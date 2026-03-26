@@ -1,12 +1,12 @@
-import { useTranslations } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { AlertTriangle } from 'lucide-react';
 import { FadeIn } from '@/components/fade-in';
+import { buildPageMetadata } from '@/lib/seo';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'termsPage' });
-  return { title: t('title') };
+  return buildPageMetadata({ locale, path: '/terms', title: t('title'), description: t('notice') });
 }
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
@@ -25,8 +25,10 @@ function Paragraph({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function TermsPage() {
-  const t = useTranslations('termsPage');
+export default async function TermsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: 'termsPage' });
 
   return (
     <div className="pt-32 pb-24 px-6">

@@ -1,11 +1,11 @@
-import { useTranslations } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { FadeIn } from '@/components/fade-in';
+import { buildPageMetadata } from '@/lib/seo';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'privacyPage' });
-  return { title: t('title') };
+  return buildPageMetadata({ locale, path: '/privacy', title: t('title'), description: t('s1Text') });
 }
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
@@ -40,8 +40,10 @@ function ListItem({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function PrivacyPage() {
-  const t = useTranslations('privacyPage');
+export default async function PrivacyPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: 'privacyPage' });
 
   return (
     <div className="pt-32 pb-24 px-6">

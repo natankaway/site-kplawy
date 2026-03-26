@@ -1,15 +1,15 @@
-import { useTranslations } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import {
   PlayCircle, Watch, Camera, Mic, Cloud, BarChart3,
   Sun, Monitor, ShieldCheck, Eye, Bluetooth, Smartphone,
 } from 'lucide-react';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/fade-in';
+import { buildPageMetadata } from '@/lib/seo';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'featuresPage' });
-  return { title: t('title') };
+  return buildPageMetadata({ locale, path: '/features', title: t('title'), description: t('subtitle') });
 }
 
 function FeatureCard({ icon: Icon, title, desc }: { icon: React.ElementType; title: string; desc: string }) {
@@ -26,8 +26,10 @@ function FeatureCard({ icon: Icon, title, desc }: { icon: React.ElementType; tit
   );
 }
 
-export default function FeaturesPage() {
-  const t = useTranslations('featuresPage');
+export default async function FeaturesPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: 'featuresPage' });
 
   const categories = [
     {

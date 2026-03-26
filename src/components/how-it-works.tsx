@@ -1,81 +1,81 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { FadeIn, StaggerContainer, StaggerItem } from './fade-in';
 
-export function HowItWorks() {
-  const t = useTranslations('howItWorks');
+export async function HowItWorks({ locale }: { locale: string }) {
+  const t = await getTranslations({ locale, namespace: 'howItWorks' });
 
   const steps = [
     {
       number: t('step1Number'),
+      overline: t('step1Overline'),
       title: t('step1Title'),
       desc: t('step1Desc'),
     },
     {
       number: t('step2Number'),
+      overline: t('step2Overline'),
       title: t('step2Title'),
       desc: t('step2Desc'),
     },
     {
       number: t('step3Number'),
+      overline: t('step3Overline'),
       title: t('step3Title'),
       desc: t('step3Desc'),
     },
   ];
 
   return (
-    <section id="how-it-works" className="relative py-32 px-6">
-      {/* Subtle divider */}
-      <div className="section-divider max-w-7xl mx-auto mb-32" />
+    <section id="how-it-works" className="relative px-6 py-28 md:py-32">
+      <div className="section-divider mx-auto mb-24 max-w-7xl" />
 
-      <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
-        <div className="text-center mb-20">
-          <FadeIn>
-            <span className="inline-flex items-center py-1.5 px-4 rounded-full bg-surface-1/80 border border-white/[0.08] text-brand-blue-dark text-xs font-semibold tracking-wide uppercase mb-6">
-              {t('badge')}
-            </span>
-          </FadeIn>
-          <FadeIn delay={0.1}>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.03em] mb-5">
-              {t('title')}
-            </h2>
-          </FadeIn>
-          <FadeIn delay={0.2}>
-            <p className="text-lg text-white/40 max-w-xl mx-auto font-light">
-              {t('subtitle')}
-            </p>
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-14 grid gap-8 lg:grid-cols-[0.88fr_1.12fr] lg:items-end">
+          <div>
+            <FadeIn>
+              <p className="section-kicker mb-5">{t('badge')}</p>
+            </FadeIn>
+            <FadeIn delay={0.08}>
+              <h2 className="max-w-2xl text-4xl font-bold tracking-[-0.04em] text-white md:text-5xl lg:text-[3.35rem] lg:leading-[1.02]">
+                {t('title')}
+              </h2>
+            </FadeIn>
+          </div>
+
+          <FadeIn delay={0.16}>
+            <div className="rounded-[2rem] border border-white/[0.08] bg-white/[0.03] p-6 backdrop-blur-xl">
+              <p className="text-base font-light leading-relaxed text-white/52 md:text-lg">
+                {t('subtitle')}
+              </p>
+              <p className="mt-4 text-sm leading-relaxed text-white/40">{t('note')}</p>
+            </div>
           </FadeIn>
         </div>
 
-        {/* Steps */}
-        <StaggerContainer className="grid md:grid-cols-3 gap-8 lg:gap-12" staggerDelay={0.15}>
-          {steps.map((step, i) => (
-            <StaggerItem key={i}>
-              <div className="relative group">
-                {/* Connector line (hidden on mobile, shown between cards on desktop) */}
-                {i < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-10 left-full w-full h-px bg-gradient-to-r from-white/[0.08] to-transparent z-0" />
-                )}
+        <StaggerContainer className="grid gap-5 lg:grid-cols-3" staggerDelay={0.08}>
+          {steps.map((step, index) => (
+            <StaggerItem key={index}>
+              <article className="premium-shell relative h-full overflow-hidden p-6 md:p-7">
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-blue-dark/60 to-transparent" />
 
-                <div className="relative">
-                  {/* Step number */}
-                  <div className="text-6xl md:text-7xl font-black text-white/[0.04] tracking-tighter mb-4 select-none">
-                    {step.number}
+                <div className="flex h-full flex-col gap-10">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/30">
+                        {step.overline}
+                      </p>
+                      <h3 className="mt-3 text-2xl font-semibold tracking-tight text-white md:text-[1.75rem]">
+                        {step.title}
+                      </h3>
+                    </div>
+                    <span className="text-6xl font-bold tracking-[-0.06em] text-white/[0.08]">{step.number}</span>
                   </div>
 
-                  {/* Blue dot accent */}
-                  <div className="w-2 h-2 rounded-full bg-brand-blue-dark mb-5 group-hover:shadow-[0_0_12px_rgba(10,132,255,0.5)] transition-shadow duration-500" />
-
-                  <h3 className="text-2xl font-semibold tracking-tight mb-3">
-                    {step.title}
-                  </h3>
-                  <p className="text-sm text-white/40 leading-relaxed font-light max-w-sm">
+                  <p className="max-w-sm text-sm font-light leading-relaxed text-white/50 md:text-base">
                     {step.desc}
                   </p>
                 </div>
-              </div>
+              </article>
             </StaggerItem>
           ))}
         </StaggerContainer>

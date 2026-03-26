@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, getTranslations } from 'next-intl/server';
+import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
+import { SITE_URL } from '@/lib/seo';
 import '../globals.css';
 
 const inter = Inter({
@@ -23,6 +24,7 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: 'meta' });
 
   return {
+    metadataBase: new URL(SITE_URL),
     title: {
       default: t('title'),
       template: `%s | KplaWY`,
@@ -33,15 +35,17 @@ export async function generateMetadata({
       description: t('ogDescription'),
       type: 'website',
       siteName: 'KplaWY',
+      images: [`${SITE_URL}/opengraph-image`],
     },
     twitter: {
       card: 'summary_large_image',
       title: t('ogTitle'),
       description: t('ogDescription'),
+      images: [`${SITE_URL}/twitter-image`],
     },
     icons: {
-      icon: '/logo.png',
-      apple: '/logo.png',
+      icon: '/logo-icon.png',
+      apple: '/logo-icon.png',
     },
   };
 }
@@ -63,6 +67,8 @@ export default async function LocaleLayout({
     notFound();
   }
 
+  setRequestLocale(locale);
+
   const messages = await getMessages();
 
   return (
@@ -73,7 +79,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <Navbar />
           <main className="min-h-screen">{children}</main>
-          <Footer />
+          <Footer locale={locale} />
         </NextIntlClientProvider>
       </body>
     </html>

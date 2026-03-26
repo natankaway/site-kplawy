@@ -1,12 +1,12 @@
-import { useTranslations } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { ShieldCheck, Zap, Cpu, Heart } from 'lucide-react';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/fade-in';
+import { buildPageMetadata } from '@/lib/seo';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'aboutPage' });
-  return { title: t('title') };
+  return buildPageMetadata({ locale, path: '/about', title: t('title'), description: t('story1') });
 }
 
 function ValueCard({ icon: Icon, title, text }: { icon: React.ElementType; title: string; text: string }) {
@@ -23,8 +23,10 @@ function ValueCard({ icon: Icon, title, text }: { icon: React.ElementType; title
   );
 }
 
-export default function AboutPage() {
-  const t = useTranslations('aboutPage');
+export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: 'aboutPage' });
 
   return (
     <div className="pt-32 pb-24 px-6">

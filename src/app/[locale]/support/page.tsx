@@ -1,12 +1,12 @@
-import { useTranslations } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Camera, Watch, FolderOpen, Cloud, Mail, ArrowRight } from 'lucide-react';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/fade-in';
+import { buildPageMetadata } from '@/lib/seo';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'supportPage' });
-  return { title: t('title') };
+  return buildPageMetadata({ locale, path: '/support', title: t('title'), description: t('subtitle') });
 }
 
 function IssueCard({
@@ -35,8 +35,10 @@ function IssueCard({
   );
 }
 
-export default function SupportPage() {
-  const t = useTranslations('supportPage');
+export default async function SupportPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: 'supportPage' });
 
   const issues = [
     { icon: Camera, title: t('issue1Title'), solution: t('issue1Solution') },

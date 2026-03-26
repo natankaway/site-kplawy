@@ -1,38 +1,38 @@
-import { useTranslations, useLocale } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import Image from 'next/image';
 
-export function Footer() {
-  const t = useTranslations();
-  const locale = useLocale();
+export async function Footer({ locale }: { locale: string }) {
+  const nav = await getTranslations({ locale, namespace: 'nav' });
+  const footer = await getTranslations({ locale, namespace: 'footer' });
 
   const productLinks = [
-    { href: `/${locale}#features`, label: t('nav.features') },
-    { href: `/${locale}#how-it-works`, label: t('nav.howItWorks') },
-    { href: `/${locale}/pricing`, label: t('nav.pricing') },
-    { href: `/${locale}/download`, label: t('nav.download') },
+    { href: `/${locale}#features`, label: nav('features') },
+    { href: `/${locale}#how-it-works`, label: nav('howItWorks') },
+    { href: `/${locale}/pricing`, label: nav('pricing') },
+    { href: `/${locale}/download`, label: nav('download') },
   ];
 
   const companyLinks = [
-    { href: `/${locale}/about`, label: t('nav.about') },
-    { href: `/${locale}/faq`, label: t('nav.faq') },
-    { href: `/${locale}/support`, label: t('nav.support') },
-    { href: `/${locale}/contact`, label: t('nav.contact') },
+    { href: `/${locale}/about`, label: nav('about') },
+    { href: `/${locale}/faq`, label: nav('faq') },
+    { href: `/${locale}/support`, label: nav('support') },
+    { href: `/${locale}/contact`, label: nav('contact') },
   ];
 
   const legalLinks = [
-    { href: `/${locale}/privacy`, label: t('nav.privacy') },
-    { href: `/${locale}/terms`, label: t('nav.terms') },
+    { href: `/${locale}/privacy`, label: nav('privacy') },
+    { href: `/${locale}/terms`, label: nav('terms') },
   ];
 
   return (
-    <footer className="border-t border-white/[0.06] bg-black">
-      <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+    <footer className="bg-black px-6 pb-8 pt-8">
+      <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/[0.06] bg-white/[0.02] px-6 pt-12 backdrop-blur-xl md:px-8 lg:px-10">
+        <div className="mb-14 grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <Link href={`/${locale}`} className="flex items-center gap-3 mb-4">
-              <div className="relative w-7 h-7">
+            <Link href={`/${locale}`} className="mb-4 flex items-center gap-3">
+              <div className="relative h-8 w-8 rounded-full bg-white/[0.03]">
                 <Image
                   src="/logo.png"
                   alt="KplaWY"
@@ -41,24 +41,24 @@ export function Footer() {
                   className="object-contain"
                 />
               </div>
-              <span className="text-lg font-bold tracking-tight">KplaWY</span>
+              <span className="text-lg font-semibold tracking-tight text-white">KplaWY</span>
             </Link>
-            <p className="text-sm text-white/40 leading-relaxed max-w-xs">
-              {t('footer.description')}
+            <p className="max-w-xs text-sm leading-relaxed text-white/44">
+              {footer('description')}
             </p>
           </div>
 
           {/* Product */}
           <div>
-            <h4 className="text-xs font-semibold text-white/30 uppercase tracking-widest mb-5">
-              {t('footer.product')}
+            <h4 className="mb-5 text-xs font-semibold uppercase tracking-widest text-white/28">
+              {footer('product')}
             </h4>
             <ul className="space-y-3">
               {productLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/50 hover:text-white transition-colors duration-300"
+                    className="text-sm text-white/50 transition-colors duration-300 hover:text-white"
                   >
                     {link.label}
                   </Link>
@@ -69,15 +69,15 @@ export function Footer() {
 
           {/* Company */}
           <div>
-            <h4 className="text-xs font-semibold text-white/30 uppercase tracking-widest mb-5">
-              {t('footer.company')}
+            <h4 className="mb-5 text-xs font-semibold uppercase tracking-widest text-white/28">
+              {footer('company')}
             </h4>
             <ul className="space-y-3">
               {companyLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/50 hover:text-white transition-colors duration-300"
+                    className="text-sm text-white/50 transition-colors duration-300 hover:text-white"
                   >
                     {link.label}
                   </Link>
@@ -88,15 +88,15 @@ export function Footer() {
 
           {/* Legal */}
           <div>
-            <h4 className="text-xs font-semibold text-white/30 uppercase tracking-widest mb-5">
-              {t('footer.legal')}
+            <h4 className="mb-5 text-xs font-semibold uppercase tracking-widest text-white/28">
+              {footer('legal')}
             </h4>
             <ul className="space-y-3">
               {legalLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/50 hover:text-white transition-colors duration-300"
+                    className="text-sm text-white/50 transition-colors duration-300 hover:text-white"
                   >
                     {link.label}
                   </Link>
@@ -107,13 +107,18 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="section-divider mb-8" />
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-white/30">
-            &copy; {new Date().getFullYear()} KplaWY. {t('footer.rights')}
-          </p>
-          <p className="text-xs text-white/20">
-            {t('footer.madeWith')}
+        <div className="section-divider mb-6" />
+        <div className="flex flex-col items-start justify-between gap-4 pb-8 md:flex-row md:items-center">
+          <div className="space-y-1">
+            <p className="text-xs text-white/30">
+              &copy; {new Date().getFullYear()} KplaWY. {footer('rights')}
+            </p>
+            <p className="text-xs text-white/22">
+              {footer('developerCredit')}
+            </p>
+          </div>
+          <p className="text-xs text-white/22">
+            {footer('madeWith')}
           </p>
         </div>
       </div>

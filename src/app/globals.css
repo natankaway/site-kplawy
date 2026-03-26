@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@config "../../tailwind.config.ts";
+@import "tailwindcss";
 
 @layer base {
   :root {
@@ -22,6 +21,10 @@
     background: var(--background);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-image:
+      radial-gradient(circle at top, rgba(10, 132, 255, 0.08), transparent 30%),
+      radial-gradient(circle at 80% 20%, rgba(10, 132, 255, 0.06), transparent 24%),
+      linear-gradient(180deg, #020304 0%, #000000 35%, #020406 100%);
   }
 
   ::selection {
@@ -169,4 +172,137 @@
   --tw-prose-hr: rgba(255, 255, 255, 0.06);
   --tw-prose-quotes: #8E8E93;
   --tw-prose-quote-borders: rgba(10, 132, 255, 0.3);
+}
+
+.noise-overlay {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 0.7px, transparent 0.7px);
+  background-size: 18px 18px;
+  opacity: 0.04;
+}
+
+.hero-orb {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(10, 132, 255, 0.16) 0%, rgba(10, 132, 255, 0.04) 46%, transparent 72%);
+  filter: blur(28px);
+  pointer-events: none;
+}
+
+.premium-shell {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border-radius: 32px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 30px 80px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.premium-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(120deg, transparent 15%, rgba(255, 255, 255, 0.05) 32%, transparent 48%);
+  opacity: 0;
+  transform: translateX(-18%);
+  transition: opacity 0.6s ease, transform 0.9s ease;
+  pointer-events: none;
+}
+
+.premium-shell:hover::before {
+  opacity: 1;
+  transform: translateX(18%);
+}
+
+.hover-lift {
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.45s ease, background-color 0.45s ease;
+  will-change: transform;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 40px 100px rgba(0, 0, 0, 0.34);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.floating-soft {
+  animation: floating-soft 7s ease-in-out infinite;
+}
+
+.floating-soft-delayed {
+  animation: floating-soft 8.5s ease-in-out infinite;
+  animation-delay: 1.2s;
+}
+
+.floating-soft-slower {
+  animation: floating-soft 10s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.glow-pulse-soft {
+  animation: glow-pulse-soft 3.8s ease-in-out infinite;
+}
+
+.media-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.media-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 18%, transparent 82%, rgba(255, 255, 255, 0.02));
+  pointer-events: none;
+}
+
+.button-sheen {
+  position: relative;
+  overflow: hidden;
+}
+
+.button-sheen::after {
+  content: '';
+  position: absolute;
+  inset: -120% auto -120% -30%;
+  width: 38%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: rotate(18deg) translateX(-180%);
+  transition: transform 0.9s ease;
+  pointer-events: none;
+}
+
+.button-sheen:hover::after {
+  transform: rotate(18deg) translateX(420%);
+}
+
+@keyframes floating-soft {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes glow-pulse-soft {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(10, 132, 255, 0.16);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(10, 132, 255, 0);
+  }
+}
+
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  line-height: 1;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.38);
 }

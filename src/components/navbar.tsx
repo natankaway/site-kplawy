@@ -37,17 +37,17 @@ export function Navbar() {
 
   return (
     <>
-      <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-500 ${
-          isScrolled
-            ? 'bg-black/80 backdrop-blur-2xl border-b border-white/[0.06]'
-            : 'bg-transparent'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <nav className="fixed top-0 z-50 w-full px-3 pt-3 transition-all duration-500 md:px-6">
+        <div
+          className={`mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between rounded-full border px-5 transition-all duration-500 md:px-6 ${
+            isScrolled
+              ? 'border-white/[0.08] bg-black/78 shadow-[0_10px_40px_rgba(0,0,0,0.28)] backdrop-blur-2xl'
+              : 'border-white/[0.04] bg-black/40 backdrop-blur-xl'
+          }`}
+        >
           {/* Logo */}
           <Link href={`/${locale}`} className="flex items-center gap-3 group">
-            <div className="relative w-8 h-8 overflow-hidden">
+            <div className="relative w-8 h-8 overflow-hidden rounded-full bg-white/[0.03]">
               <Image
                 src="/logo.png"
                 alt="KplaWY"
@@ -56,7 +56,7 @@ export function Navbar() {
                 className="object-contain"
               />
             </div>
-            <span className="text-xl font-bold tracking-tight group-hover:text-brand-blue-dark transition-colors duration-300">
+            <span className="text-lg font-semibold tracking-tight text-white transition-colors duration-300 group-hover:text-brand-blue-dark md:text-xl">
               KplaWY
             </span>
           </Link>
@@ -67,7 +67,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-white/60 hover:text-white transition-colors duration-300"
+                className="text-sm font-medium text-white/52 transition-colors duration-300 hover:text-white"
               >
                 {link.label}
               </Link>
@@ -79,7 +79,7 @@ export function Navbar() {
             {/* Language Switch */}
             <button
               onClick={switchLocale}
-              className="text-xs font-semibold text-white/50 hover:text-white border border-white/10 hover:border-white/20 px-3 py-1.5 rounded-full transition-all duration-300 uppercase tracking-wider"
+              className="rounded-full border border-white/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white/50 transition-all duration-300 hover:border-white/20 hover:text-white"
             >
               {locale === 'pt' ? 'EN' : 'PT'}
             </button>
@@ -87,7 +87,7 @@ export function Navbar() {
             {/* CTA */}
             <Link
               href={`/${locale}/download`}
-              className="hidden md:flex items-center gap-2 bg-brand-blue-dark text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-brand-blue transition-colors duration-300"
+              className="hidden rounded-full bg-brand-blue-dark px-5 py-2.5 text-sm font-semibold text-white transition-colors duration-300 hover:bg-brand-blue md:flex"
             >
               {t('getApp')}
             </Link>
@@ -95,7 +95,7 @@ export function Navbar() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileOpen(!isMobileOpen)}
-              className="lg:hidden p-2 text-white/70 hover:text-white transition-colors"
+              className="p-2 text-white/70 transition-colors hover:text-white lg:hidden"
               aria-label={t('menu')}
             >
               {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
@@ -112,48 +112,50 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 bg-black/95 backdrop-blur-2xl pt-24 px-6 lg:hidden"
+            className="fixed inset-0 z-40 bg-black/96 px-6 pt-28 backdrop-blur-2xl lg:hidden"
           >
-            <div className="flex flex-col gap-1">
-              {navLinks.map((link) => (
+            <div className="mx-auto max-w-xl rounded-[2rem] border border-white/[0.06] bg-white/[0.03] p-5 shadow-[0_20px_80px_rgba(0,0,0,0.45)]">
+              <div className="flex flex-col gap-1">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsMobileOpen(false)}
+                    className="border-b border-white/[0.06] py-4 text-2xl font-semibold text-white/70 transition-colors hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
                 <Link
-                  key={link.href}
-                  href={link.href}
+                  href={`/${locale}/about`}
                   onClick={() => setIsMobileOpen(false)}
-                  className="text-2xl font-semibold text-white/70 hover:text-white py-4 border-b border-white/[0.06] transition-colors"
+                  className="border-b border-white/[0.06] py-4 text-2xl font-semibold text-white/70 transition-colors hover:text-white"
                 >
-                  {link.label}
+                  {t('about')}
                 </Link>
-              ))}
-              <Link
-                href={`/${locale}/about`}
-                onClick={() => setIsMobileOpen(false)}
-                className="text-2xl font-semibold text-white/70 hover:text-white py-4 border-b border-white/[0.06] transition-colors"
-              >
-                {t('about')}
-              </Link>
-              <Link
-                href={`/${locale}/faq`}
-                onClick={() => setIsMobileOpen(false)}
-                className="text-2xl font-semibold text-white/70 hover:text-white py-4 border-b border-white/[0.06] transition-colors"
-              >
-                {t('faq')}
-              </Link>
-              <Link
-                href={`/${locale}/support`}
-                onClick={() => setIsMobileOpen(false)}
-                className="text-2xl font-semibold text-white/70 hover:text-white py-4 border-b border-white/[0.06] transition-colors"
-              >
-                {t('support')}
-              </Link>
-              <div className="pt-8">
                 <Link
-                  href={`/${locale}/download`}
+                  href={`/${locale}/faq`}
                   onClick={() => setIsMobileOpen(false)}
-                  className="flex items-center justify-center bg-brand-blue-dark text-white px-8 py-4 rounded-full text-lg font-semibold w-full"
+                  className="border-b border-white/[0.06] py-4 text-2xl font-semibold text-white/70 transition-colors hover:text-white"
                 >
-                  {t('getApp')}
+                  {t('faq')}
                 </Link>
+                <Link
+                  href={`/${locale}/support`}
+                  onClick={() => setIsMobileOpen(false)}
+                  className="border-b border-white/[0.06] py-4 text-2xl font-semibold text-white/70 transition-colors hover:text-white"
+                >
+                  {t('support')}
+                </Link>
+                <div className="pt-8">
+                  <Link
+                    href={`/${locale}/download`}
+                    onClick={() => setIsMobileOpen(false)}
+                    className="flex w-full items-center justify-center rounded-full bg-brand-blue-dark px-8 py-4 text-lg font-semibold text-white"
+                  >
+                    {t('getApp')}
+                  </Link>
+                </div>
               </div>
             </div>
           </motion.div>

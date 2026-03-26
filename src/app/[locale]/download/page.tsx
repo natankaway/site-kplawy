@@ -1,17 +1,19 @@
-import { useTranslations } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
-import { Apple, ArrowRight, Smartphone, Monitor } from 'lucide-react';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { Apple, ArrowRight, Smartphone } from 'lucide-react';
 import { FadeIn } from '@/components/fade-in';
 import Image from 'next/image';
+import { buildPageMetadata } from '@/lib/seo';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'downloadPage' });
-  return { title: t('title') };
+  return buildPageMetadata({ locale, path: '/download', title: t('title'), description: t('subtitle') });
 }
 
-export default function DownloadPage() {
-  const t = useTranslations('downloadPage');
+export default async function DownloadPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations({ locale, namespace: 'downloadPage' });
 
   return (
     <div className="pt-32 pb-24 px-6">
