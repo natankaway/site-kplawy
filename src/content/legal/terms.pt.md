@@ -1,6 +1,6 @@
 # Termos de Uso — KplaWY Instant Replay 22s
 
-**Última atualização:** [[PREENCHER: DATA PUBLICAÇÃO]]
+**Última atualização:** 7 de junho de 2026
 **Versão:** 1.0
 
 Estes Termos de Uso ("Termos") regulam o uso do aplicativo KplaWY Instant

@@ -1,6 +1,6 @@
 # Terms of Use — KplaWY Instant Replay 22s
 
-**Last updated:** [[PREENCHER: DATA PUBLICAÇÃO]]
+**Last updated:** June 7, 2026
 **Version:** 1.0
 
 These Terms of Use ("Terms") govern your use of the KplaWY Instant Replay 22s

@@ -1,6 +1,6 @@
 # Política de Privacidade — KplaWY Instant Replay 22s
 
-**Última atualização:** [[PREENCHER: DATA PUBLICAÇÃO]]
+**Última atualização:** 7 de junho de 2026
 **Versão:** 1.0
 **Aplica-se a:** aplicativo KplaWY Instant Replay 22s (iOS, Android, Apple Watch, Wear OS) e ao site `kplawy.app`.
 
