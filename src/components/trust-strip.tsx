@@ -36,20 +36,20 @@ export async function TrustStrip({ locale }: { locale: string }) {
               </div>
 
               <StaggerContainer
-                className="grid flex-1 grid-cols-2 gap-3 sm:grid-cols-3"
+                className="grid flex-1 grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
                 staggerDelay={0.05}
               >
                 {items.map((item, index) => (
                   <StaggerItem key={index}>
-                    <div className="hover-lift group flex h-full items-center gap-3 rounded-2xl border border-white/[0.08] bg-white/[0.02] px-4 py-3.5 backdrop-blur-xl">
+                    <div className="hover-lift group flex h-full items-start gap-3 rounded-2xl border border-white/[0.08] bg-white/[0.02] px-4 py-3.5 backdrop-blur-xl">
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-brand-blue/25 bg-brand-blue/10 text-brand-blue-bright transition-colors duration-300 group-hover:border-brand-blue/45 group-hover:text-brand-cyan">
                         <item.Icon size={18} strokeWidth={2} aria-hidden="true" />
                       </div>
                       <div className="min-w-0">
-                        <p className="tabular truncate text-sm font-semibold uppercase tracking-[0.04em] text-white">
+                        <p className="text-sm font-semibold uppercase tracking-[0.04em] text-white">
                           {item.title}
                         </p>
-                        <p className="mt-0.5 truncate text-xs leading-relaxed text-white/65">
+                        <p className="mt-0.5 text-xs leading-relaxed text-white/65">
                           {item.desc}
                         </p>
                       </div>
