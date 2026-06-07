@@ -28,15 +28,11 @@ and data at any time, directly in the app.
 
 ## 1. Who is responsible for your data
 
-The party responsible (the **data controller**) for processing your personal
-data is:
+The party responsible (the **data controller**, under Article 5, VI of Brazil's
+LGPD — Law No. 13.709/2018) for processing your personal data is:
 
-- **Legal name:** [[PREENCHER: RAZÃO SOCIAL]]
-- **Registration (CNPJ):** [[PREENCHER: CNPJ]]
+- **Responsible party:** Natan Kaway da Silva Pereira, an individual (natural person) responsible for the KplaWY app.
 - **Contact:** kplawyapp@gmail.com (see "How to contact us")
-
-> ⚠️ *Working draft — the controller's registration will be filled before
-> publication.*
 
 ---
 
@@ -222,7 +218,7 @@ objection.
 You exercise most of these rights directly in the app (access, correction,
 export, deletion). For the others, contact us (see "How to contact us").
 
-**Data Protection Officer (DPO):** kplawyapp@gmail.com.
+**Data Protection Officer (DPO):** the responsible party also acts as the data protection officer and can be reached at kplawyapp@gmail.com.
 
 ---
 
@@ -284,7 +280,7 @@ are served from our own domain (self-hosted), with no third-party requests.
 To exercise your rights, ask questions, or file privacy complaints:
 
 - **Email:** kplawyapp@gmail.com
-- **Controller:** [[PREENCHER: RAZÃO SOCIAL]], CNPJ [[PREENCHER: CNPJ]]
+- **Controller:** Natan Kaway da Silva Pereira (individual responsible for the KplaWY app)
 
 We will respond within the applicable legal timeframe.
 

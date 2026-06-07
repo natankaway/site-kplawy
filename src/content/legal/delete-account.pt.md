@@ -1,7 +1,7 @@
 # Exclusão de conta — KplaWY
 
 **Aplica-se a:** aplicativo KplaWY Instant Replay 22s (iOS, Android, Apple Watch, Wear OS).
-**Responsável:** [[PREENCHER: RAZÃO SOCIAL]], CNPJ [[PREENCHER: CNPJ]].
+**Responsável:** Natan Kaway da Silva Pereira (pessoa física responsável pelo aplicativo KplaWY).
 
 Esta página explica como excluir sua conta KplaWY e os dados associados a ela.
 

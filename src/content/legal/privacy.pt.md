@@ -28,10 +28,9 @@ conta e seus dados a qualquer momento, direto no app.
 
 ## 1. Quem é o responsável pelos seus dados
 
-O responsável (controlador) pelo tratamento dos seus dados pessoais é:
+O responsável (controlador), nos termos do Art. 5º, VI, da Lei nº 13.709/2018 (LGPD), pelo tratamento dos seus dados pessoais é:
 
-- **Razão social:** [[PREENCHER: RAZÃO SOCIAL]]
-- **CNPJ:** [[PREENCHER: CNPJ]]
+- **Responsável:** Natan Kaway da Silva Pereira, pessoa física responsável pelo aplicativo KplaWY.
 - **Contato:** kplawyapp@gmail.com (ver seção "Como falar conosco")
 
 ---
@@ -227,7 +226,7 @@ A maioria desses direitos você exerce direto no app (acesso, correção,
 exportação, exclusão). Para os demais, fale conosco (seção "Como falar
 conosco").
 
-**Encarregado (DPO):** kplawyapp@gmail.com.
+**Encarregado (DPO):** o próprio responsável acumula a função de encarregado pelo tratamento de dados, pelo e-mail kplawyapp@gmail.com.
 
 ---
 
@@ -286,7 +285,7 @@ Para exercer seus direitos, tirar dúvidas ou fazer reclamações sobre
 privacidade:
 
 - **E-mail:** kplawyapp@gmail.com
-- **Responsável:** [[PREENCHER: RAZÃO SOCIAL]], CNPJ [[PREENCHER: CNPJ]]
+- **Responsável:** Natan Kaway da Silva Pereira (pessoa física responsável pelo aplicativo KplaWY)
 
 Responderemos no prazo legal aplicável.
 

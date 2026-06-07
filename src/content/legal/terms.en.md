@@ -19,8 +19,7 @@ must not use the app.** If you are between **13 and 17**, you must use the app
 with the consent and supervision of your parents or legal guardians.
 
 1.3 **Party responsible (controller) for the app:**
-- **Legal name:** [[PREENCHER: RAZÃO SOCIAL]]
-- **Registration (CNPJ):** [[PREENCHER: CNPJ]]
+- **Responsible party:** Natan Kaway da Silva Pereira, an individual (natural person) responsible for the KplaWY app.
 
 ---
 
@@ -251,4 +250,4 @@ clause where applicable.
 ## 15. Contact
 
 - **Email:** kplawyapp@gmail.com
-- **Controller:** [[PREENCHER: RAZÃO SOCIAL]], CNPJ [[PREENCHER: CNPJ]]
+- **Controller:** Natan Kaway da Silva Pereira (individual responsible for the KplaWY app)

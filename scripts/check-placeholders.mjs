@@ -1,6 +1,6 @@
 // Guard anti-vazamento: falha o build se algum placeholder [[PREENCHER: …]]
-// ainda existir no conteúdo. Garante que nenhuma página com dado pendente do
-// MEI (CNPJ, razão social, data) chegue ao ar. Roda no `prebuild`.
+// ainda existir no conteúdo. Garante que nenhuma página com campo pendente
+// ([[PREENCHER]]) chegue ao ar. Roda no `prebuild`.
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -27,7 +27,7 @@ if (hits.length > 0) {
   console.error(
     `\n❌ Build bloqueado: ${hits.length} placeholder(s) [[PREENCHER]] não preenchido(s).`,
   );
-  console.error('   Preencha os dados do MEI antes de publicar (ver PLACEHOLDERS.md):\n');
+  console.error('   Preencha os campos pendentes ([[PREENCHER]]) antes de publicar (ver PLACEHOLDERS.md):\n');
   for (const h of hits) console.error('   ' + h);
   console.error('');
   process.exit(1);

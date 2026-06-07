@@ -1,7 +1,7 @@
 # Account deletion — KplaWY
 
 **Applies to:** KplaWY Instant Replay 22s app (iOS, Android, Apple Watch, Wear OS).
-**Controller:** [[PREENCHER: RAZÃO SOCIAL]], CNPJ [[PREENCHER: CNPJ]].
+**Controller:** Natan Kaway da Silva Pereira (individual responsible for the KplaWY app).
 
 This page explains how to delete your KplaWY account and its associated data.
 

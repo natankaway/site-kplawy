@@ -19,8 +19,7 @@ não devem usar o app.** Se você tem entre **13 e 17 anos**, deve usar o app co
 o consentimento e a supervisão dos seus pais ou responsáveis legais.
 
 1.3 **Responsável (controlador) pelo app:**
-- **Razão social:** [[PREENCHER: RAZÃO SOCIAL]]
-- **CNPJ:** [[PREENCHER: CNPJ]]
+- **Responsável:** Natan Kaway da Silva Pereira, pessoa física responsável pelo aplicativo KplaWY.
 
 ---
 
@@ -252,4 +251,4 @@ prevalece sobre esta cláusula.
 ## 15. Contato
 
 - **E-mail:** kplawyapp@gmail.com
-- **Responsável:** [[PREENCHER: RAZÃO SOCIAL]], CNPJ [[PREENCHER: CNPJ]]
+- **Responsável:** Natan Kaway da Silva Pereira (pessoa física responsável pelo aplicativo KplaWY)
