@@ -17,10 +17,10 @@ function FeatureCard({ icon: Icon, title, desc }: { icon: React.ElementType; tit
     <StaggerItem>
       <div className="group p-6 rounded-2xl bg-surface-1/30 border border-white/[0.04] hover:border-brand-blue-dark/20 hover:bg-surface-1/50 transition-all duration-500">
         <div className="w-10 h-10 bg-brand-blue-dark/10 text-brand-blue-dark rounded-xl flex items-center justify-center mb-4 group-hover:bg-brand-blue-dark group-hover:text-white transition-all duration-500">
-          <Icon size={20} strokeWidth={1.5} />
+          <Icon size={20} strokeWidth={1.5} aria-hidden="true" />
         </div>
         <h3 className="text-lg font-semibold tracking-tight mb-2">{title}</h3>
-        <p className="text-sm text-white/40 leading-relaxed font-light">{desc}</p>
+        <p className="text-sm text-white/65 leading-relaxed font-light">{desc}</p>
       </div>
     </StaggerItem>
   );
@@ -81,7 +81,7 @@ export default async function FeaturesPage({ params }: { params: Promise<{ local
             </h1>
           </FadeIn>
           <FadeIn delay={0.1}>
-            <p className="text-lg text-white/40 max-w-2xl mx-auto font-light">
+            <p className="text-lg text-white/65 max-w-2xl mx-auto font-light">
               {t('subtitle')}
             </p>
           </FadeIn>
@@ -91,7 +91,7 @@ export default async function FeaturesPage({ params }: { params: Promise<{ local
         {categories.map((category, catIndex) => (
           <div key={catIndex} className="mb-20 last:mb-0">
             <FadeIn>
-              <h2 className="text-xs font-semibold text-white/30 uppercase tracking-[0.2em] mb-8">
+              <h2 className="text-xs font-semibold text-white/65 uppercase tracking-[0.2em] mb-8">
                 {category.title}
               </h2>
             </FadeIn>

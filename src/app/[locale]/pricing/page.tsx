@@ -25,7 +25,7 @@ export default async function PricingPage({
 
   return (
     <div className="pt-24 md:pt-28">
-      <PricingCards locale={currentLocale} showDivider={false} />
+      <PricingCards locale={currentLocale} showDivider={false} isPageHeading />
       <CtaBanner locale={currentLocale} />
     </div>
   );

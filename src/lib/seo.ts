@@ -52,8 +52,8 @@ export function buildSoftwareApplicationJsonLd(locale: string) {
       '@type': 'AggregateOffer',
       priceCurrency: 'BRL',
       lowPrice: '0',
-      highPrice: '299.90',
-      offerCount: 4,
+      highPrice: '249.90',
+      offerCount: 3,
     },
     description:
       locale === 'pt'

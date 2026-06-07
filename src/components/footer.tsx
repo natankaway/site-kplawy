@@ -23,101 +23,78 @@ export async function Footer({ locale }: { locale: string }) {
   const legalLinks = [
     { href: `/${locale}/privacy`, label: nav('privacy') },
     { href: `/${locale}/terms`, label: nav('terms') },
+    { href: `/${locale}/delete-account`, label: nav('deleteAccount') },
+  ];
+
+  const linkGroups = [
+    { heading: footer('product'), links: productLinks },
+    { heading: footer('company'), links: companyLinks },
+    { heading: footer('legal'), links: legalLinks },
   ];
 
   return (
     <footer className="bg-black px-6 pb-8 pt-8">
-      <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/[0.06] bg-white/[0.02] px-6 pt-12 backdrop-blur-xl md:px-8 lg:px-10">
+      <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-white/[0.06] bg-white/[0.02] px-6 pt-12 backdrop-blur-xl md:px-8 lg:px-10">
+        {/* Electric edge accent */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-blue/40 to-transparent" />
+
         <div className="mb-14 grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <Link href={`/${locale}`} className="mb-4 flex items-center gap-3">
-              <div className="relative h-8 w-8 rounded-full bg-white/[0.03]">
+            <Link href={`/${locale}`} className="group mb-4 flex items-center gap-3">
+              <div className="relative h-8 w-8 overflow-hidden rounded-full bg-white/[0.03] ring-1 ring-white/[0.06] transition-all duration-300 group-hover:ring-brand-blue/40">
                 <Image
-                  src="/logo.png"
+                  src="/logo-icon.png"
                   alt="KplaWY"
                   width={28}
                   height={28}
                   className="object-contain"
                 />
               </div>
-              <span className="text-lg font-semibold tracking-tight text-white">KplaWY</span>
+              <span className="font-display text-xl font-bold uppercase tracking-tight text-white transition-colors duration-300 group-hover:text-brand-blue-bright">
+                KplaWY
+              </span>
             </Link>
-            <p className="max-w-xs text-sm leading-relaxed text-white/44">
+            <p className="max-w-xs text-sm leading-relaxed text-white/70">
               {footer('description')}
             </p>
           </div>
 
-          {/* Product */}
-          <div>
-            <h4 className="mb-5 text-xs font-semibold uppercase tracking-widest text-white/28">
-              {footer('product')}
-            </h4>
-            <ul className="space-y-3">
-              {productLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-white/50 transition-colors duration-300 hover:text-white"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div>
-            <h4 className="mb-5 text-xs font-semibold uppercase tracking-widest text-white/28">
-              {footer('company')}
-            </h4>
-            <ul className="space-y-3">
-              {companyLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-white/50 transition-colors duration-300 hover:text-white"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h4 className="mb-5 text-xs font-semibold uppercase tracking-widest text-white/28">
-              {footer('legal')}
-            </h4>
-            <ul className="space-y-3">
-              {legalLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-white/50 transition-colors duration-300 hover:text-white"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Link columns */}
+          {linkGroups.map((group) => (
+            <div key={group.heading}>
+              <h4 className="mb-5 font-display text-sm font-semibold uppercase tracking-[0.2em] text-white/60">
+                {group.heading}
+              </h4>
+              <ul className="space-y-3">
+                {group.links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="group inline-flex items-center gap-2 text-sm text-white/70 transition-colors duration-300 hover:text-brand-blue-bright"
+                    >
+                      <span className="h-px w-0 bg-brand-cyan transition-all duration-300 group-hover:w-3" />
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
         {/* Bottom bar */}
         <div className="section-divider mb-6" />
         <div className="flex flex-col items-start justify-between gap-4 pb-8 md:flex-row md:items-center">
           <div className="space-y-1">
-            <p className="text-xs text-white/30">
+            <p className="text-xs text-white/70">
               &copy; {new Date().getFullYear()} KplaWY. {footer('rights')}
             </p>
-            <p className="text-xs text-white/22">
+            <p className="text-xs text-white/60">
               {footer('developerCredit')}
             </p>
           </div>
-          <p className="text-xs text-white/22">
+          <p className="text-xs text-white/60">
             {footer('madeWith')}
           </p>
         </div>

@@ -17,7 +17,7 @@ function ValueCard({ icon: Icon, title, text }: { icon: React.ElementType; title
           <Icon size={20} strokeWidth={1.5} />
         </div>
         <h3 className="text-lg font-semibold tracking-tight mb-2">{title}</h3>
-        <p className="text-sm text-white/40 leading-relaxed font-light">{text}</p>
+        <p className="text-sm text-white/65 leading-relaxed font-light">{text}</p>
       </div>
     </StaggerItem>
   );
@@ -71,7 +71,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           <div className="relative text-center mb-20 overflow-hidden">
             <div className="ambient-glow-sm absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
             <div className="relative z-10">
-              <h2 className="text-xs font-semibold text-white/30 uppercase tracking-[0.2em] mb-6">
+              <h2 className="text-xs font-semibold text-white/65 uppercase tracking-[0.2em] mb-6">
                 {t('missionTitle')}
               </h2>
               <p className="text-2xl md:text-3xl font-bold tracking-tight">
@@ -85,8 +85,8 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
 
         {/* Values */}
         <FadeIn>
-          <h2 className="text-xs font-semibold text-white/30 uppercase tracking-[0.2em] mb-8 text-center">
-            {t('missionTitle')}
+          <h2 className="text-xs font-semibold text-white/65 uppercase tracking-[0.2em] mb-8 text-center">
+            {t('valuesTitle')}
           </h2>
         </FadeIn>
         <StaggerContainer className="grid md:grid-cols-3 gap-4 mb-20" staggerDelay={0.08}>
@@ -100,14 +100,14 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         {/* Developer */}
         <FadeIn>
           <div className="text-center">
-            <p className="text-xs font-semibold text-white/30 uppercase tracking-[0.2em] mb-4">
+            <p className="text-xs font-semibold text-white/65 uppercase tracking-[0.2em] mb-4">
               {t('developer')}
             </p>
             <p className="text-2xl font-bold tracking-tight mb-2">
               {t('developerName')}
             </p>
-            <p className="text-sm text-white/40 font-light flex items-center justify-center gap-2">
-              <Heart size={14} className="text-brand-blue-dark" />
+            <p className="text-sm text-white/65 font-light flex items-center justify-center gap-2">
+              <Heart size={14} aria-hidden="true" className="text-brand-blue-dark" />
               {t('since')}
             </p>
           </div>

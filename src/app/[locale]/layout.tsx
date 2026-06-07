@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Barlow, Barlow_Condensed } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -9,9 +9,19 @@ import { Footer } from '@/components/footer';
 import { SITE_URL } from '@/lib/seo';
 import '../globals.css';
 
-const inter = Inter({
+// Display: Barlow Condensed — athletic, condensed, "scoreboard" energy for a
+// sports instant-replay product. Body: Barlow — same family, readable.
+const barlowCondensed = Barlow_Condensed({
   subsets: ['latin'],
-  variable: '--font-inter',
+  weight: ['500', '600', '700', '800'],
+  variable: '--font-display',
+  display: 'swap',
+});
+
+const barlow = Barlow({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-body',
   display: 'swap',
 });
 
@@ -72,9 +82,9 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className="dark">
+    <html lang={locale}>
       <body
-        className={`${inter.variable} font-sans antialiased bg-black text-white min-h-screen`}
+        className={`${barlow.variable} ${barlowCondensed.variable} font-sans antialiased bg-black text-white min-h-screen`}
       >
         <NextIntlClientProvider messages={messages}>
           <Navbar />

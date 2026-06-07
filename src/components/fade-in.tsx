@@ -1,7 +1,68 @@
 'use client';
 
-import { useRef, type ReactNode } from 'react';
-import { motion, useInView } from 'framer-motion';
+import {
+  Children,
+  isValidElement,
+  cloneElement,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type ReactElement,
+} from 'react';
+
+function prefersReducedMotion() {
+  if (typeof window === 'undefined' || !window.matchMedia) return false;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+/**
+ * useReveal — flips `shown` to true once the element scrolls into view.
+ * Reveals once (never re-hides). Respects reduced motion and missing
+ * IntersectionObserver by showing immediately.
+ *
+ * SSR-safe: `shown` starts false but the rendered markup defaults to fully
+ * visible (see the `reveal-*` CSS), and we only opt into the hidden state on
+ * the client after mount. If JS never runs, content stays visible.
+ */
+function useReveal<T extends HTMLElement>(rootMargin = '-50px') {
+  const ref = useRef<T>(null);
+  const [shown, setShown] = useState(false);
+  // Tracks whether the client effect has run; until then we render in the
+  // "visible" fallback state so no-JS / pre-hydration content isn't hidden.
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const node = ref.current;
+    if (!node) return;
+
+    if (prefersReducedMotion() || typeof IntersectionObserver === 'undefined') {
+      setShown(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setShown(true);
+            observer.disconnect();
+            break;
+          }
+        }
+      },
+      { rootMargin },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [rootMargin]);
+
+  // Before mount: visible (fallback). After mount: hidden until revealed.
+  const dataShown = !mounted || shown;
+  return { ref, dataShown };
+}
 
 interface FadeInProps {
   children: ReactNode;
@@ -11,50 +72,19 @@ interface FadeInProps {
   once?: boolean;
 }
 
-export function FadeIn({
-  children,
-  delay = 0,
-  direction = 'up',
-  className = '',
-  once = true,
-}: FadeInProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once, margin: '-50px' });
-
-  const directionOffset = {
-    up: { y: 30, x: 0 },
-    down: { y: -30, x: 0 },
-    left: { y: 0, x: 30 },
-    right: { y: 0, x: -30 },
-    none: { y: 0, x: 0 },
-  };
+export function FadeIn({ children, delay = 0, className = '' }: FadeInProps) {
+  const { ref, dataShown } = useReveal<HTMLDivElement>();
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={{
-        opacity: 0,
-        y: directionOffset[direction].y,
-        x: directionOffset[direction].x,
-      }}
-      animate={
-        isInView
-          ? { opacity: 1, y: 0, x: 0 }
-          : {
-              opacity: 0,
-              y: directionOffset[direction].y,
-              x: directionOffset[direction].x,
-            }
-      }
-      transition={{
-        duration: 0.7,
-        delay,
-        ease: [0.25, 0.1, 0.25, 1],
-      }}
+      data-reveal
+      data-shown={dataShown ? 'true' : 'false'}
+      style={{ transitionDelay: `${delay}s` }}
       className={className}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
@@ -69,52 +99,48 @@ export function StaggerContainer({
   className = '',
   staggerDelay = 0.1,
 }: StaggerContainerProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const { ref, dataShown } = useReveal<HTMLDivElement>();
+
+  // Cascade the reveal: give each StaggerItem an incremental transitionDelay,
+  // mirroring framer-motion's staggerChildren.
+  let order = 0;
+  const enhanced = Children.map(children, (child) => {
+    if (isValidElement(child) && child.type === StaggerItem) {
+      const el = child as ReactElement<StaggerItemProps>;
+      const delay = order * staggerDelay;
+      order += 1;
+      return cloneElement(el, { _delay: delay });
+    }
+    return child;
+  });
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
-      variants={{
-        hidden: {},
-        visible: {
-          transition: {
-            staggerChildren: staggerDelay,
-          },
-        },
-      }}
+      data-reveal-group
+      data-shown={dataShown ? 'true' : 'false'}
       className={className}
     >
-      {children}
-    </motion.div>
+      {enhanced}
+    </div>
   );
 }
 
-export function StaggerItem({
-  children,
-  className = '',
-}: {
+interface StaggerItemProps {
   children: ReactNode;
   className?: string;
-}) {
+  /** Internal: injected by StaggerContainer to cascade the reveal. */
+  _delay?: number;
+}
+
+export function StaggerItem({ children, className = '', _delay = 0 }: StaggerItemProps) {
   return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 24 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: {
-            duration: 0.6,
-            ease: [0.25, 0.1, 0.25, 1],
-          },
-        },
-      }}
+    <div
+      data-reveal-item
+      style={{ transitionDelay: `${_delay}s` }}
       className={className}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

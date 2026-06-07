@@ -5,15 +5,24 @@
   :root {
     --background: #000000;
     --foreground: #ffffff;
-    --brand-blue: #007AFF;
-    --brand-blue-dark: #0A84FF;
-    --surface-1: #1C1C1E;
-    --surface-2: #2C2C2E;
-    --surface-3: #3A3A3C;
+    --brand-blue: #2E7BFF;
+    --brand-blue-dark: #1E6BFF;
+    --brand-blue-bright: #4D97FF;
+    --brand-cyan: #37D5FF;
+    --surface-1: #121317;
+    --surface-2: #181A20;
+    --surface-3: #22252D;
   }
 
   html {
     scroll-behavior: smooth;
+  }
+
+  /* Display headings use Barlow Condensed — athletic, tight, scoreboard energy */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display), var(--font-body), sans-serif;
+    letter-spacing: -0.01em;
+    line-height: 1.04;
   }
 
   body {
@@ -22,15 +31,50 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-image:
-      radial-gradient(circle at top, rgba(10, 132, 255, 0.08), transparent 30%),
-      radial-gradient(circle at 80% 20%, rgba(10, 132, 255, 0.06), transparent 24%),
+      radial-gradient(circle at top, rgba(46, 123, 255, 0.08), transparent 30%),
+      radial-gradient(circle at 80% 20%, rgba(46, 123, 255, 0.06), transparent 24%),
       linear-gradient(180deg, #020304 0%, #000000 35%, #020406 100%);
   }
 
   ::selection {
-    background: rgba(10, 132, 255, 0.3);
+    background: rgba(46, 123, 255, 0.3);
     color: #ffffff;
   }
+}
+
+/* Global keyboard focus indicator */
+*:focus-visible {
+  outline: 2px solid var(--brand-blue-bright);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   Scroll reveal (zero-dependency replacement for framer-motion)
+   Driven by FadeIn / StaggerContainer / StaggerItem data attrs.
+   Default state is VISIBLE so no-JS / pre-hydration content shows;
+   the client toggles data-shown="false" to hide before revealing.
+   ============================================================ */
+[data-reveal],
+[data-reveal-item] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+  will-change: opacity, transform;
+}
+
+[data-reveal][data-shown='false'],
+[data-reveal-group][data-shown='false'] [data-reveal-item] {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+[data-reveal][data-shown='true'],
+[data-reveal-group][data-shown='true'] [data-reveal-item] {
+  opacity: 1;
+  transform: none;
 }
 
 /* Premium scrollbar */
@@ -59,8 +103,8 @@
   border-radius: 9999px;
   background: radial-gradient(
     circle,
-    rgba(10, 132, 255, 0.15) 0%,
-    rgba(10, 132, 255, 0.05) 40%,
+    rgba(46, 123, 255, 0.15) 0%,
+    rgba(46, 123, 255, 0.05) 40%,
     transparent 70%
   );
   filter: blur(80px);
@@ -74,79 +118,11 @@
   border-radius: 9999px;
   background: radial-gradient(
     circle,
-    rgba(10, 132, 255, 0.12) 0%,
+    rgba(46, 123, 255, 0.12) 0%,
     transparent 70%
   );
   filter: blur(60px);
   pointer-events: none;
-}
-
-/* Glass card */
-.glass-card {
-  background: rgba(28, 28, 30, 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 20px;
-}
-
-.glass-card:hover {
-  border-color: rgba(10, 132, 255, 0.2);
-}
-
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #ffffff 0%, #8E8E93 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Feature card hover glow */
-.feature-card {
-  position: relative;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.feature-card::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 21px;
-  padding: 1px;
-  background: linear-gradient(
-    135deg,
-    transparent 0%,
-    transparent 100%
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.feature-card:hover::before {
-  background: linear-gradient(
-    135deg,
-    rgba(10, 132, 255, 0.4) 0%,
-    rgba(10, 132, 255, 0.1) 100%
-  );
-  opacity: 1;
-}
-
-/* Replay button animation */
-@keyframes replay-pulse {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(10, 132, 255, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 0 16px rgba(10, 132, 255, 0);
-  }
-}
-
-.replay-pulse {
-  animation: replay-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 /* Section divider */
@@ -160,20 +136,6 @@
   );
 }
 
-/* Prose customization for legal pages */
-.prose-brand {
-  --tw-prose-body: #8E8E93;
-  --tw-prose-headings: #ffffff;
-  --tw-prose-lead: #8E8E93;
-  --tw-prose-links: #0A84FF;
-  --tw-prose-bold: #ffffff;
-  --tw-prose-counters: #636366;
-  --tw-prose-bullets: #636366;
-  --tw-prose-hr: rgba(255, 255, 255, 0.06);
-  --tw-prose-quotes: #8E8E93;
-  --tw-prose-quote-borders: rgba(10, 132, 255, 0.3);
-}
-
 .noise-overlay {
   background-image: radial-gradient(rgba(255, 255, 255, 0.07) 0.7px, transparent 0.7px);
   background-size: 18px 18px;
@@ -183,36 +145,9 @@
 .hero-orb {
   position: absolute;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(10, 132, 255, 0.16) 0%, rgba(10, 132, 255, 0.04) 46%, transparent 72%);
+  background: radial-gradient(circle, rgba(46, 123, 255, 0.16) 0%, rgba(46, 123, 255, 0.04) 46%, transparent 72%);
   filter: blur(28px);
   pointer-events: none;
-}
-
-.premium-shell {
-  position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-  border-radius: 32px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 30px 80px rgba(0, 0, 0, 0.28);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-}
-
-.premium-shell::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(120deg, transparent 15%, rgba(255, 255, 255, 0.05) 32%, transparent 48%);
-  opacity: 0;
-  transform: translateX(-18%);
-  transition: opacity 0.6s ease, transform 0.9s ease;
-  pointer-events: none;
-}
-
-.premium-shell:hover::before {
-  opacity: 1;
-  transform: translateX(18%);
 }
 
 .hover-lift {
@@ -242,19 +177,6 @@
 
 .glow-pulse-soft {
   animation: glow-pulse-soft 3.8s ease-in-out infinite;
-}
-
-.media-frame {
-  position: relative;
-  overflow: hidden;
-}
-
-.media-frame::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 18%, transparent 82%, rgba(255, 255, 255, 0.02));
-  pointer-events: none;
 }
 
 .button-sheen {
@@ -288,10 +210,10 @@
 
 @keyframes glow-pulse-soft {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(10, 132, 255, 0.16);
+    box-shadow: 0 0 0 0 rgba(46, 123, 255, 0.16);
   }
   50% {
-    box-shadow: 0 0 0 12px rgba(10, 132, 255, 0);
+    box-shadow: 0 0 0 12px rgba(46, 123, 255, 0);
   }
 }
 
@@ -299,10 +221,115 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   line-height: 1;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: rgba(255, 255, 255, 0.38);
+  letter-spacing: 0.24em;
+  color: var(--brand-blue-bright);
+}
+
+/* ============================================================
+   Dark sports-tech system — electric blue, scoreboard energy
+   ============================================================ */
+
+/* Big condensed display headline (uppercase scoreboard feel) */
+.display-xl {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 700;
+  line-height: 0.94;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+}
+
+/* Electric blue -> cyan gradient for accent words */
+.text-electric {
+  background: linear-gradient(100deg, var(--brand-blue-bright) 0%, var(--brand-cyan) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Electric CTA button */
+.btn-electric {
+  position: relative;
+  background: linear-gradient(180deg, var(--brand-blue-bright), var(--brand-blue-dark));
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(46, 123, 255, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+}
+.btn-electric:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 38px rgba(46, 123, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+.btn-electric:active { transform: translateY(0); }
+
+/* Subtle tech grid texture (stadium / broadcast) */
+.grid-texture {
+  background-image:
+    linear-gradient(rgba(46, 123, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46, 123, 255, 0.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, transparent 78%);
+  mask-image: radial-gradient(ellipse at center, #000 0%, transparent 78%);
+}
+
+/* Electric hairline (motion streak) */
+.streak {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--brand-cyan), transparent);
+}
+
+/* Card with electric edge on hover */
+.card-electric {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.015));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+.card-electric:hover {
+  border-color: rgba(46, 123, 255, 0.45);
+  transform: translateY(-4px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(46, 123, 255, 0.18);
+  background: linear-gradient(180deg, rgba(46, 123, 255, 0.06), rgba(255, 255, 255, 0.015));
+}
+
+/* Tabular numerals for stats / scoreboard numbers */
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .btn-electric,
+  .card-electric,
+  .floating-soft,
+  .floating-soft-delayed,
+  .floating-soft-slower,
+  .glow-pulse-soft,
+  .hover-lift,
+  .button-sheen,
+  .streak {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .button-sheen::after {
+    display: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* Scroll-reveal must show instantly with no movement when reduced. */
+  [data-reveal],
+  [data-reveal-item],
+  [data-reveal][data-shown='false'],
+  [data-reveal-group][data-shown='false'] [data-reveal-item] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
