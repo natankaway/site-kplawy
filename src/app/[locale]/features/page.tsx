@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import {
   PlayCircle, Watch, Camera, Mic, Cloud, BarChart3,
   Sun, Monitor, ShieldCheck, Eye, Bluetooth, Smartphone,
+  type LucideIcon,
 } from 'lucide-react';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/fade-in';
 import { buildPageMetadata } from '@/lib/seo';
@@ -12,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return buildPageMetadata({ locale, path: '/features', title: t('title'), description: t('subtitle') });
 }
 
-function FeatureCard({ icon: Icon, title, desc }: { icon: React.ElementType; title: string; desc: string }) {
+function FeatureCard({ icon: Icon, title, desc }: { icon: LucideIcon; title: string; desc: string }) {
   return (
     <StaggerItem>
       <div className="group p-6 rounded-2xl bg-surface-1/30 border border-white/[0.04] hover:border-brand-blue-dark/20 hover:bg-surface-1/50 transition-all duration-500">

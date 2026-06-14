@@ -3,15 +3,23 @@
 
 @layer base {
   :root {
-    --background: #000000;
+    /* Brand-ref navy-black base (was pure #000000) — softer, reads premium and
+       lets the glass cards breathe. */
+    --background: #0A0F1A;
     --foreground: #ffffff;
     --brand-blue: #2E7BFF;
     --brand-blue-dark: #1E6BFF;
     --brand-blue-bright: #4D97FF;
-    --brand-cyan: #37D5FF;
-    --surface-1: #121317;
-    --surface-2: #181A20;
-    --surface-3: #22252D;
+    /* Semantic accents — strict discipline:
+       green = "controle remoto", gold = "Pro / multicâmera". Nothing else. */
+    --brand-green: #34D27B;
+    --brand-gold: #E3A92C;
+    /* Cyan retired from the 3-accent system; kept pointing at blue-bright so any
+       stray var(--brand-cyan) stays on-system instead of leaking a 4th hue. */
+    --brand-cyan: #4D97FF;
+    --surface-1: #121722;
+    --surface-2: #161C28;
+    --surface-3: #212838;
   }
 
   html {
@@ -31,9 +39,9 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-image:
-      radial-gradient(circle at top, rgba(46, 123, 255, 0.08), transparent 30%),
+      radial-gradient(circle at top, rgba(46, 123, 255, 0.10), transparent 30%),
       radial-gradient(circle at 80% 20%, rgba(46, 123, 255, 0.06), transparent 24%),
-      linear-gradient(180deg, #020304 0%, #000000 35%, #020406 100%);
+      linear-gradient(180deg, #0A0F1A 0%, #070B13 38%, #0A0F1A 100%);
   }
 
   ::selection {
@@ -217,17 +225,30 @@
   }
 }
 
+/* Mono eyebrow — brand signature. The mono face (loaded as --font-mono in the
+   locale layout) makes every section kicker a real monospace label at once. */
 .section-kicker {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.78rem;
+  font-family: var(--font-mono), ui-monospace, "SFMono-Regular", monospace;
+  font-size: 0.72rem;
   line-height: 1;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.22em;
   color: var(--brand-blue-bright);
 }
+
+/* Semantic-accent variants for the mono eyebrow (used by remote/Pro sections). */
+.section-kicker--green { color: var(--brand-green); }
+.section-kicker--gold { color: var(--brand-gold); }
+
+/* Two-tone heading accent — line 1 stays white, the accent line uses this.
+   Solid accent (not a gradient) keeps it crisp and AA on the navy base. */
+.title-accent { color: var(--brand-blue-bright); }
+.title-accent--green { color: var(--brand-green); }
+.title-accent--gold { color: var(--brand-gold); }
 
 /* ============================================================
    Dark sports-tech system — electric blue, scoreboard energy
@@ -242,9 +263,9 @@
   text-transform: uppercase;
 }
 
-/* Electric blue -> cyan gradient for accent words */
+/* Electric blue gradient for accent words (cyan end-stop retired -> blue) */
 .text-electric {
-  background: linear-gradient(100deg, var(--brand-blue-bright) 0%, var(--brand-cyan) 100%);
+  background: linear-gradient(100deg, var(--brand-blue-bright) 0%, var(--brand-blue) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -277,7 +298,7 @@
 /* Electric hairline (motion streak) */
 .streak {
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--brand-cyan), transparent);
+  background: linear-gradient(90deg, transparent, var(--brand-blue-bright), transparent);
 }
 
 /* Card with electric edge on hover */

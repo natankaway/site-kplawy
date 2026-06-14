@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { routing } from '@/i18n/routing';
+import { routing, isLocale } from '@/i18n/routing';
 import { PricingCards } from '@/components/pricing-cards';
 import { CtaBanner } from '@/components/cta-banner';
 import { buildPageMetadata } from '@/lib/seo';
@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return buildPageMetadata({
     locale,
     path: '/pricing',
-    title: t('title'),
+    title: `${t('titleLine1')} ${t('titleLine2')}`,
     description: t('subtitle'),
   });
 }
@@ -21,7 +21,7 @@ export default async function PricingPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const currentLocale = routing.locales.includes(locale as 'pt' | 'en') ? locale : routing.defaultLocale;
+  const currentLocale = isLocale(locale) ? locale : routing.defaultLocale;
 
   return (
     <div className="pt-24 md:pt-28">
