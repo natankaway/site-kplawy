@@ -11,8 +11,10 @@ import * as THREE from 'three';
  */
 function Ring() {
   const meshRef = useRef<THREE.InstancedMesh>(null);
-  const COUNT = 72;
-  const R = 2;
+  const COUNT = 90;
+  // Radius larger than the phone width so the ring reads as a halo around it
+  // instead of hiding behind the device.
+  const R = 3.35;
 
   const dummy = useMemo(() => new THREE.Object3D(), []);
   const color = useMemo(() => new THREE.Color(), []);
@@ -49,7 +51,7 @@ function Ring() {
   });
 
   return (
-    <instancedMesh ref={meshRef} args={[undefined, undefined, 72]}>
+    <instancedMesh ref={meshRef} args={[undefined, undefined, 90]}>
       <boxGeometry args={[1, 1, 1]} />
       <meshBasicMaterial toneMapped={false} transparent opacity={0.92} />
     </instancedMesh>

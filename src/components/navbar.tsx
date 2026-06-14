@@ -159,7 +159,7 @@ export function Navbar() {
             {/* Language Switch */}
             <button
               onClick={switchLocale}
-              aria-label={t('switchLanguage')}
+              aria-label={`${locale === 'pt' ? 'EN' : 'PT'} — ${t('switchLanguage')}`}
               className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-white/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white/80 transition-colors duration-300 hover:border-brand-blue/40 hover:text-white motion-reduce:transition-none"
             >
               {locale === 'pt' ? 'EN' : 'PT'}

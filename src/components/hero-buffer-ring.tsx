@@ -53,7 +53,7 @@ export function HeroBufferRing() {
       className="pointer-events-none absolute inset-0 -z-[5] flex items-center justify-center"
     >
       {enabled ? (
-        <div className="h-[125%] w-[125%] opacity-80">
+        <div className="aspect-square w-[155%] opacity-75">
           <BufferRingScene />
         </div>
       ) : null}

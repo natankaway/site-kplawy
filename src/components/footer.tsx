@@ -70,9 +70,9 @@ export async function Footer({ locale }: { locale: string }) {
           {/* Link columns */}
           {linkGroups.map((group) => (
             <div key={group.heading}>
-              <h4 className="mb-4 font-display text-sm font-semibold uppercase tracking-[0.2em] text-white/75">
+              <h2 className="mb-4 font-display text-sm font-semibold uppercase tracking-[0.2em] text-white/75">
                 {group.heading}
-              </h4>
+              </h2>
               <ul className="space-y-1">
                 {group.links.map((link) => (
                   <li key={link.href}>
