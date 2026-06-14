@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { Camera, Watch, FolderOpen, Cloud, Mail, ArrowRight } from 'lucide-react';
+import { Camera, Watch, FolderOpen, Cloud, Mail, ArrowRight, type LucideIcon } from 'lucide-react';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/fade-in';
 import { buildPageMetadata } from '@/lib/seo';
 
@@ -14,7 +14,7 @@ function IssueCard({
   title,
   solution,
 }: {
-  icon: React.ElementType;
+  icon: LucideIcon;
   title: string;
   solution: string;
 }) {

@@ -15,9 +15,13 @@ const config: Config = {
           'blue-dark': '#1E6BFF',
           'blue-bright': '#4D97FF',
           electric: '#2E7BFF',
-          cyan: '#37D5FF',
+          // cyan retired from the accent system — aliased to blue-bright so any
+          // leftover `brand-cyan` utility stays on-system instead of leaking.
+          cyan: '#4D97FF',
           green: '#34D27B',
-          amber: '#FFC857',
+          // Pro / multicâmera accent — brand-ref gold (replaces yellow amber).
+          gold: '#E3A92C',
+          amber: '#E3A92C',
           red: '#E53935',
           purple: '#AB47BC',
         },
@@ -36,6 +40,7 @@ const config: Config = {
         sans: ['var(--font-body)', 'system-ui', 'sans-serif'],
         body: ['var(--font-body)', 'system-ui', 'sans-serif'],
         display: ['var(--font-display)', 'var(--font-body)', 'sans-serif'],
+        mono: ['var(--font-mono)', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       borderRadius: {
         'xs': '6px',

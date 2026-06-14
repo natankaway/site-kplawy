@@ -4,11 +4,11 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'KplaWY',
     short_name: 'KplaWY',
-    description: 'Premium instant replay app for the real world.',
+    description: 'Instant replay app for the real world.',
     start_url: '/pt',
     display: 'standalone',
-    background_color: '#000000',
-    theme_color: '#000000',
+    background_color: '#0A0F1A',
+    theme_color: '#0A0F1A',
     icons: [
       {
         src: '/logo-icon.png',

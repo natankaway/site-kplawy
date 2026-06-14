@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
-import { Barlow, Barlow_Condensed } from 'next/font/google';
+import { Barlow, Barlow_Condensed, IBM_Plex_Mono } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { routing } from '@/i18n/routing';
+import { routing, isLocale } from '@/i18n/routing';
+import { SmoothScroll } from '@/components/smooth-scroll';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 import { SITE_URL } from '@/lib/seo';
@@ -22,6 +23,14 @@ const barlow = Barlow({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   variable: '--font-body',
+  display: 'swap',
+});
+
+// Mono eyebrow signature — broadcast/scoreboard label energy.
+const plexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['500', '600'],
+  variable: '--font-mono',
   display: 'swap',
 });
 
@@ -73,7 +82,7 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
 
-  if (!routing.locales.includes(locale as 'pt' | 'en')) {
+  if (!isLocale(locale)) {
     notFound();
   }
 
@@ -84,8 +93,9 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body
-        className={`${barlow.variable} ${barlowCondensed.variable} font-sans antialiased bg-black text-white min-h-screen`}
+        className={`${barlow.variable} ${barlowCondensed.variable} ${plexMono.variable} font-sans antialiased text-white min-h-screen`}
       >
+        <SmoothScroll />
         <NextIntlClientProvider messages={messages}>
           <Navbar />
           <main className="min-h-screen">{children}</main>

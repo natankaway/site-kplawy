@@ -1,5 +1,5 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { ShieldCheck, Zap, Cpu, Heart } from 'lucide-react';
+import { ShieldCheck, Zap, Cpu, Heart, type LucideIcon } from 'lucide-react';
 import { FadeIn, StaggerContainer, StaggerItem } from '@/components/fade-in';
 import { buildPageMetadata } from '@/lib/seo';
 
@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return buildPageMetadata({ locale, path: '/about', title: t('title'), description: t('story1') });
 }
 
-function ValueCard({ icon: Icon, title, text }: { icon: React.ElementType; title: string; text: string }) {
+function ValueCard({ icon: Icon, title, text }: { icon: LucideIcon; title: string; text: string }) {
   return (
     <StaggerItem>
       <div className="p-6 rounded-2xl bg-surface-1/30 border border-white/[0.04]">
