@@ -7,6 +7,8 @@ export const size = {
 
 export const contentType = 'image/png';
 
+// Language-neutral OG card (shared across locales) — brand navy + the rewind
+// «« motif + a two-tone headline. No locale-specific copy.
 export default function OpenGraphImage() {
   return new ImageResponse(
     (
@@ -15,47 +17,97 @@ export default function OpenGraphImage() {
           width: '100%',
           height: '100%',
           display: 'flex',
-          background: 'linear-gradient(135deg, #000000 0%, #04111f 60%, #0A84FF 100%)',
+          background:
+            'radial-gradient(circle at 78% 30%, rgba(46,123,255,0.28), transparent 55%), linear-gradient(135deg, #0A0F1A 0%, #070B13 55%, #0A0F1A 100%)',
           color: 'white',
-          padding: '56px 64px',
+          padding: '64px 72px',
           justifyContent: 'space-between',
           alignItems: 'stretch',
           fontFamily: 'sans-serif',
         }}
       >
-        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', width: '62%' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-            <div style={{ width: 42, height: 42, borderRadius: 999, background: 'rgba(255,255,255,0.08)' }} />
-            <div style={{ fontSize: 30, fontWeight: 700 }}>KplaWY</div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            width: '64%',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: 999,
+                background: 'rgba(46,123,255,0.16)',
+                border: '1px solid rgba(46,123,255,0.4)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#4D97FF',
+                fontSize: 24,
+                fontWeight: 800,
+              }}
+            >
+              «
+            </div>
+            <div style={{ fontSize: 30, fontWeight: 800, letterSpacing: 1 }}>KplaWY</div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-            <div style={{ fontSize: 20, letterSpacing: 4, textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)' }}>
-              Instant Replay Premium
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
+            <div
+              style={{
+                fontSize: 20,
+                letterSpacing: 6,
+                textTransform: 'uppercase',
+                color: '#4D97FF',
+                fontFamily: 'monospace',
+              }}
+            >
+              Instant Replay · Adjustable Buffer
             </div>
-            <div style={{ fontSize: 66, lineHeight: 1.02, fontWeight: 800 }}>
-              Grave o agora. Salve o instante que acabou de acontecer.
+            <div style={{ display: 'flex', flexDirection: 'column', fontSize: 72, lineHeight: 0.98, fontWeight: 800, textTransform: 'uppercase' }}>
+              <span>Save the play</span>
+              <span style={{ color: '#4D97FF' }}>after it happens.</span>
             </div>
-            <div style={{ fontSize: 28, lineHeight: 1.35, color: 'rgba(255,255,255,0.76)' }}>
-              Tempo de replay configuravel, relogio, Bluetooth, multi-camera e privacidade total.
+            <div style={{ fontSize: 26, lineHeight: 1.35, color: '#9AA4B2' }}>
+              Continuous buffer, watch &amp; Bluetooth triggers, multi-cam and full privacy.
             </div>
           </div>
         </div>
         <div
           style={{
             width: '30%',
-            borderRadius: 36,
-            border: '1px solid rgba(255,255,255,0.12)',
-            background: 'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02))',
+            borderRadius: 40,
+            border: '1px solid rgba(255,255,255,0.1)',
+            background:
+              'radial-gradient(circle at 50% 42%, rgba(46,123,255,0.22), transparent 60%), linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015))',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 30px 80px rgba(0,0,0,0.35)',
+            boxShadow: '0 30px 90px rgba(0,0,0,0.45)',
           }}
         >
-          <div style={{ fontSize: 84, fontWeight: 800, color: '#0A84FF' }}>K</div>
+          <div
+            style={{
+              width: 168,
+              height: 168,
+              borderRadius: 999,
+              border: '2px solid rgba(77,151,255,0.55)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 0 60px rgba(46,123,255,0.45), inset 0 0 30px rgba(46,123,255,0.25)',
+              color: '#9FC4FF',
+              fontSize: 64,
+              fontWeight: 800,
+            }}
+          >
+            ««
+          </div>
         </div>
       </div>
     ),
-    size
+    size,
   );
 }

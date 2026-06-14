@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { FadeIn } from './fade-in';
 import { DownloadButton, SecondaryLink, TrustBadges } from './section-cta';
 import { HeroBufferRing } from './hero-buffer-ring';
+import { PhoneParallax } from './phone-parallax';
 import { PRICING } from '@/lib/pricing';
 
 export async function Hero({ locale }: { locale: string }) {
@@ -16,7 +17,7 @@ export async function Hero({ locale }: { locale: string }) {
   });
 
   return (
-    <section className="relative overflow-hidden px-6 pb-20 pt-32 md:pb-28 md:pt-40">
+    <section className="relative overflow-hidden px-6 pb-20 pt-28 md:pb-28 md:pt-40">
       {/* Atmosphere — decorative only */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="grid-texture absolute inset-0" />
@@ -27,7 +28,7 @@ export async function Hero({ locale }: { locale: string }) {
       </div>
 
       <div className="relative z-10 mx-auto max-w-7xl">
-        <div className="grid items-center gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 xl:gap-20">
+        <div className="grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12 xl:gap-20">
           {/* Left — copy */}
           <div>
             <FadeIn>
@@ -41,20 +42,20 @@ export async function Hero({ locale }: { locale: string }) {
             </FadeIn>
 
             <FadeIn delay={0.08}>
-              <h1 className="mt-7 max-w-[15ch] text-balance font-display text-[3.4rem] font-bold uppercase leading-[0.9] tracking-[-0.02em] text-white sm:text-7xl md:text-[5.5rem] lg:text-[6rem]">
+              <h1 className="mt-6 max-w-[15ch] text-balance font-display text-[2.85rem] font-bold uppercase leading-[0.9] tracking-[-0.02em] text-white sm:text-7xl md:text-[5.5rem] lg:text-[6rem]">
                 {t('headlineLine1')}{' '}
                 <span className="title-accent">{t('headlineLine2')}</span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={0.16}>
-              <p className="mt-7 max-w-xl text-lg font-light leading-relaxed text-white/85 md:text-xl">
+              <p className="mt-5 max-w-xl text-base font-light leading-relaxed text-white/85 sm:text-lg md:mt-7 md:text-xl">
                 {t('subheadline')}
               </p>
             </FadeIn>
 
             <FadeIn delay={0.24}>
-              <div className="mt-9 flex flex-col gap-3.5 sm:flex-row sm:items-center">
+              <div className="mt-7 flex flex-col gap-3.5 sm:flex-row sm:items-center md:mt-9">
                 <DownloadButton
                   href={`/${locale}/download`}
                   label={t('ctaPrimary')}
@@ -75,7 +76,7 @@ export async function Hero({ locale }: { locale: string }) {
 
             {/* Honest proof — real product facts, no fabricated ratings */}
             <FadeIn delay={0.36}>
-              <ul className="mt-9 grid max-w-xl gap-x-6 gap-y-3 sm:grid-cols-2">
+              <ul className="mt-7 grid max-w-xl gap-x-6 gap-y-3 sm:grid-cols-2">
                 {proofPoints.map((point) => (
                   <li
                     key={point}
@@ -111,13 +112,13 @@ export async function Hero({ locale }: { locale: string }) {
             className="relative mx-auto w-full max-w-[26rem] lg:max-w-[30rem]"
           >
             <div
-              className="absolute inset-0 -z-10 scale-110 rounded-full bg-[radial-gradient(circle,rgba(46,123,255,0.28),transparent_62%)] blur-2xl"
+              className="absolute inset-0 -z-10 scale-110 rounded-full bg-[radial-gradient(circle,rgba(46,123,255,0.16),transparent_64%)] blur-2xl"
               aria-hidden="true"
             />
-            {/* WebGL buffer ring — the rolling buffer, visualized. Progressive
-                enhancement: lazy, disabled under reduced motion, never the LCP. */}
+            {/* Buffer ring — the rolling buffer, visualized. Static SVG always,
+                upgraded to WebGL when motion is allowed; never the LCP. */}
             <HeroBufferRing />
-            <div className="floating-soft relative">
+            <PhoneParallax className="floating-soft relative">
               {/* Phone */}
               <div className="relative mx-auto w-[78%] overflow-hidden rounded-[2.6rem] border border-white/15 bg-black shadow-[0_50px_120px_rgba(0,0,0,0.6),0_0_0_1px_rgba(46,123,255,0.2)]">
                 <Image
@@ -138,7 +139,7 @@ export async function Hero({ locale }: { locale: string }) {
                 />
                 {t('visualReady')}
               </div>
-            </div>
+            </PhoneParallax>
           </FadeIn>
         </div>
       </div>

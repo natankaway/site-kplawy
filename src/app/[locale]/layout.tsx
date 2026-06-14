@@ -14,7 +14,7 @@ import '../globals.css';
 // sports instant-replay product. Body: Barlow — same family, readable.
 const barlowCondensed = Barlow_Condensed({
   subsets: ['latin'],
-  weight: ['500', '600', '700', '800'],
+  weight: ['600', '700', '800'],
   variable: '--font-display',
   display: 'swap',
 });
@@ -27,11 +27,13 @@ const barlow = Barlow({
 });
 
 // Mono eyebrow signature — broadcast/scoreboard label energy.
+// Not LCP-critical, so keep it out of the preload set.
 const plexMono = IBM_Plex_Mono({
   subsets: ['latin'],
-  weight: ['500', '600'],
+  weight: ['500'],
   variable: '--font-mono',
   display: 'swap',
+  preload: false,
 });
 
 export async function generateMetadata({
