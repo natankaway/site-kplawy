@@ -68,12 +68,16 @@ export function GET(request: NextRequest): Response {
   const search = request.nextUrl.search;
 
   // 1) Social/link crawlers: serve OG HTML, do not redirect.
+  // Must be no-store: this route is fully user-agent dependent, so a shared CDN
+  // must never cache one UA's response at the bare `/download` key and replay it
+  // to another. A cacheable bot response would otherwise poison the cache and
+  // serve the OG page to real humans (and vice-versa).
   if (isBot(userAgent)) {
     return new Response(botHtml(), {
       status: 200,
       headers: {
         'content-type': 'text/html; charset=utf-8',
-        'cache-control': 'public, max-age=300',
+        'cache-control': 'no-store',
       },
     });
   }
