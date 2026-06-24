@@ -52,18 +52,15 @@ export default async function DownloadPage({ params }: { params: Promise<{ local
 
             <FadeIn delay={0.3}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-                <button
-                  type="button"
-                  disabled
-                  aria-disabled="true"
-                  className="relative flex items-center justify-center gap-3 bg-white text-black px-10 py-5 rounded-full text-lg font-semibold opacity-50 cursor-not-allowed"
+                <a
+                  href="https://apps.apple.com/br/app/kplawy/id6761232468"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative flex items-center justify-center gap-3 bg-white text-black px-10 py-5 rounded-full text-lg font-semibold transition-transform hover:scale-[1.02]"
                 >
                   <Apple size={24} aria-hidden="true" />
                   {t('ctaApple')}
-                  <span className="absolute -top-2 -right-2 rounded-full border border-white/15 bg-surface-2 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/70">
-                    {comingSoon}
-                  </span>
-                </button>
+                </a>
                 <button
                   type="button"
                   disabled
