@@ -29,6 +29,7 @@ export async function PricingCards({
   const premiumFeatures = [
     t('premiumF1'), t('premiumF2'), t('premiumF3'), t('premiumF4'),
     t('premiumF5'), t('premiumF6'), t('premiumF7'), t('premiumF8'),
+    t('premiumF9'),
   ];
 
   const billingOptions = [
