@@ -353,5 +353,13 @@
   "termsPage": {
     "title": "Termos de Uso",
     "metaDescription": "Termos de Uso do KplaWY: licença de uso, assinatura Premium, responsabilidades e limitações."
+  },
+  "guide": {
+    "indexTitle": "Guia KplaWY",
+    "indexDescription": "Guias práticos de replay esportivo: como gravar o lance depois que ele aconteceu, setup do celular na quadra, armazenamento e o que comparar entre apps.",
+    "indexKicker": "Guia",
+    "readMore": "Ler o guia",
+    "backToIndex": "Voltar pro guia",
+    "home": "Início"
   }
 }

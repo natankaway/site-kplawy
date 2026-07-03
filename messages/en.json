@@ -353,5 +353,13 @@
   "termsPage": {
     "title": "Terms of Service",
     "metaDescription": "KplaWY Terms of Service: usage license, Premium subscription, responsibilities, and limitations."
+  },
+  "guide": {
+    "indexTitle": "KplaWY Guides",
+    "indexDescription": "Practical sports replay guides: how to record the play after it happened, court phone setup, storage math, and what to compare between apps.",
+    "indexKicker": "Guides",
+    "readMore": "Read the guide",
+    "backToIndex": "Back to all guides",
+    "home": "Home"
   }
 }
