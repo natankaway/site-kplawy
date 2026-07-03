@@ -354,6 +354,13 @@
     "title": "Termos de Uso",
     "metaDescription": "Termos de Uso do KplaWY: licença de uso, assinatura Premium, responsabilidades e limitações."
   },
+  "retroExplainer": {
+    "title": "Como funciona o replay retroativo?",
+    "p1": "O KplaWY grava continuamente num buffer que guarda só os últimos segundos — de 5 a 50, você escolhe. Nada vai pro armazenamento até você pedir.",
+    "p2": "Aconteceu o ponto? Toque em REPLAY no celular, no smartwatch ou num botão Bluetooth. É assim que dá pra gravar o lance depois que ele aconteceu: a câmera já viu tudo, o toque só decide o que fica.",
+    "p3": "O clipe dos últimos segundos é salvo na hora, direto no seu aparelho — pronto pra rever no intervalo e compartilhar com o grupo.",
+    "link": "Ler o guia completo"
+  },
   "guide": {
     "indexTitle": "Guia KplaWY",
     "indexDescription": "Guias práticos de replay esportivo: como gravar o lance depois que ele aconteceu, setup do celular na quadra, armazenamento e o que comparar entre apps.",

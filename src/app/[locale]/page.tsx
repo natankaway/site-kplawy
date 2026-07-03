@@ -5,6 +5,7 @@ import { ProductEvidence } from '@/components/product-evidence';
 import { TrustStrip } from '@/components/trust-strip';
 import { FeaturesGrid } from '@/components/features-grid';
 import { HowItWorks } from '@/components/how-it-works';
+import { RetroReplayExplainer } from '@/components/retro-replay-explainer';
 import { Testimonials } from '@/components/testimonials';
 import { PricingCards } from '@/components/pricing-cards';
 import { FaqInline } from '@/components/faq-inline';
@@ -69,6 +70,7 @@ export default async function HomePage({
       <ProductEvidence locale={currentLocale} />
       <FeaturesGrid locale={currentLocale} />
       <HowItWorks locale={currentLocale} />
+      <RetroReplayExplainer locale={currentLocale} />
       <Testimonials locale={currentLocale} />
       <PricingCards locale={currentLocale} />
       <FaqInline locale={currentLocale} />

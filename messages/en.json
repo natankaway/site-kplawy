@@ -354,6 +354,13 @@
     "title": "Terms of Service",
     "metaDescription": "KplaWY Terms of Service: usage license, Premium subscription, responsibilities, and limitations."
   },
+  "retroExplainer": {
+    "title": "How does retroactive replay work?",
+    "p1": "KplaWY records continuously into a buffer that keeps only the last few seconds — from 5 to 50, your choice. Nothing hits storage until you ask.",
+    "p2": "Point just happened? Tap REPLAY on the phone, on your smartwatch, or on a Bluetooth button. That's how you record the play after it happened: the camera already saw everything, the tap just decides what stays.",
+    "p3": "The clip of the last seconds is saved on the spot, straight to your device — ready to rewatch during the break and share with the group.",
+    "link": "Read the full guide"
+  },
   "guide": {
     "indexTitle": "KplaWY Guides",
     "indexDescription": "Practical sports replay guides: how to record the play after it happened, court phone setup, storage math, and what to compare between apps.",
