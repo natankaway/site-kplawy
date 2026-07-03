@@ -299,7 +299,11 @@
     "q7": "What's the difference between Free and KplaWY Pro?",
     "a7": "Free covers the essentials to get started: a continuous buffer with configurable duration, replay on your phone, unlimited clips, and smartwatch or Bluetooth triggering. KplaWY Pro adds multi-camera, remote control with live preview, automatic backup, advanced statistics, and customization.",
     "q8": "How do KplaWY Pro trial and billing work?",
-    "a8": "You can try KplaWY Pro features free for 7 days. After that, billing can continue as monthly at {monthly} or annual upfront at {annual}."
+    "a8": "You can try KplaWY Pro features free for 7 days. After that, billing can continue as monthly at {monthly} or annual upfront at {annual}.",
+    "q9": "How much battery does KplaWY use?",
+    "a9": "Honestly: continuous recording uses battery like any camera app, since the sensor and screen stay active. KplaWY has a built-in battery saver mode, and you can cut usage further by lowering screen brightness, using a shorter buffer, and keeping the device out of direct sun. For long sessions, a power bank solves it.",
+    "q10": "Can I film other people at the court?",
+    "a10": "Ask for the group's consent before recording — it's the fair thing to do and, at many venues, a house rule. In KplaWY, videos stay only on YOUR device: nothing goes to the cloud unless you send it. Respect the venue's rules and avoid sharing clips where someone didn't want to appear."
   },
   "supportPage": {
     "title": "Support",

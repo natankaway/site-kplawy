@@ -32,6 +32,8 @@ export default async function FAQPage({ params }: { params: Promise<{ locale: st
         annual: money(PRICING.premiumAnnual),
       }),
     },
+    { q: t('q9'), a: t('a9') },
+    { q: t('q10'), a: t('a10') },
   ];
 
   return <FaqContent headline={t('headline')} faqs={faqs} />;

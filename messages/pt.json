@@ -299,7 +299,11 @@
     "q7": "Qual a diferença entre o plano Free e o KplaWY Pro?",
     "a7": "O Free cobre o essencial para começar: buffer contínuo com tempo configurável, replay no celular, clipes ilimitados e controle por smartwatch ou Bluetooth. O KplaWY Pro adiciona multi-câmera, controle remoto com live preview, backup automático, estatísticas avançadas e personalização.",
     "q8": "Como funcionam teste e cobrança do KplaWY Pro?",
-    "a8": "Você pode testar os recursos KplaWY Pro por 7 dias. Depois disso, a assinatura pode seguir no mensal por {monthly} ou anual à vista por {annual}."
+    "a8": "Você pode testar os recursos KplaWY Pro por 7 dias. Depois disso, a assinatura pode seguir no mensal por {monthly} ou anual à vista por {annual}.",
+    "q9": "Quanta bateria o KplaWY consome?",
+    "a9": "Sendo honesto: gravação contínua consome bateria como qualquer app de câmera, porque o sensor e a tela ficam ativos. O KplaWY tem modo de economia de bateria embutido, e você reduz ainda mais o consumo baixando o brilho da tela, usando um buffer menor e mantendo o aparelho fora do sol. Pra sessões longas, um power bank resolve.",
+    "q10": "Posso filmar outras pessoas na quadra?",
+    "a10": "Peça o consentimento do grupo antes de gravar — é o combinado justo e, em muitos locais, regra da casa. No KplaWY, os vídeos ficam somente no SEU aparelho: nada sobe pra nuvem sem você mandar. Respeite as regras do local e evite compartilhar clipes em que alguém não quis aparecer."
   },
   "supportPage": {
     "title": "Suporte",
