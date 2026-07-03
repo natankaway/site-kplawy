@@ -15,6 +15,7 @@ export async function Footer({ locale }: { locale: string }) {
 
   const companyLinks = [
     { href: `/${locale}/about`, label: nav('about') },
+    { href: `/${locale}/guia`, label: nav('guide') },
     { href: `/${locale}/faq`, label: nav('faq') },
     { href: `/${locale}/support`, label: nav('support') },
     { href: `/${locale}/contact`, label: nav('contact') },
