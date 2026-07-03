@@ -78,6 +78,61 @@ export function buildSoftwareApplicationJsonLd(locale: string) {
       name: 'Natan Kaway',
     },
     url: `${SITE_URL}/${locale}`,
+    image: `${SITE_URL}/logo.png`,
+    screenshot: `${SITE_URL}/opengraph-image`,
+    downloadUrl: `${SITE_URL}/download`,
+    installUrl: `${SITE_URL}/download`,
+  };
+}
+
+/** WebSite — dá nome/idiomas do site pros mecanismos e assistentes de IA. */
+export function buildWebSiteJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'KplaWY',
+    url: SITE_URL,
+    inLanguage: routing.locales,
+  };
+}
+
+/** VideoObject do demo real da home (clipe de futevôlei com replay salvo). */
+export function buildVideoObjectJsonLd(locale: string) {
+  const names: Record<string, string> = {
+    pt: 'KplaWY — replay salvo depois do lance',
+    en: 'KplaWY — replay saved after the play',
+    es: 'KplaWY — replay guardado después de la jugada',
+  };
+  const descriptions: Record<string, string> = {
+    pt: 'Demonstração real: o buffer contínuo captura o lance e o replay é salvo com um toque, depois que o ponto aconteceu.',
+    en: 'Real demo: the continuous buffer captures the play and the replay is saved with one tap, after the point happened.',
+    es: 'Demostración real: el búfer continuo captura la jugada y el replay se guarda con un toque, después del punto.',
+  };
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: names[locale] ?? names[routing.defaultLocale],
+    description: descriptions[locale] ?? descriptions[routing.defaultLocale],
+    thumbnailUrl: `${SITE_URL}/media/video/replay-demo-poster.jpg`,
+    contentUrl: `${SITE_URL}/media/video/replay-demo-720.mp4`,
+    uploadDate: '2026-06-24',
+    inLanguage: locale,
+  };
+}
+
+/** BreadcrumbList — páginas internas (Home → Página). */
+export function buildBreadcrumbJsonLd(
+  items: Array<{ name: string; url: string }>
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: item.name,
+      item: item.url,
+    })),
   };
 }
 
