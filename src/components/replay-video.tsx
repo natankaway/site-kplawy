@@ -5,6 +5,8 @@ import { Play, Pause } from 'lucide-react';
 
 interface ReplayVideoProps {
   src: string;
+  /** Fonte WebM opcional (menor; navegadores que suportam usam primeiro). */
+  webmSrc?: string;
   poster: string;
   className?: string;
   /** Accessible name for the video element itself. */
@@ -27,6 +29,7 @@ function prefersReducedMotion() {
  */
 export function ReplayVideo({
   src,
+  webmSrc,
   poster,
   className = '',
   label,
@@ -92,11 +95,12 @@ export function ReplayVideo({
         muted
         loop
         playsInline
-        preload="metadata"
+        preload="none"
         poster={poster}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
       >
+        {webmSrc ? <source src={webmSrc} type="video/webm" /> : null}
         <source src={src} type="video/mp4" />
       </video>
 
