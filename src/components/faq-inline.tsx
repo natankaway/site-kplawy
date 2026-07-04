@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { FadeIn } from './fade-in';
 import { FaqAccordion, type Faq } from './faq-accordion';
-import { PRICING } from '@/lib/pricing';
+import { pricingFor } from '@/lib/pricing';
 
 /**
  * Inline FAQ on the landing page — reuses the /faq content (faqPage namespace)
@@ -14,8 +14,9 @@ export async function FaqInline({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: 'faqPage' });
   const ui = await getTranslations({ locale, namespace: 'faqInline' });
   const format = await getFormatter({ locale });
+  const pricing = pricingFor(locale);
   const money = (value: number) =>
-    format.number(value, { style: 'currency', currency: PRICING.currency });
+    format.number(value, { style: 'currency', currency: pricing.currency });
 
   const items: Faq[] = [
     { q: t('q1'), a: t('a1') },
@@ -26,8 +27,8 @@ export async function FaqInline({ locale }: { locale: string }) {
     {
       q: t('q8'),
       a: t('a8', {
-        monthly: money(PRICING.premiumMonthly),
-        annual: money(PRICING.premiumAnnual),
+        monthly: money(pricing.premiumMonthly),
+        annual: money(pricing.premiumAnnual),
       }),
     },
   ];

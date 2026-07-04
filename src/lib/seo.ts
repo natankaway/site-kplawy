@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { routing } from '@/i18n/routing';
-import { PRICE_HIGH, PRICE_LOW, OFFER_COUNT } from '@/lib/pricing';
+import { PRICE_LOW, OFFER_COUNT, pricingFor, priceHighFor } from '@/lib/pricing';
 
 export const SITE_URL = 'https://kplawy.app';
 
@@ -67,9 +67,9 @@ export function buildSoftwareApplicationJsonLd(locale: string) {
     operatingSystem: 'iOS, Android',
     offers: {
       '@type': 'AggregateOffer',
-      priceCurrency: 'BRL',
+      priceCurrency: pricingFor(locale).currency,
       lowPrice: PRICE_LOW,
-      highPrice: PRICE_HIGH,
+      highPrice: priceHighFor(locale),
       offerCount: OFFER_COUNT,
     },
     description: APP_DESCRIPTION[locale] ?? APP_DESCRIPTION[routing.defaultLocale],

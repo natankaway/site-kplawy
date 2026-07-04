@@ -5,15 +5,16 @@ import { FadeIn } from './fade-in';
 import { DownloadButton, SecondaryLink, TrustBadges } from './section-cta';
 import { HeroBufferRing } from './hero-buffer-ring';
 import { PhoneParallax } from './phone-parallax';
-import { PRICING } from '@/lib/pricing';
+import { pricingFor } from '@/lib/pricing';
 
 export async function Hero({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: 'hero' });
   const format = await getFormatter({ locale });
   const proofPoints = [t('proof1'), t('proof2'), t('proof3'), t('proof4')];
-  const monthly = format.number(PRICING.premiumMonthly, {
+  const pricing = pricingFor(locale);
+  const monthly = format.number(pricing.premiumMonthly, {
     style: 'currency',
-    currency: PRICING.currency,
+    currency: pricing.currency,
   });
 
   return (

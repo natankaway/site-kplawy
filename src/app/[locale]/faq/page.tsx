@@ -1,7 +1,7 @@
 import { getTranslations, getFormatter, setRequestLocale } from 'next-intl/server';
 import { buildPageMetadata } from '@/lib/seo';
 import { FaqContent } from '@/components/faq-content';
-import { PRICING } from '@/lib/pricing';
+import { pricingFor } from '@/lib/pricing';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -14,8 +14,9 @@ export default async function FAQPage({ params }: { params: Promise<{ locale: st
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'faqPage' });
   const format = await getFormatter({ locale });
+  const pricing = pricingFor(locale);
   const money = (value: number) =>
-    format.number(value, { style: 'currency', currency: PRICING.currency });
+    format.number(value, { style: 'currency', currency: pricing.currency });
 
   const faqs = [
     { q: t('q1'), a: t('a1') },
@@ -28,8 +29,8 @@ export default async function FAQPage({ params }: { params: Promise<{ locale: st
     {
       q: t('q8'),
       a: t('a8', {
-        monthly: money(PRICING.premiumMonthly),
-        annual: money(PRICING.premiumAnnual),
+        monthly: money(pricing.premiumMonthly),
+        annual: money(pricing.premiumAnnual),
       }),
     },
     { q: t('q9'), a: t('a9') },
