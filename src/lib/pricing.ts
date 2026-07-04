@@ -7,7 +7,7 @@
  * hardcoded strings, so prices can never drift between hero / pricing / FAQ /
  * download / structured data.
  *
- * ⚠️ STORE RECONCILIATION: the BRL amounts below are set in App Store Connect /
+ * ⚠️ STORE RECONCILIATION: the BRL/USD amounts below are set in App Store Connect /
  * Google Play and surfaced through RevenueCat (project proj7603053a, offering
  * "default"). They are NOT readable from the RevenueCat API (store-priced), so
  * verify them against the live store listings before launch. Mapping:
@@ -20,21 +20,55 @@
  * introductory offer before launch, or the copy is overstated. Keep TRIAL_DAYS
  * here as the single place to flip it.
  */
-export const PRICING = {
-  currency: 'BRL',
-  premiumMonthly: 29.9,
-  premiumAnnual: 249.9,
-  trialDays: 7,
-} as const;
+export type LocalePricing = {
+  currency: string;
+  premiumMonthly: number;
+  premiumAnnual: number;
+  trialDays: number;
+};
+
+/** Preço por locale — App Store / Google Play precificam por região. */
+export const PRICING_BY_LOCALE = {
+  pt: {
+    currency: 'BRL',
+    premiumMonthly: 29.9,
+    premiumAnnual: 249.9,
+    trialDays: 7,
+  },
+  en: {
+    currency: 'USD',
+    premiumMonthly: 5.99,
+    premiumAnnual: 39.99,
+    trialDays: 7,
+  },
+} as const satisfies Record<string, LocalePricing>;
+
+/** Pricing do locale, com fallback pra pt (default do site). */
+export function pricingFor(locale: string): LocalePricing {
+  return (
+    PRICING_BY_LOCALE[locale as keyof typeof PRICING_BY_LOCALE] ??
+    PRICING_BY_LOCALE.pt
+  );
+}
 
 /** Annual savings vs paying monthly for 12 months — derived, never hand-typed. */
-export const ANNUAL_SAVINGS = Number(
-  (PRICING.premiumMonthly * 12 - PRICING.premiumAnnual).toFixed(2)
-);
+export function annualSavingsFor(locale: string): number {
+  const p = pricingFor(locale);
+  return Number((p.premiumMonthly * 12 - p.premiumAnnual).toFixed(2));
+}
+
+/** Aliases legados (pt) — preferir pricingFor(locale)/annualSavingsFor(locale). */
+export const PRICING = PRICING_BY_LOCALE.pt;
+export const ANNUAL_SAVINGS = annualSavingsFor('pt');
 
 /** schema.org AggregateOffer bounds (string, 2-decimal, dot-separated). */
 export const PRICE_LOW = '0';
-export const PRICE_HIGH = PRICING.premiumAnnual.toFixed(2);
+
+/** highPrice do AggregateOffer por locale (anual = maior oferta paga). */
+export function priceHighFor(locale: string): string {
+  return pricingFor(locale).premiumAnnual.toFixed(2);
+}
+export const PRICE_HIGH = priceHighFor('pt');
 
 /** Number of distinct offers (Free, Premium monthly, Premium annual). */
 export const OFFER_COUNT = 3;
