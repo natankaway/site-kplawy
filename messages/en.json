@@ -132,7 +132,7 @@
     "subtitle": "Start on Free and move to KplaWY Pro when it makes sense. Checkout happens inside the app.",
     "freeLabel": "Entry",
     "freeName": "Free",
-    "freePrice": "R$ 0",
+    "freePrice": "$0",
     "freePeriod": "to start",
     "freeDesc": "To get to know the experience and record with manual replay.",
     "freeF1": "Continuous buffer with replays up to 10 seconds",
@@ -168,7 +168,7 @@
     "saveVsMonthly": "Save {savings} over the year versus monthly.",
     "premiumMeta1": "Checkout and billing inside the app.",
     "premiumMeta2": "7-day free trial to test KplaWY Pro.",
-    "pricingFootnote": "Monthly or annual upfront, right in the store. On Android (Google Play): R$ 29.99/month and R$ 249.99/year — store rounding.",
+    "pricingFootnote": "Monthly or annual upfront, right in the store. On Google Play, prices may vary slightly by store rounding.",
     "premiumCta": "Download and choose a plan",
     "premiumF9": "7-day free trial"
   },
