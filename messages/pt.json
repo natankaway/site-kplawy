@@ -67,7 +67,7 @@
     "item2Title": "Relógio + Bluetooth",
     "item2Desc": "dispare sem o celular na mão",
     "item3Title": "Privacidade total",
-    "item3Desc": "sem analytics, sem anúncios, sem rastreamento",
+    "item3Desc": "sem anúncios, sem rastreamento de terceiros",
     "item4Title": "Backup no Google Drive",
     "item4Desc": "seus lances seguros quando você quiser",
     "item5Title": "Multi-câmera",
@@ -102,7 +102,7 @@
     "card4Kicker": "Confiança",
     "card4Title": "Privacidade forte. Qualidade alta.",
     "card4Desc": "Do SD ao UHD com HEVC, vídeos no próprio dispositivo e backup opcional no Google Drive.",
-    "card4Point1": "Sem analytics, sem anúncios, sem rastreamento.",
+    "card4Point1": "Sem anúncios e sem rastreamento de terceiros.",
     "card4Point2": "Controle fino de câmera e áudio.",
     "card4Point3": "Multi-câmera e estatísticas pra quem quer mais."
   },
@@ -260,7 +260,7 @@
     "expF3Title": "Modo Proteção",
     "expF3Desc": "Escurece o preview para economizar bateria em gravações longas, com gesto de slide-to-unlock para reativar.",
     "expF4Title": "Privacidade Total",
-    "expF4Desc": "Nenhum dado sai do dispositivo sem sua permissão. Sem analytics, sem rastreamento, sem anúncios. Seus momentos são apenas seus."
+    "expF4Desc": "Nenhum vídeo sai do dispositivo sem sua permissão. Sem anúncios e sem rastreamento de terceiros; as estatísticas de uso são anônimas e você pode desligá-las. Seus momentos são apenas seus."
   },
   "aboutPage": {
     "title": "Sobre",
@@ -353,7 +353,7 @@
   },
   "privacyPage": {
     "title": "Política de Privacidade",
-    "metaDescription": "Como o KplaWY coleta, usa e protege seus dados: e-mail, identificadores de dispositivo e diagnósticos de falhas (Crashlytics). Em conformidade com a LGPD."
+    "metaDescription": "Como o KplaWY coleta, usa e protege seus dados: e-mail, identificadores de dispositivo, diagnósticos de falhas (Crashlytics) e estatísticas de uso anônimas e opcionais (Analytics). Em conformidade com a LGPD."
   },
   "termsPage": {
     "title": "Termos de Uso",

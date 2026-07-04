@@ -67,7 +67,7 @@
     "item2Title": "Watch + Bluetooth",
     "item2Desc": "trigger without the phone in your hand",
     "item3Title": "Full privacy",
-    "item3Desc": "no analytics, no ads, no tracking",
+    "item3Desc": "no ads, no third-party tracking",
     "item4Title": "Google Drive backup",
     "item4Desc": "your plays safe whenever you want",
     "item5Title": "Multi-camera",
@@ -102,7 +102,7 @@
     "card4Kicker": "Confidence",
     "card4Title": "Strong privacy. High quality.",
     "card4Desc": "From SD to UHD with HEVC, videos on your own device and optional Google Drive backup.",
-    "card4Point1": "No analytics, no ads, no tracking.",
+    "card4Point1": "No ads and no third-party tracking.",
     "card4Point2": "Fine control over camera and audio.",
     "card4Point3": "Multi-cam and stats for those who want more."
   },
@@ -260,7 +260,7 @@
     "expF3Title": "Protection Mode",
     "expF3Desc": "Dims the preview to save battery during long recordings, with slide-to-unlock gesture to reactivate.",
     "expF4Title": "Total Privacy",
-    "expF4Desc": "No data leaves your device without your permission. No analytics, no tracking, no ads. Your moments are yours alone."
+    "expF4Desc": "No video leaves your device without your permission. No ads and no third-party tracking; usage statistics are anonymous and you can turn them off. Your moments are yours alone."
   },
   "aboutPage": {
     "title": "About",
@@ -353,7 +353,7 @@
   },
   "privacyPage": {
     "title": "Privacy Policy",
-    "metaDescription": "How KplaWY collects, uses, and protects your data: email, device identifiers, and crash diagnostics (Crashlytics). LGPD/GDPR compliant."
+    "metaDescription": "How KplaWY collects, uses, and protects your data: email, device identifiers, crash diagnostics (Crashlytics), and anonymous optional usage statistics (Analytics). LGPD/GDPR compliant."
   },
   "termsPage": {
     "title": "Terms of Service",
