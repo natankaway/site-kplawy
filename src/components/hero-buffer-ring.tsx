@@ -16,6 +16,10 @@ function StaticRing() {
   const cx = 100;
   const cy = 100;
   const r = 82;
+  // Round coords to a fixed precision so SSR (Node) and client (browser) emit
+  // byte-identical attribute strings — otherwise float serialization differs and
+  // React reports a hydration mismatch.
+  const round = (n: number) => Math.round(n * 1000) / 1000;
   return (
     <svg
       viewBox="0 0 200 200"
@@ -25,10 +29,10 @@ function StaticRing() {
     >
       {Array.from({ length: segments }).map((_, i) => {
         const a = (i / segments) * Math.PI * 2;
-        const x1 = cx + Math.cos(a) * r;
-        const y1 = cy + Math.sin(a) * r;
-        const x2 = cx + Math.cos(a) * (r + 7);
-        const y2 = cy + Math.sin(a) * (r + 7);
+        const x1 = round(cx + Math.cos(a) * r);
+        const y1 = round(cy + Math.sin(a) * r);
+        const x2 = round(cx + Math.cos(a) * (r + 7));
+        const y2 = round(cy + Math.sin(a) * (r + 7));
         // a few segments brighter to hint the "head"
         const lead = i > segments - 8;
         return (

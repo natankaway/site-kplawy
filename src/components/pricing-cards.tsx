@@ -135,8 +135,9 @@ export async function PricingCards({
               <div className="streak absolute inset-x-0 top-0" aria-hidden="true" />
 
               <div className="relative z-10">
-                <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
-                  <div className="max-w-2xl">
+                {/* Header + billing choice */}
+                <div className="grid gap-8 lg:grid-cols-[1fr_0.92fr] lg:items-start">
+                  <div>
                     <div className="inline-flex items-center gap-2 rounded-full border border-brand-gold/30 bg-brand-gold/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-gold">
                       <Sparkles size={13} aria-hidden="true" />
                       {t('premiumLabel')}
@@ -144,44 +145,44 @@ export async function PricingCards({
                     <h3 className="mt-4 font-display text-3xl font-bold uppercase tracking-tight text-white md:text-[2.5rem]">
                       {t('premiumName')}
                     </h3>
-                    <p className="mt-3 max-w-2xl text-sm font-light leading-relaxed text-white/80 md:text-base">
+                    <p className="mt-3 max-w-xl text-sm font-light leading-relaxed text-white/80 md:text-base">
                       {t('premiumDesc')}
                     </p>
+                    <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/60">{t('pricingFootnote')}</p>
                   </div>
 
-                  <div className="rounded-2xl border border-white/[0.08] bg-black/30 px-4 py-4 text-sm text-white/80 backdrop-blur-xl md:max-w-[15rem]">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70">{t('billingTitle')}</p>
-                    <p className="mt-2 leading-relaxed">{t('pricingFootnote')}</p>
-                  </div>
+                  {/* Billing tiles: the one place a card earns its place — a real choice */}
+                  <ul className="grid list-none gap-3 sm:grid-cols-2">
+                    {billingOptions.map((option) => (
+                      <li
+                        key={option.name}
+                        className={`rounded-2xl border p-5 ${option.emphasis}`}
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <p className="text-sm font-semibold tracking-tight text-white">{option.name}</p>
+                          {option.badge ? (
+                            <span className="rounded-full border border-brand-blue/30 bg-brand-blue/20 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-brand-blue-bright">
+                              {option.badge}
+                            </span>
+                          ) : null}
+                        </div>
+                        <div className="mt-5 flex items-end gap-2">
+                          <span className="tabular font-display text-4xl font-bold tracking-tight text-white">{option.price}</span>
+                          <span className="pb-1 text-sm font-medium text-white/70">{option.period}</span>
+                        </div>
+                        <p className="mt-3 text-sm leading-relaxed text-white/80">{option.note}</p>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                <ul className="mt-8 grid list-none gap-4 sm:grid-cols-2">
-                  {billingOptions.map((option) => (
-                    <li
-                      key={option.name}
-                      className={`hover-lift rounded-[1.75rem] border p-5 backdrop-blur-xl ${option.emphasis}`}
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <p className="text-sm font-semibold tracking-tight text-white">{option.name}</p>
-                        {option.badge ? (
-                          <span className="rounded-full border border-brand-blue/30 bg-brand-blue/20 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-brand-blue-bright">
-                            {option.badge}
-                          </span>
-                        ) : null}
-                      </div>
-                      <div className="mt-5 flex items-end gap-2">
-                        <span className="tabular font-display text-4xl font-bold tracking-tight text-white">{option.price}</span>
-                        <span className="pb-1 text-sm font-medium text-white/70">{option.period}</span>
-                      </div>
-                      <p className="mt-3 text-sm leading-relaxed text-white/80">{option.note}</p>
-                    </li>
-                  ))}
-                </ul>
+                <div className="my-8 h-px bg-white/[0.08]" aria-hidden="true" />
 
-                <div className="mt-8 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-                  <div className="rounded-[1.75rem] border border-white/[0.08] bg-black/25 p-5">
+                {/* Includes + value — plain sections, no nested boxes */}
+                <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+                  <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-gold">{t('premiumIncludes')}</p>
-                    <ul className="mt-5 space-y-3">
+                    <ul className="mt-5 grid gap-3 sm:grid-cols-2">
                       {premiumFeatures.map((feature) => (
                         <li key={feature} className="flex items-start gap-3">
                           <Check size={16} aria-hidden="true" className="mt-0.5 shrink-0 text-brand-gold" strokeWidth={2.5} />
@@ -191,27 +192,22 @@ export async function PricingCards({
                     </ul>
                   </div>
 
-                  <div className="flex flex-col gap-4">
-                    <div className="hover-lift rounded-[1.75rem] border border-brand-blue/25 bg-brand-blue/[0.08] p-5">
+                  <div className="flex flex-col justify-end gap-5">
+                    <div>
                       <p className="section-kicker">{t('valueTitle')}</p>
                       <p className="mt-3 font-display text-2xl font-bold uppercase tracking-tight text-white">{t('valueHeadline')}</p>
-                      <div className="mt-5 space-y-3 text-sm text-white/80">
-                        <p>{t('saveVsMonthly', { savings: money(ANNUAL_SAVINGS) })}</p>
-                      </div>
+                      <p className="mt-3 text-sm text-white/80">{t('saveVsMonthly', { savings: money(ANNUAL_SAVINGS) })}</p>
                     </div>
-
-                    <div className="hover-lift rounded-[1.75rem] border border-white/[0.08] bg-white/[0.03] p-5">
-                      <div className="grid gap-3 text-sm text-white/80 md:grid-cols-2">
-                        <p>{t('premiumMeta1')}</p>
-                        <p>{t('premiumMeta2')}</p>
-                      </div>
-                      <Link
-                        href={`/${locale}/download`}
-                        className="btn-electric button-sheen mt-5 inline-flex min-h-[48px] w-full items-center justify-center rounded-full px-6 py-3.5 text-sm font-semibold tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-bright focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0F1A]"
-                      >
-                        {t('premiumCta')}
-                      </Link>
+                    <div className="grid gap-2 text-sm text-white/70 sm:grid-cols-2">
+                      <p>{t('premiumMeta1')}</p>
+                      <p>{t('premiumMeta2')}</p>
                     </div>
+                    <Link
+                      href={`/${locale}/download`}
+                      className="btn-electric button-sheen inline-flex min-h-[48px] w-full items-center justify-center rounded-full px-6 py-3.5 text-sm font-semibold tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-bright focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0F1A]"
+                    >
+                      {t('premiumCta')}
+                    </Link>
                   </div>
                 </div>
 
