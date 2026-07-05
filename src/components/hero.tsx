@@ -103,6 +103,9 @@ export async function Hero({ locale }: { locale: string }) {
                 <span className="text-sm font-medium text-white/70">
                   {t('priceSuffix')}
                 </span>
+                <span className="ml-1 rounded-full border border-brand-green/30 bg-brand-green/10 px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-brand-green">
+                  {t('trialBadge')}
+                </span>
               </div>
             </FadeIn>
           </div>

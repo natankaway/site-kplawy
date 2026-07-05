@@ -161,11 +161,11 @@ export async function FeaturesGrid({ locale }: { locale: string }) {
                       </p>
                     </div>
 
-                    <ul className="grid gap-2.5">
+                    <ul className="grid gap-3 border-t border-white/[0.07] pt-5">
                       {card.points.map((point) => (
                         <li
                           key={point}
-                          className="flex items-start gap-2.5 rounded-2xl border border-white/[0.07] bg-black/40 px-4 py-3 text-sm leading-snug text-white/80"
+                          className="flex items-start gap-2.5 text-sm leading-snug text-white/80"
                         >
                           <Check
                             size={16}

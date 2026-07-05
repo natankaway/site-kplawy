@@ -2,8 +2,11 @@
 
 import { useState, type FormEvent } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
-import { ArrowRight, Check, Loader2 } from 'lucide-react';
+import { Apple, ArrowRight, Check, Loader2 } from 'lucide-react';
 import { FadeIn } from './fade-in';
+import { APP_STORE_ID } from '@/lib/store-links';
+
+const APP_STORE_URL = `https://apps.apple.com/app/id${APP_STORE_ID}`;
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -77,6 +80,24 @@ export function WaitlistForm({
               <p className="mx-auto mt-4 max-w-md text-base font-light leading-relaxed text-white/80">
                 {t('subtitle')}
               </p>
+              {/* iOS is live now — let iPhone visitors convert immediately */}
+              <a
+                href={APP_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-electric button-sheen mx-auto mt-7 inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-full px-7 text-base font-semibold tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+              >
+                <Apple size={20} aria-hidden="true" />
+                {t('iosCta')}
+              </a>
+            </div>
+
+            <div className="mx-auto mt-8 flex max-w-md items-center gap-4" aria-hidden="true">
+              <span className="h-px flex-1 bg-white/10" />
+              <span className="text-xs font-medium uppercase tracking-[0.18em] text-white/45">
+                {locale === 'en' ? 'or' : 'ou'}
+              </span>
+              <span className="h-px flex-1 bg-white/10" />
             </div>
 
             {status === 'success' ? (

@@ -4,44 +4,30 @@ import { FadeIn, StaggerContainer, StaggerItem } from './fade-in';
 import { ReplayVideo } from './replay-video';
 import { ConversionBlock } from './section-cta';
 
-const ACCENT_LINE: Record<string, string> = {
-  blue: 'via-brand-blue',
-  green: 'via-brand-green',
-  gold: 'via-brand-gold',
-};
-
 export async function ProductEvidence({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: 'evidence' });
   const h = await getTranslations({ locale, namespace: 'hero' });
   const cta = await getTranslations({ locale, namespace: 'cta' });
 
+  const shotLocale = locale === 'en' ? 'en' : 'pt';
   const cards = [
     {
-      image: '/media/app/phone-control-web.png',
+      image: `/media/store/${shotLocale}/remote-control.png`,
       title: t('card1Title'),
       text: t('card1Text'),
       alt: h('controlShotAlt'),
-      width: 647,
-      height: 1400,
-      accent: 'green', // controle remoto
     },
     {
-      image: '/media/app/phone-clips-web.png',
+      image: `/media/store/${shotLocale}/sports-gym.png`,
       title: t('card2Title'),
       text: t('card2Text'),
       alt: h('clipsShotAlt'),
-      width: 647,
-      height: 1400,
-      accent: 'blue', // biblioteca
     },
     {
-      image: '/media/wear/wear-ready.png',
+      image: `/media/store/${shotLocale}/watches.png`,
       title: t('card3Title'),
       text: t('card3Text'),
       alt: h('watchShotAlt'),
-      width: 432,
-      height: 432,
-      accent: 'green', // smartwatch / remote
     },
   ];
 
@@ -113,46 +99,32 @@ export async function ProductEvidence({ locale }: { locale: string }) {
           </article>
         </FadeIn>
 
-        {/* Real screenshots — large, legible, in electric device frames */}
+        {/* App story panels — self-contained brand art. Desktop: 3-up grid.
+            Mobile: horizontal swipe so 3 tall phone shots don't bury the scroll. */}
         <StaggerContainer
           as="ul"
-          className="grid list-none gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="-mx-6 flex snap-x snap-mandatory list-none gap-4 overflow-x-auto px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-5 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3"
           staggerDelay={0.1}
         >
           {cards.map((card) => (
-            <StaggerItem as="li" key={card.title}>
-              <article className="card-electric group relative flex h-full flex-col overflow-hidden rounded-[2rem] p-6 md:p-7">
+            <StaggerItem as="li" key={card.title} className="w-[78%] shrink-0 snap-center sm:w-auto sm:shrink">
+              <figure className="group relative overflow-hidden rounded-[1.75rem] border border-white/10 transition-transform duration-500 hover:-translate-y-1 motion-reduce:transition-none">
                 <div
-                  className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent ${ACCENT_LINE[card.accent]} to-transparent opacity-50`}
+                  className="pointer-events-none absolute -inset-8 -z-10 rounded-full bg-[radial-gradient(circle_at_50%_25%,rgba(46,123,255,0.28),transparent_62%)] opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
                   aria-hidden="true"
                 />
-                {/* Device frame */}
-                <div className="relative mx-auto w-full max-w-[20rem]">
-                  <div
-                    className="absolute inset-0 -z-10 scale-105 rounded-full bg-[radial-gradient(circle,rgba(46,123,255,0.3),transparent_62%)] blur-2xl opacity-70 transition-opacity duration-500 group-hover:opacity-100"
-                    aria-hidden="true"
-                  />
-                  <div className="relative overflow-hidden rounded-[2rem] border border-white/15 bg-black shadow-[0_40px_100px_rgba(0,0,0,0.6),0_0_0_1px_rgba(46,123,255,0.18)] transition-transform duration-500 group-hover:-translate-y-1 motion-reduce:transition-none">
-                    <Image
-                      src={card.image}
-                      alt={card.alt}
-                      width={card.width}
-                      height={card.height}
-                      sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
-                      className="h-auto w-full object-cover"
-                    />
-                  </div>
-                </div>
-
-                <div className="mt-7">
-                  <h3 className="font-display text-xl font-bold uppercase tracking-tight text-white md:text-2xl">
-                    {card.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-white/80 md:text-base">
-                    {card.text}
-                  </p>
-                </div>
-              </article>
+                <Image
+                  src={card.image}
+                  alt={card.alt}
+                  width={1284}
+                  height={2778}
+                  sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
+                  className="h-auto w-full"
+                />
+                <figcaption className="sr-only">
+                  {card.title}. {card.text}
+                </figcaption>
+              </figure>
             </StaggerItem>
           ))}
         </StaggerContainer>
