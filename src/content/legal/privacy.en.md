@@ -46,6 +46,7 @@ LGPD — Law No. 13.709/2018) for processing your personal data is:
 | **Subscription** | Your subscription status (free/Pro), purchase history, trial state | From RevenueCat and the stores (App Store / Google Play) |
 | **Backup (optional)** | Backup status and counts, your Drive folder identifier | Only if you enable backup; kept on your device |
 | **Diagnostics** | Crash reports + device information (Firebase Crashlytics) | When the app crashes, to fix errors — you can **turn this off** in Account → "Send crash reports" |
+| **Usage statistics** | Anonymous in-app usage events — for example: a replay was saved, the plans screen was viewed, a clip was shared (Firebase Analytics). **No** video content and **no** data that identifies you | To understand how the app is used and improve it — off by default until you consent; you **turn it off** with the same Account control → "Send crash reports and usage statistics" |
 
 > **Data collected by the infrastructure (not by the app) — IP address:**
 > Google Firebase automatically logs the IP address of each connection as part
@@ -74,6 +75,7 @@ hardware identifiers, or any data for advertising tracking (on iOS we declare
 | Apple token (refresh token) | Revoke your access with Apple when you delete the account (Apple requirement) | Legal obligation (Art. 6(1)(c)) + contract (b) |
 | Device identifier + model + name | **Diagnostics and improvement** — understanding multi-device usage patterns | Legitimate interest (Art. 6(1)(f)) |
 | Crash reports + device info (Crashlytics) | Fix errors and crashes; app stability | Legitimate interest (Art. 6(1)(f)) — **can be turned off** in Account |
+| Anonymous usage events (Firebase Analytics) | Understand how the app is used (without identifying you) and prioritize improvements | Consent (Art. 6(1)(a)) — off until you accept, **can be turned off** in Account |
 | Subscription and trial state | Unlock Pro features; manage the single trial period | Performance of a contract (Art. 6(1)(b)) |
 | Backup metadata | Manage the backup queue you enabled | Performance of a contract (Art. 6(1)(b)) |
 | IP address | Platform security and fraud prevention | Legitimate interest (Art. 6(1)(f)) |

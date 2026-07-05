@@ -5,12 +5,19 @@ import { ProductEvidence } from '@/components/product-evidence';
 import { TrustStrip } from '@/components/trust-strip';
 import { FeaturesGrid } from '@/components/features-grid';
 import { HowItWorks } from '@/components/how-it-works';
+import { RetroReplayExplainer } from '@/components/retro-replay-explainer';
 import { Testimonials } from '@/components/testimonials';
 import { PricingCards } from '@/components/pricing-cards';
 import { FaqInline } from '@/components/faq-inline';
 import { WaitlistForm } from '@/components/waitlist-form';
 import { CtaBanner } from '@/components/cta-banner';
-import { buildOrganizationJsonLd, buildPageMetadata, buildSoftwareApplicationJsonLd } from '@/lib/seo';
+import {
+  buildOrganizationJsonLd,
+  buildPageMetadata,
+  buildSoftwareApplicationJsonLd,
+  buildVideoObjectJsonLd,
+  buildWebSiteJsonLd,
+} from '@/lib/seo';
 
 export async function generateMetadata({
   params,
@@ -37,6 +44,8 @@ export default async function HomePage({
   const currentLocale = isLocale(locale) ? locale : routing.defaultLocale;
   const softwareApplicationJsonLd = buildSoftwareApplicationJsonLd(currentLocale);
   const organizationJsonLd = buildOrganizationJsonLd();
+  const webSiteJsonLd = buildWebSiteJsonLd();
+  const videoJsonLd = buildVideoObjectJsonLd(currentLocale);
 
   return (
     <>
@@ -48,11 +57,20 @@ export default async function HomePage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(videoJsonLd) }}
+      />
       <Hero locale={currentLocale} />
       <TrustStrip locale={currentLocale} />
       <ProductEvidence locale={currentLocale} />
       <FeaturesGrid locale={currentLocale} />
       <HowItWorks locale={currentLocale} />
+      <RetroReplayExplainer locale={currentLocale} />
       <Testimonials locale={currentLocale} />
       <PricingCards locale={currentLocale} />
       <FaqInline locale={currentLocale} />

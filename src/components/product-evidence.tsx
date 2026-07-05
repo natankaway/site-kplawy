@@ -92,7 +92,8 @@ export async function ProductEvidence({ locale }: { locale: string }) {
             />
             <div className="relative overflow-hidden rounded-[1.6rem] border border-white/10 bg-black/40 shadow-[inset_0_0_0_1px_rgba(46,123,255,0.12)]">
               <ReplayVideo
-                src="/media/video/replay-demo-optimized.mp4"
+                src="/media/video/replay-demo-720.mp4"
+                webmSrc="/media/video/replay-demo-720.webm"
                 poster="/media/video/replay-demo-poster.jpg"
                 className="aspect-[9/16] h-full w-full object-cover md:aspect-[16/9]"
                 label={t('videoTitle')}

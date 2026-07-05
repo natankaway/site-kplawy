@@ -45,6 +45,7 @@ O responsável (controlador), nos termos do Art. 5º, VI, da Lei nº 13.709/2018
 | **Assinatura** | Estado da sua assinatura (gratuito/Pro), histórico de compra, estado do período de teste | Pela RevenueCat e pelas lojas (App Store/Google Play) |
 | **Backup (opcional)** | Status e contagem de backups, identificador da pasta no seu Drive | Apenas se você ativa o backup; ficam no seu aparelho |
 | **Diagnóstico** | Relatórios de falha (*crash*) + informações do aparelho (Firebase Crashlytics) | Quando o app trava, para corrigir erros — você pode **desligar** em Conta → "Enviar relatórios de falha" |
+| **Estatísticas de uso** | Eventos anônimos de uso do app — por exemplo: um replay foi salvo, a tela de planos foi vista, um clipe foi compartilhado (Firebase Analytics). **Sem** conteúdo de vídeo e **sem** dados que identifiquem você | Para entender como o app é usado e melhorá-lo — desativado por padrão até seu consentimento; você **desliga** no mesmo controle de Conta → "Enviar relatórios de falha e estatísticas de uso" |
 
 > **Dado coletado pela infraestrutura (não pelo aplicativo) — Endereço IP:**
 > o Google Firebase registra automaticamente o endereço IP de cada conexão como
@@ -73,6 +74,7 @@ rastreamento publicitário (no iOS, declaramos `NSPrivacyTracking = false`).
 | Token Apple (*refresh token*) | Revogar seu acesso junto à Apple quando você exclui a conta (exigência da Apple) | Cumprimento de obrigação (Art. 7º, II) + execução de contrato (V) |
 | Identificador + modelo + nome do dispositivo | **Diagnóstico e melhoria** — entender padrões de uso em múltiplos aparelhos | Legítimo interesse (Art. 7º, IX) |
 | Relatórios de falha + info do aparelho (Crashlytics) | Corrigir erros e travamentos; estabilidade do app | Legítimo interesse (Art. 7º, IX) — **desligável** em Conta |
+| Eventos anônimos de uso (Firebase Analytics) | Entender como o app é usado (sem identificar você) e priorizar melhorias | Consentimento (Art. 7º, I) — desativado até você aceitar, **desligável** em Conta |
 | Estado de assinatura e teste | Liberar recursos Pro; controlar o período de teste único | Execução de contrato (Art. 7º, V) |
 | Metadados de backup | Gerenciar a fila de backup que você ativou | Execução de contrato (Art. 7º, V) |
 | Endereço IP | Segurança e prevenção a fraudes da plataforma | Legítimo interesse (Art. 7º, IX) |

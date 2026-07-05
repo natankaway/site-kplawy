@@ -3,7 +3,7 @@ import { Check, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { FadeIn } from './fade-in';
 import { TrustBadges } from './section-cta';
-import { PRICING, ANNUAL_SAVINGS } from '@/lib/pricing';
+import { pricingFor, annualSavingsFor } from '@/lib/pricing';
 
 export async function PricingCards({
   locale,
@@ -16,8 +16,9 @@ export async function PricingCards({
 }) {
   const t = await getTranslations({ locale, namespace: 'pricing' });
   const format = await getFormatter({ locale });
+  const pricing = pricingFor(locale);
   const money = (value: number) =>
-    format.number(value, { style: 'currency', currency: PRICING.currency });
+    format.number(value, { style: 'currency', currency: pricing.currency });
 
   // h1 when this is the pricing route's main heading; h2 on the home page.
   const TitleTag = isPageHeading ? 'h1' : 'h2';
@@ -29,12 +30,13 @@ export async function PricingCards({
   const premiumFeatures = [
     t('premiumF1'), t('premiumF2'), t('premiumF3'), t('premiumF4'),
     t('premiumF5'), t('premiumF6'), t('premiumF7'), t('premiumF8'),
+    t('premiumF9'),
   ];
 
   const billingOptions = [
     {
       name: t('monthlyName'),
-      price: money(PRICING.premiumMonthly),
+      price: money(pricing.premiumMonthly),
       period: t('monthlyPeriod'),
       note: t('monthlyNote'),
       badge: null as string | null,
@@ -43,7 +45,7 @@ export async function PricingCards({
     },
     {
       name: t('upfrontName'),
-      price: money(PRICING.premiumAnnual),
+      price: money(pricing.premiumAnnual),
       period: t('upfrontPeriod'),
       note: t('upfrontNote'),
       badge: t('upfrontBadge'),
@@ -196,7 +198,7 @@ export async function PricingCards({
                       <p className="section-kicker">{t('valueTitle')}</p>
                       <p className="mt-3 font-display text-2xl font-bold uppercase tracking-tight text-white">{t('valueHeadline')}</p>
                       <div className="mt-5 space-y-3 text-sm text-white/80">
-                        <p>{t('saveVsMonthly', { savings: money(ANNUAL_SAVINGS) })}</p>
+                        <p>{t('saveVsMonthly', { savings: money(annualSavingsFor(locale)) })}</p>
                       </div>
                     </div>
 

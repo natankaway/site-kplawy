@@ -3,7 +3,7 @@ import { Apple, ArrowRight, Smartphone } from 'lucide-react';
 import { FadeIn } from '@/components/fade-in';
 import Image from 'next/image';
 import { buildPageMetadata } from '@/lib/seo';
-import { PRICING } from '@/lib/pricing';
+import { pricingFor } from '@/lib/pricing';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -16,10 +16,11 @@ export default async function DownloadPage({ params }: { params: Promise<{ local
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'downloadPage' });
   const format = await getFormatter({ locale });
+  const pricing = pricingFor(locale);
   const proAvailable = t('proAvailable', {
-    price: format.number(PRICING.premiumMonthly, {
+    price: format.number(pricing.premiumMonthly, {
       style: 'currency',
-      currency: PRICING.currency,
+      currency: pricing.currency,
     }),
   });
   const comingSoon = locale === 'pt' ? 'Em breve' : 'Coming soon';

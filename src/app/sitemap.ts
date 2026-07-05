@@ -1,8 +1,13 @@
 import type { MetadataRoute } from 'next';
 import { SITE_URL } from '@/lib/seo';
 import { routing } from '@/i18n/routing';
+import { guides } from '@/lib/guides';
 
-const routes = ['', '/about', '/contact', '/download', '/faq', '/features', '/pricing', '/privacy', '/support', '/terms'];
+const routes = [
+  '', '/about', '/contact', '/download', '/faq', '/features', '/pricing', '/privacy', '/support', '/terms',
+  '/guia',
+  ...guides.map((guide) => `/guia/${guide.slug}`),
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
@@ -13,7 +18,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${SITE_URL}/${locale}${route}`,
       lastModified: now,
       changeFrequency: route === '' ? 'weekly' : 'monthly',
-      priority: route === '' ? 1 : route === '/pricing' || route === '/download' ? 0.9 : 0.7,
+      priority:
+        route === ''
+          ? 1
+          : route === '/pricing' || route === '/download'
+            ? 0.9
+            : route === '/guia'
+              ? 0.8
+              : 0.7,
       alternates: {
         languages: {
           ...Object.fromEntries(
