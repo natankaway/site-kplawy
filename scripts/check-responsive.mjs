@@ -229,6 +229,61 @@ async function inspectLanding(pathname, viewport) {
   return result.value;
 }
 
+async function inspectStickyCta(pathname, viewport) {
+  const target = await fetch(`http://127.0.0.1:${chromePort}/json/new`, { method: 'PUT' }).then(
+    (response) => response.json(),
+  );
+  const client = new CdpClient(target.webSocketDebuggerUrl);
+  await client.open();
+  await client.send('Page.enable');
+  await client.send('Runtime.enable');
+  await client.send('Emulation.setDeviceMetricsOverride', {
+    width: viewport.width,
+    height: viewport.height,
+    deviceScaleFactor: viewport.deviceScaleFactor ?? 1,
+    mobile: viewport.mobile,
+  });
+
+  const loaded = client.once('Page.loadEventFired');
+  await client.send('Page.navigate', { url: `${webBaseUrl}${pathname}` });
+  await loaded;
+  await client.send('Runtime.evaluate', {
+    expression: 'window.scrollTo(0, 900)',
+  });
+  await new Promise((resolve) => setTimeout(resolve, 350));
+
+  const { result } = await client.send('Runtime.evaluate', {
+    returnByValue: true,
+    expression: `(() => {
+      const visualWidth = Math.min(
+        window.innerWidth,
+        window.visualViewport ? window.visualViewport.width : window.innerWidth,
+      );
+      const sticky = document.querySelector('#sticky');
+      const button = document.querySelector('#sticky a');
+      const stickyRect = sticky.getBoundingClientRect();
+      const buttonRect = button.getBoundingClientRect();
+      const stickyStyle = getComputedStyle(sticky);
+      return {
+        visualWidth,
+        stickyDisplay: stickyStyle.display,
+        stickyLeft: Math.round(stickyRect.left),
+        stickyRight: Math.round(stickyRect.right),
+        buttonLeft: Math.round(buttonRect.left),
+        buttonRight: Math.round(buttonRect.right),
+        buttonWidth: Math.round(buttonRect.width),
+        buttonHeight: Math.round(buttonRect.height),
+        buttonClipped: buttonRect.left < 0 || buttonRect.right > visualWidth,
+        buttonTooSmall: buttonRect.width < 44 || buttonRect.height < 44,
+      };
+    })()`,
+  });
+
+  await fetch(`http://127.0.0.1:${chromePort}/json/close/${target.id}`).catch(() => {});
+  client.close();
+  return result.value;
+}
+
 describe('responsive static landing', () => {
   before(async () => {
     assert.ok(existsSync(chromePath), `Chrome not found at ${chromePath}`);
@@ -276,6 +331,21 @@ describe('responsive static landing', () => {
 
       assert.equal(result.scrollOverflow, 0);
       assert.deepEqual(result.clippedFloaties, []);
+    });
+  }
+
+  for (const pathname of ['/pt', '/en']) {
+    it(`${pathname} keeps the sticky download CTA fully visible on Galaxy S25-sized mobile`, async () => {
+      const result = await inspectStickyCta(pathname, {
+        width: 360,
+        height: 780,
+        deviceScaleFactor: 3,
+        mobile: true,
+      });
+
+      assert.equal(result.stickyDisplay, 'flex');
+      assert.equal(result.buttonClipped, false);
+      assert.equal(result.buttonTooSmall, false);
     });
   }
 });

@@ -340,8 +340,12 @@ footer a.f:hover{color:#fff}
 .store-pill:hover{border-color:#fff;color:#fff}
 
 /* sticky mobile CTA */
-#sticky{position:fixed;left:0;right:0;bottom:0;z-index:85;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(5,8,15,.85);backdrop-filter:blur(14px);border-top:1px solid rgba(148,178,224,.18);display:none;gap:10px;align-items:center}
+#sticky{position:fixed;left:0;right:auto;bottom:0;z-index:85;width:100%;width:100dvw;max-width:100dvw;overflow:hidden;padding:10px max(12px,env(safe-area-inset-left)) calc(10px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-right));background:rgba(5,8,15,.85);backdrop-filter:blur(14px);border-top:1px solid rgba(148,178,224,.18);display:none;gap:10px;align-items:center}
 #sticky.on{display:flex}
+#sticky .sticky-copy{flex:1 1 0;min-width:0;overflow:hidden}
+#sticky .sticky-title{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sticky .sticky-sub{margin-top:1px;font-size:11px;color:#8FA3BE;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#sticky .sticky-btn{flex:0 0 auto;min-width:84px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;background:#1E8FFF;color:#fff;font-weight:800;font-size:14px;padding:0 18px;border-radius:999px;white-space:nowrap;box-shadow:0 10px 34px rgba(30,143,255,.38)}
 
 /* reveals */
 [data-rv]{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
