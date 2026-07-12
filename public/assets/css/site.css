@@ -25,6 +25,7 @@ button:focus-visible,a:focus-visible{outline:2px solid #7FD2FF;outline-offset:3p
 @keyframes kwFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @keyframes kwMarq{to{transform:translateX(-50%)}}
 @keyframes kwBuf{0%{transform:translateX(0)}100%{transform:translateX(354%)}}
+@keyframes kwBufMobile{0%{transform:translateX(0)}100%{transform:translateX(160%)}}
 @keyframes kwPulse{0%{box-shadow:0 0 0 0 rgba(47,155,255,.5)}70%{box-shadow:0 0 0 22px rgba(47,155,255,0)}100%{box-shadow:0 0 0 0 rgba(47,155,255,0)}}
 @keyframes kwFlow{to{background-position:26px 0}}
 @keyframes kwUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
@@ -153,6 +154,25 @@ button:focus-visible,a:focus-visible{outline:2px solid #7FD2FF;outline-offset:3p
 .buf-track{flex:1;height:26px;border-radius:8px;border:1px solid var(--line);background:repeating-linear-gradient(90deg,rgba(148,178,224,.07) 0 2px,transparent 2px 14px);position:relative;overflow:hidden}
 .buf-win{position:absolute;top:3px;bottom:3px;left:3px;width:22%;border-radius:6px;background:linear-gradient(90deg,rgba(47,155,255,.16),rgba(47,155,255,.45));border:1px solid rgba(90,180,255,.6);animation:kwBuf 7s linear infinite alternate;display:flex;align-items:center;justify-content:center;color:#CDE7FF;font-size:10px}
 .buf-strip p{margin:10px 0 0;font-size:12.5px;color:var(--dim)}
+@media(max-width:520px){
+  #hero .cols{padding-top:108px;padding-bottom:26px;gap:24px}
+  #hero .copy{min-width:0;flex-basis:100%}
+  #hero h1{font-size:clamp(40px,12vw,56px);letter-spacing:-.8px}
+  #hero .ctas{gap:10px}
+  #hero .ctas .btn,#hero .ctas .btn-ghost{width:100%;padding:14px 20px!important}
+  .hero-chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:16px;padding:0 16px}
+  .hero-chips span{min-height:44px;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px 10px;line-height:1.2}
+  .buf-strip{margin-top:24px;padding:0 24px 30px}
+  .buf-strip .row{display:grid;grid-template-columns:1fr;gap:10px;align-items:start}
+  .buf-strip .row>span{white-space:normal!important;line-height:1.45}
+  .buf-strip .row>span:last-child{justify-self:start}
+  .buf-track{width:100%;height:30px}
+  .buf-win{width:38%;min-width:104px;font-size:9.5px;animation-name:kwBufMobile}
+  .buf-strip p{font-size:12px;line-height:1.55}
+}
+@media(max-width:340px){
+  .hero-chips{grid-template-columns:1fr}
+}
 
 /* ticker */
 .ticker{border-top:1px solid rgba(148,178,224,.12);border-bottom:1px solid rgba(148,178,224,.12);background:var(--bg2);overflow:hidden;padding:16px 0}

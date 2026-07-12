@@ -284,6 +284,78 @@ async function inspectStickyCta(pathname, viewport) {
   return result.value;
 }
 
+async function inspectMobileHeroCompression(pathname, viewport) {
+  const target = await fetch(`http://127.0.0.1:${chromePort}/json/new`, { method: 'PUT' }).then(
+    (response) => response.json(),
+  );
+  const client = new CdpClient(target.webSocketDebuggerUrl);
+  await client.open();
+  await client.send('Page.enable');
+  await client.send('Runtime.enable');
+  await client.send('Emulation.setDeviceMetricsOverride', {
+    width: viewport.width,
+    height: viewport.height,
+    deviceScaleFactor: viewport.deviceScaleFactor ?? 1,
+    mobile: viewport.mobile,
+  });
+
+  const loaded = client.once('Page.loadEventFired');
+  await client.send('Page.navigate', { url: `${webBaseUrl}${pathname}` });
+  await loaded;
+  await new Promise((resolve) => setTimeout(resolve, 350));
+
+  const { result } = await client.send('Runtime.evaluate', {
+    returnByValue: true,
+    expression: `(() => {
+      const layoutViewportWidth = window.innerWidth;
+      const viewportWidth = Math.min(
+        window.innerWidth,
+        window.visualViewport ? window.visualViewport.width : window.innerWidth,
+      );
+      const doc = document.documentElement;
+      const row = document.querySelector('.buf-strip .row');
+      const bufferWindow = document.querySelector('.buf-win');
+      const bufferTrack = document.querySelector('.buf-track');
+      const isVisible = (el) => {
+        const style = getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+      };
+      const inspectTarget = (el, label) => {
+        const rect = el.getBoundingClientRect();
+        return {
+          label,
+          left: Math.round(rect.left),
+          right: Math.round(rect.right),
+          width: Math.round(rect.width),
+          height: Math.round(rect.height),
+          clipped: rect.left < 0 || rect.right > viewportWidth,
+          textClipped: el.scrollWidth > el.clientWidth + 1,
+        };
+      };
+      const chipTargets = Array.from(document.querySelectorAll('.hero-chips span'))
+        .filter(isVisible)
+        .map((el, index) => inspectTarget(el, 'hero chip ' + index));
+      const rowTargets = Array.from(document.querySelectorAll('.buf-strip .row > *'))
+        .filter(isVisible)
+        .map((el, index) => inspectTarget(el, 'buffer row item ' + index));
+
+      return {
+        viewportWidth,
+        scrollOverflow: Math.max(0, doc.scrollWidth - layoutViewportWidth),
+        rowDisplay: row ? getComputedStyle(row).display : null,
+        bufferWindowWidth: bufferWindow ? Math.round(bufferWindow.getBoundingClientRect().width) : 0,
+        bufferTrackWidth: bufferTrack ? Math.round(bufferTrack.getBoundingClientRect().width) : 0,
+        compressedTargets: [...chipTargets, ...rowTargets].filter((target) => target.clipped || target.textClipped),
+      };
+    })()`,
+  });
+
+  await fetch(`http://127.0.0.1:${chromePort}/json/close/${target.id}`).catch(() => {});
+  client.close();
+  return result.value;
+}
+
 describe('responsive static landing', () => {
   before(async () => {
     assert.ok(existsSync(chromePath), `Chrome not found at ${chromePath}`);
@@ -346,6 +418,23 @@ describe('responsive static landing', () => {
       assert.equal(result.stickyDisplay, 'flex');
       assert.equal(result.buttonClipped, false);
       assert.equal(result.buttonTooSmall, false);
+    });
+  }
+
+  for (const pathname of ['/pt', '/en']) {
+    it(`${pathname} keeps hero chips and the buffer strip readable on Galaxy S25-sized mobile`, async () => {
+      const result = await inspectMobileHeroCompression(pathname, {
+        width: 360,
+        height: 780,
+        deviceScaleFactor: 3,
+        mobile: true,
+      });
+
+      assert.equal(result.scrollOverflow, 0);
+      assert.equal(result.rowDisplay, 'grid');
+      assert.ok(result.bufferWindowWidth >= 96);
+      assert.ok(result.bufferTrackWidth >= 260);
+      assert.deepEqual(result.compressedTargets, []);
     });
   }
 });
