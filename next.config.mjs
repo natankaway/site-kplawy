@@ -7,6 +7,9 @@ const nextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
   },
+  outputFileTracingIncludes: {
+    '/*': ['./src/static-site/**/*'],
+  },
 };
 
 export default withNextIntl(nextConfig);

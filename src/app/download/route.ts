@@ -91,8 +91,7 @@ export function GET(request: NextRequest): Response {
   if (platform === 'ios') {
     target = STORE_LINKS.appStore;
   } else if (platform === 'android') {
-    // Empty Play URL (app not published yet) => web fallback, no dead listing.
-    target = STORE_LINKS.playStore || fallback;
+    target = STORE_LINKS.playStore;
   } else {
     // desktop, iPad-as-Macintosh, or missing user-agent.
     target = fallback;

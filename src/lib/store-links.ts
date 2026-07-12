@@ -5,9 +5,8 @@
  * per environment without code edits. The defaults below keep the route working
  * even with an empty environment.
  *
- * Android gating: an empty `ANDROID_STORE_URL` means the app is not published on
- * Google Play yet. The route then sends Android visitors to the web fallback
- * instead of a dead Play listing. Fill the env var when the listing goes live.
+ * Android is live on Google Play. The env var is only an override in case the
+ * listing URL changes later.
  */
 import { SITE_URL } from '@/lib/seo';
 
@@ -19,15 +18,13 @@ export const ANDROID_PACKAGE = 'com.kplawy.instantreplay';
 
 // Country-neutral App Store link — Apple routes to the visitor's local storefront.
 const DEFAULT_APP_STORE_URL = `https://apps.apple.com/app/id${APP_STORE_ID}`;
+const DEFAULT_PLAY_STORE_URL = `https://play.google.com/store/apps/details?id=${ANDROID_PACKAGE}`;
 
 export const STORE_LINKS = {
   /** iOS App Store listing. */
   appStore: process.env.APP_STORE_URL?.trim() || DEFAULT_APP_STORE_URL,
-  /**
-   * Google Play listing. Empty string => Android not published yet, so the route
-   * uses the web fallback for Android visitors instead of a 404 Play page.
-   */
-  playStore: process.env.ANDROID_STORE_URL?.trim() ?? '',
+  /** Google Play listing. */
+  playStore: process.env.ANDROID_STORE_URL?.trim() || DEFAULT_PLAY_STORE_URL,
   /**
    * Override for the desktop / iPad / unknown fallback target. Empty string =>
    * the route builds a locale-aware `/<locale>/download` path at request time.

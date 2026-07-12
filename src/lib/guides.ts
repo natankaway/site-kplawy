@@ -290,14 +290,14 @@ export const guides: Guide[] = [
           heading: 'Preço: assinatura x o que você usa de verdade',
           paragraphs: [
             'Compare o plano gratuito primeiro: dá pra jogar e salvar replays sem pagar? Depois avalie se os recursos pagos resolvem problemas que você tem de fato — buffer mais longo, multicâmera, controle remoto com preview — ou se são recursos de vitrine.',
-            'O KplaWY Free cobre o essencial (buffer contínuo até 10 segundos, clipes ilimitados, controle por smartwatch e Bluetooth). O KplaWY Pro custa R$ 29,90/mês no iOS e adiciona buffers de 22, 30 e 50 segundos, multicâmera, controle remoto com live preview e backup automático.',
+            'O KplaWY Free cobre o essencial (buffer contínuo até 10 segundos, clipes ilimitados, controle por smartwatch e Bluetooth). O KplaWY Pro custa a partir de R$ 29,90/mês e adiciona buffers de 22, 30 e 50 segundos, multicâmera, controle remoto com live preview e backup automático.',
           ],
         },
         {
           heading: 'Onde o KplaWY se encaixa nessa comparação',
           paragraphs: [
             'Sendo transparente: o KplaWY foi feito pra um caso de uso específico — jogador amador de vôlei, futevôlei e beach tennis que quer sair da quadra com os melhores lances salvos, sem operar câmera e sem editar vídeo. Replay retroativo, armazenamento local e controle pelo pulso são o núcleo do produto.',
-            'Se você precisa de análise tática quadro a quadro ou telestração pra treinador, um app de scout tradicional serve melhor. Pra todo o resto — o lance bonito de sábado que merecia ter sido filmado — é exatamente pra isso que o KplaWY existe. Hoje disponível pra iOS; Android em breve.',
+            'Se você precisa de análise tática quadro a quadro ou telestração pra treinador, um app de scout tradicional serve melhor. Pra todo o resto — o lance bonito de sábado que merecia ter sido filmado — é exatamente pra isso que o KplaWY existe. Disponível para iOS e Android.',
           ],
         },
       ],
@@ -341,14 +341,14 @@ export const guides: Guide[] = [
           heading: 'Price: subscription vs what you actually use',
           paragraphs: [
             'Compare the free plan first: can you play and save replays without paying? Then evaluate whether the paid features solve problems you actually have — longer buffer, multi-camera, remote control with preview — or whether they are showcase features.',
-            'KplaWY Free covers the essentials (continuous buffer up to 10 seconds, unlimited clips, smartwatch and Bluetooth control). KplaWY Pro costs R$ 29.90/month on iOS and adds 22, 30 and 50-second buffers, multi-camera, remote control with live preview, and automatic backup.',
+            'KplaWY Free covers the essentials (continuous buffer up to 10 seconds, unlimited clips, smartwatch and Bluetooth control). KplaWY Pro starts at $5.99/month and adds 22, 30 and 50-second buffers, multi-camera, remote control with live preview, and automatic backup.',
           ],
         },
         {
           heading: 'Where KplaWY fits in this comparison',
           paragraphs: [
             'Being transparent: KplaWY was built for a specific use case — amateur volleyball, footvolley and beach tennis players who want to leave the court with their best plays saved, without operating a camera or editing video. Retroactive replay, local storage and wrist control are the core of the product.',
-            "If you need frame-by-frame tactical analysis or coach telestration, a traditional scouting app serves you better. For everything else — that beautiful Saturday play that deserved to be filmed — that is exactly what KplaWY exists for. Available for iOS today; Android coming soon.",
+            "If you need frame-by-frame tactical analysis or coach telestration, a traditional scouting app serves you better. For everything else — that beautiful Saturday play that deserved to be filmed — that is exactly what KplaWY exists for. Available for iOS and Android.",
           ],
         },
       ],

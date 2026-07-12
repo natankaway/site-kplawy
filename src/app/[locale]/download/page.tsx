@@ -1,9 +1,10 @@
 import { getTranslations, getFormatter, setRequestLocale } from 'next-intl/server';
-import { Apple, ArrowRight, Smartphone } from 'lucide-react';
+import { Apple, Smartphone } from 'lucide-react';
 import { FadeIn } from '@/components/fade-in';
 import Image from 'next/image';
 import { buildPageMetadata } from '@/lib/seo';
 import { pricingFor } from '@/lib/pricing';
+import { STORE_LINKS } from '@/lib/store-links';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -23,7 +24,6 @@ export default async function DownloadPage({ params }: { params: Promise<{ local
       currency: pricing.currency,
     }),
   });
-  const comingSoon = locale === 'pt' ? 'Em breve' : 'Coming soon';
 
   return (
     <div className="pt-32 pb-24 px-6">
@@ -54,7 +54,7 @@ export default async function DownloadPage({ params }: { params: Promise<{ local
             <FadeIn delay={0.3}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
                 <a
-                  href="https://apps.apple.com/br/app/kplawy/id6761232468"
+                  href={STORE_LINKS.appStore}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="relative flex items-center justify-center gap-3 bg-white text-black px-10 py-5 rounded-full text-lg font-semibold transition-transform hover:scale-[1.02]"
@@ -62,18 +62,15 @@ export default async function DownloadPage({ params }: { params: Promise<{ local
                   <Apple size={24} aria-hidden="true" />
                   {t('ctaApple')}
                 </a>
-                <button
-                  type="button"
-                  disabled
-                  aria-disabled="true"
-                  className="relative flex items-center justify-center gap-3 bg-surface-1 text-white border border-white/[0.08] px-10 py-5 rounded-full text-lg font-semibold opacity-50 cursor-not-allowed"
+                <a
+                  href={STORE_LINKS.playStore}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative flex items-center justify-center gap-3 bg-surface-1 text-white border border-white/[0.08] px-10 py-5 rounded-full text-lg font-semibold transition-transform hover:scale-[1.02] hover:border-brand-blue/40"
                 >
+                  <Smartphone size={24} aria-hidden="true" />
                   {t('ctaGoogle')}
-                  <ArrowRight size={20} aria-hidden="true" />
-                  <span className="absolute -top-2 -right-2 rounded-full border border-white/15 bg-surface-2 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-white/70">
-                    {comingSoon}
-                  </span>
-                </button>
+                </a>
               </div>
             </FadeIn>
 

@@ -180,25 +180,25 @@
     "subtitle": "Download KplaWY, pick your plan and never react too late again.",
     "ctaApple": "Download the app",
     "ctaGoogle": "See pricing",
-    "trust1": "iPhone · Android soon",
+    "trust1": "iPhone · Android",
     "trust2": "No ads",
     "trust3": "Videos on device"
   },
   "waitlist": {
-    "badge": "Android · coming soon",
-    "titleLine1": "Android is",
-    "titleLine2": "on the way.",
-    "subtitle": "On iPhone you can download it right now. Join the list and we'll tell you the moment KplaWY lands on Android.",
-    "iosCta": "Download on iPhone",
+    "badge": "iOS and Android",
+    "titleLine1": "KplaWY is",
+    "titleLine2": "live in stores.",
+    "subtitle": "Download it on the App Store or Google Play and get important app updates by email.",
+    "iosCta": "Download the app",
     "emailLabel": "Your email",
     "emailPlaceholder": "you@email.com",
-    "submit": "Notify me when Android drops",
+    "submit": "Get updates",
     "submitting": "Sending...",
     "successTitle": "You're in!",
-    "successText": "You're on the list. We'll ping you when Android lands.",
+    "successText": "You're on the list. We'll send important app updates.",
     "errorText": "Something went wrong. Try again.",
     "invalidEmail": "Enter a valid email.",
-    "privacyNote": "No spam. Just the Android heads-up."
+    "privacyNote": "No spam. Just important updates."
   },
   "testimonials": {
     "badge": "Testimonials",
@@ -344,7 +344,7 @@
   "downloadPage": {
     "title": "Download KplaWY",
     "headline": "Ready to never miss the play?",
-    "subtitle": "Live on iPhone, with Android on the way. Download now and start capturing your best moments.",
+    "subtitle": "Live on iPhone and Android. Download now and start capturing your best moments.",
     "requirementsTitle": "Requirements",
     "ios": "iOS 15.0 or later",
     "android": "Android 8.0 or later",

@@ -180,25 +180,25 @@
     "subtitle": "Baixe o KplaWY, escolha seu plano e nunca mais reaja tarde demais.",
     "ctaApple": "Baixar o app",
     "ctaGoogle": "Ver preços",
-    "trust1": "iPhone · Android em breve",
+    "trust1": "iPhone · Android",
     "trust2": "Sem anúncios",
     "trust3": "Vídeos no dispositivo"
   },
   "waitlist": {
-    "badge": "Android · em breve",
-    "titleLine1": "O Android está",
-    "titleLine2": "chegando.",
-    "subtitle": "No iPhone já dá pra baixar agora. Entre na lista e a gente te avisa assim que o KplaWY chegar no Android.",
-    "iosCta": "Baixar no iPhone",
+    "badge": "iOS e Android",
+    "titleLine1": "O KplaWY já está",
+    "titleLine2": "nas lojas.",
+    "subtitle": "Baixe na App Store ou no Google Play e receba novidades importantes do app por e-mail.",
+    "iosCta": "Baixar o app",
     "emailLabel": "Seu e-mail",
     "emailPlaceholder": "seu@email.com",
-    "submit": "Avisar quando sair no Android",
+    "submit": "Receber novidades",
     "submitting": "Enviando...",
     "successTitle": "Tudo certo!",
-    "successText": "Você está na lista. A gente te avisa quando o Android chegar.",
+    "successText": "Você está na lista. A gente te avisa sobre novidades importantes.",
     "errorText": "Algo deu errado. Tenta de novo.",
     "invalidEmail": "Digite um e-mail válido.",
-    "privacyNote": "Sem spam. Só o aviso do Android."
+    "privacyNote": "Sem spam. Só novidades importantes."
   },
   "testimonials": {
     "badge": "Depoimentos",
@@ -344,7 +344,7 @@
   "downloadPage": {
     "title": "Baixar KplaWY",
     "headline": "Pronto para nunca mais perder o lance?",
-    "subtitle": "Já disponível no iPhone, com Android a caminho. Baixe agora e comece a capturar seus melhores momentos.",
+    "subtitle": "Já disponível para iPhone e Android. Baixe agora e comece a capturar seus melhores momentos.",
     "requirementsTitle": "Requisitos",
     "ios": "iOS 15.0 ou superior",
     "android": "Android 8.0 ou superior",
