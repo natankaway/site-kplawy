@@ -112,7 +112,7 @@ export function Navbar() {
           <Link
             href={`/${locale}`}
             aria-label={t('home')}
-            className="group flex items-center gap-3 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-bright"
+            className="group flex min-h-11 min-w-0 items-center gap-3 rounded-full px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-blue-bright"
           >
             <div className="relative h-8 w-8 overflow-hidden rounded-full bg-white/[0.03] ring-1 ring-white/[0.06] transition-colors duration-300 group-hover:ring-brand-blue/40 motion-reduce:transition-none">
               <Image
@@ -138,7 +138,7 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   aria-current={active ? 'page' : undefined}
-                  className={`group relative text-sm font-medium transition-colors duration-300 motion-reduce:transition-none ${
+                  className={`group relative flex min-h-11 items-center text-sm font-medium transition-colors duration-300 motion-reduce:transition-none ${
                     active ? 'text-white' : 'text-white/80 hover:text-white'
                   }`}
                 >
@@ -168,7 +168,7 @@ export function Navbar() {
             {/* CTA — full label on >=sm */}
             <Link
               href={`/${locale}/download`}
-              className="btn-electric hidden rounded-full px-5 py-2.5 text-sm font-semibold tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:flex"
+              className="btn-electric hidden min-h-11 items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 sm:flex"
             >
               {t('getApp')}
             </Link>

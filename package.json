@@ -10,6 +10,7 @@
     "lint": "rm -rf .next/dev && tsc --noEmit && npm run check:placeholders && npm run test:static-home",
     "check:placeholders": "node scripts/check-placeholders.mjs",
     "test:static-home": "node --test scripts/check-static-home.mjs",
+    "test:responsive": "node --test scripts/check-responsive.mjs",
     "prebuild": "npm run check:placeholders && npm run test:static-home"
   },
   "dependencies": {
