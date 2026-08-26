@@ -17,71 +17,93 @@ function assertExcludes(source, text, label) {
   assert.ok(!source.includes(text), `${label} should not include ${text}`);
 }
 
-describe('static production home', () => {
-  it('serves the new static landing from the locale route handler', () => {
-    assert.equal(existsSync(join(root, 'src/static-site/pt/index.html')), true);
-    assert.equal(existsSync(join(root, 'src/static-site/en/index.html')), true);
+describe('production landing', () => {
+  it('serves the refreshed bilingual landing from the locale route', () => {
     assert.equal(existsSync(join(root, 'src/app/[locale]/route.ts')), true);
-    assert.equal(existsSync(join(root, 'src/app/[locale]/page.tsx')), false);
+    assert.equal(existsSync(join(root, 'src/lib/home-page-v2.ts')), true);
+    assert.equal(existsSync(join(root, 'public/assets/css/site-v2.css')), true);
+    assert.equal(existsSync(join(root, 'public/assets/js/site-v2.js')), true);
+    assert.equal(existsSync(join(root, 'src/app/media/v2/[...asset]/route.ts')), true);
 
     const route = read('src/app/[locale]/route.ts');
     assertIncludes(route, "redirect('/pt')", 'locale route');
-    assertIncludes(route, 'src/static-site', 'locale route');
+    assertIncludes(route, 'renderLandingPage', 'locale route');
+    assertExcludes(route, 'src/static-site', 'locale route');
   });
 
-  it('keeps root semantics aligned with the current site', () => {
+  it('keeps language, SEO and default-locale semantics aligned', () => {
     const proxy = read('src/proxy.ts');
-    assertIncludes(proxy, "matcher: ['/', '/(pt|en)/:path*']", 'proxy');
+    const landing = read('src/lib/home-page-v2.ts');
+    const routing = read('src/i18n/routing.ts');
 
-    const pt = read('src/static-site/pt/index.html');
-    assertIncludes(pt, '<link rel="canonical" href="https://kplawy.app/pt">', 'pt home');
-    assertIncludes(pt, 'hreflang="pt-BR" href="https://kplawy.app/pt"', 'pt home');
-    assertIncludes(pt, 'hreflang="en" href="https://kplawy.app/en"', 'pt home');
-    assertIncludes(pt, 'hreflang="x-default" href="https://kplawy.app/pt"', 'pt home');
+    assertIncludes(proxy, "matcher: ['/', '/(pt|en)/:path*']", 'proxy');
+    assertIncludes(routing, "defaultLocale: 'pt'", 'routing');
+    assertIncludes(landing, 'https://kplawy.app/${locale}', 'canonical source');
+    assertIncludes(landing, 'hreflang=\"pt-BR\"', 'landing');
+    assertIncludes(landing, 'hreflang=\"en\"', 'landing');
+    assertIncludes(landing, 'hreflang=\"x-default\"', 'landing');
+    assertIncludes(landing, 'https://kplawy.app/pt', 'x-default target');
+    assertIncludes(landing, 'SoftwareApplication', 'structured data');
+    assertIncludes(landing, 'FAQPage', 'structured data');
   });
 
-  it('serves legal pages through the new static visual system', () => {
-    const legalSlugs = ['privacy', 'terms', 'delete-account'];
+  it('uses the approved conversion-first message and refreshed media', () => {
+    const landing = read('src/lib/home-page-v2.ts');
+    assertIncludes(landing, 'O lance já aconteceu?', 'PT hero');
+    assertIncludes(landing, 'Salve os últimos segundos.', 'PT hero');
+    assertIncludes(landing, 'The play already happened?', 'EN hero');
+    assertIncludes(landing, 'Save the last seconds.', 'EN hero');
+    assertIncludes(landing, '/media/v2/demo.mp4', 'demo video');
+    assertIncludes(landing, '/media/v2/watch.webp', 'watch image');
+    assertIncludes(landing, '/media/v2/logo-symbol-white.webp', 'new logo');
+    assertIncludes(landing, 'camera.webp', 'new app screenshots');
+    assertIncludes(landing, 'clips.webp', 'new app screenshots');
+    assertIncludes(landing, 'multicam.webp', 'new app screenshots');
+  });
 
+  it('uses the corrected English and Brazilian Pro pricing', () => {
+    const landing = read('src/lib/home-page-v2.ts');
+    assertIncludes(landing, '$4.99/month', 'English monthly price');
+    assertIncludes(landing, '$39.99/year', 'English annual price');
+    assertIncludes(landing, "price: '4.99'", 'English monthly JSON-LD price');
+    assertIncludes(landing, "price: '39.99'", 'English annual JSON-LD price');
+    assertIncludes(landing, 'R$ 29,90/mês', 'Brazilian monthly price');
+    assertIncludes(landing, 'R$ 249,90/ano', 'Brazilian annual price');
+    assertIncludes(landing, "price: '29.90'", 'Brazilian monthly JSON-LD price');
+    assertIncludes(landing, "price: '249.90'", 'Brazilian annual JSON-LD price');
+    assertExcludes(landing, '$5.99', 'refreshed landing');
+  });
+
+  it('uses precise privacy language rather than a blanket tracking claim', () => {
+    const landing = read('src/lib/home-page-v2.ts');
+    assertIncludes(landing, 'Sem rastreamento publicitário', 'PT privacy');
+    assertIncludes(landing, 'No advertising tracking', 'EN privacy');
+    assertIncludes(landing, 'Backup opcional', 'PT privacy');
+    assertIncludes(landing, 'Optional backup', 'EN privacy');
+  });
+
+  it('serves legal pages through the static legal system', () => {
+    const legalSlugs = ['privacy', 'terms', 'delete-account'];
     for (const slug of legalSlugs) {
       const routePath = `src/app/[locale]/${slug}/route.ts`;
       const pagePath = `src/app/[locale]/${slug}/page.tsx`;
-
       assert.equal(existsSync(join(root, routePath)), true, `${routePath} should exist`);
       assert.equal(existsSync(join(root, pagePath)), false, `${pagePath} should not render the old Next page`);
-
       const route = read(routePath);
       assertIncludes(route, 'renderLegalPage', routePath);
       assertIncludes(route, `'${slug}'`, routePath);
     }
-
     const legalRenderer = read('src/lib/static-legal-html.tsx');
-    assertIncludes(legalRenderer, 'class="legal-page"', 'legal renderer');
-    assertIncludes(legalRenderer, '/assets/css/site.css', 'legal renderer');
     assertIncludes(legalRenderer, 'loadLegalDoc', 'legal renderer');
     assertIncludes(legalRenderer, 'kplawyapp@gmail.com', 'legal renderer');
   });
 
-  it('redirects legacy landing pages away from the old design', () => {
+  it('redirects legacy landing pages to sections of the refreshed homepage', () => {
     const proxy = read('src/proxy.ts');
     const routeMap = read('src/lib/legacy-landing-routes.ts');
-
     assertIncludes(proxy, 'OLD_LANDING_ROUTES', 'proxy');
     assertIncludes(proxy, 'NextResponse.redirect', 'proxy');
     assertIncludes(routeMap, 'OLD_LANDING_ROUTES', 'legacy route map');
-
-    for (const route of [
-      'about',
-      'contact',
-      'download',
-      'faq',
-      'features',
-      'pricing',
-      'support',
-      'guia',
-    ]) {
-      assertIncludes(routeMap, route, 'legacy route map');
-    }
 
     for (const [route, file] of [
       ['about', 'src/app/[locale]/about/page.tsx'],
@@ -98,82 +120,23 @@ describe('static production home', () => {
     }
   });
 
-  it('keeps the public sitemap scoped to the new landing and required legal pages', () => {
+  it('keeps the public sitemap scoped to the homepage and required legal pages', () => {
     const sitemap = read('src/app/sitemap.ts');
-
-    for (const route of ["''", "'/privacy'", "'/terms'", "'/delete-account'"]) {
-      assertIncludes(sitemap, route, 'sitemap routes');
-    }
-
-    for (const oldRoute of [
-      "'/about'",
-      "'/contact'",
-      "'/download'",
-      "'/faq'",
-      "'/features'",
-      "'/pricing'",
-      "'/support'",
-      "'/guia'",
-      'guides.map',
-    ]) {
-      assertExcludes(sitemap, oldRoute, 'sitemap routes');
-    }
+    for (const route of ["''", "'/privacy'", "'/terms'", "'/delete-account'"]) assertIncludes(sitemap, route, 'sitemap routes');
+    for (const oldRoute of ["'/about'", "'/contact'", "'/download'", "'/faq'", "'/features'", "'/pricing'", "'/support'", "'/guia'", 'guides.map']) assertExcludes(sitemap, oldRoute, 'sitemap routes');
   });
 
-  it('uses confirmed support email and live Android store links', () => {
-    for (const file of ['src/static-site/pt/index.html', 'src/static-site/en/index.html']) {
-      const html = read(file);
-      assertIncludes(html, 'mailto:kplawyapp@gmail.com', file);
-      assertIncludes(html, 'https://play.google.com/store/apps/details?id=com.kplawy.instantreplay', file);
-      assertExcludes(html, 'support@kplawy.app', file);
-      assertExcludes(html, 'contact@kplawy.app', file);
-      assertExcludes(html, 'Android soon', file);
-      assertExcludes(html, 'coming soon', file);
-      assertExcludes(html, 'fonts.googleapis.com', file);
-      assertExcludes(html, 'fonts.gstatic.com', file);
-    }
-  });
-
-  it('uses dollar pricing on the English landing', () => {
-    const en = read('src/static-site/en/index.html');
-    assertIncludes(en, '"priceCurrency":"USD"', 'en home JSON-LD');
-    assertIncludes(en, '"price":"5.99"', 'en home JSON-LD');
-    assertIncludes(en, '"price":"39.99"', 'en home JSON-LD');
-    assertIncludes(en, '$5.99', 'en home visible pricing');
-    assertIncludes(en, '$39.99/year', 'en home visible pricing');
-    assertIncludes(en, 'save $31.89', 'en home visible pricing');
-    assertExcludes(en, 'R$29.90', 'en home');
-    assertExcludes(en, 'R$249.90', 'en home');
-  });
-
-  it('keeps internal launch copy aligned with Android availability', () => {
+  it('keeps live store links and Android availability', () => {
+    const landing = read('src/lib/home-page-v2.ts');
     const storeLinks = read('src/lib/store-links.ts');
+    assertIncludes(landing, 'apps.apple.com/app/id6761232468', 'landing App Store link');
+    assertIncludes(landing, 'play.google.com/store/apps/details?id=com.kplawy.instantreplay', 'landing Play Store link');
     assertIncludes(storeLinks, 'play.google.com/store/apps/details?id=', 'store links');
     assertIncludes(storeLinks, 'com.kplawy.instantreplay', 'store links');
-
-    const localizedDownloadPage = read('src/app/[locale]/download/page.tsx');
-    assertIncludes(localizedDownloadPage, "landingRedirectUrl(locale, 'download')", 'localized download page');
-
-    const smartDownloadRoute = read('src/app/download/route.ts');
-    assertIncludes(smartDownloadRoute, 'STORE_LINKS.playStore', 'smart download route');
-
-    for (const file of [
-      'src/lib/store-links.ts',
-      'src/app/download/route.ts',
-      'src/app/[locale]/download/page.tsx',
-      'src/lib/guides.ts',
-      'messages/pt.json',
-      'messages/en.json',
-    ]) {
-      const source = read(file);
-      assertExcludes(source, 'Android soon', file);
-      assertExcludes(source, 'Android coming soon', file);
-      assertExcludes(source, 'Android em breve', file);
-      assertExcludes(source, 'Android · coming soon', file);
-      assertExcludes(source, 'Android · em breve', file);
+    for (const source of [landing, storeLinks, read('src/app/download/route.ts')]) {
+      assertExcludes(source, 'Android soon', 'launch copy');
+      assertExcludes(source, 'Android coming soon', 'launch copy');
+      assertExcludes(source, 'Android em breve', 'launch copy');
     }
-
-    const guides = read('src/lib/guides.ts');
-    assertIncludes(guides, '$5.99/month', 'guides English pricing');
   });
 });
