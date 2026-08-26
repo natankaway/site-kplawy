@@ -1,11 +1,9 @@
 import { after, before, describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { createServer } from 'node:http';
 import { createServer as createNetServer } from 'node:net';
 import { spawn } from 'node:child_process';
 import { existsSync, mkdtempSync, rmSync } from 'node:fs';
-import { readFile } from 'node:fs/promises';
-import { extname, join, normalize } from 'node:path';
+import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 
 const root = process.cwd();
@@ -18,17 +16,6 @@ let chrome;
 let chromePort;
 let chromeProfile;
 
-const mimeTypes = new Map([
-  ['.css', 'text/css; charset=utf-8'],
-  ['.html', 'text/html; charset=utf-8'],
-  ['.js', 'text/javascript; charset=utf-8'],
-  ['.jpg', 'image/jpeg'],
-  ['.jpeg', 'image/jpeg'],
-  ['.png', 'image/png'],
-  ['.mp4', 'video/mp4'],
-  ['.webm', 'video/webm'],
-]);
-
 function getFreePort() {
   return new Promise((resolve, reject) => {
     const server = createNetServer();
@@ -40,46 +27,43 @@ function getFreePort() {
   });
 }
 
-function startStaticServer() {
-  return new Promise((resolve, reject) => {
-    const server = createServer(async (req, res) => {
-      try {
-        const url = new URL(req.url || '/', 'http://127.0.0.1');
-        let filePath;
-
-        if (url.pathname === '/' || url.pathname === '/pt' || url.pathname === '/pt/') {
-          filePath = join(root, 'src/static-site/pt/index.html');
-        } else if (url.pathname === '/en' || url.pathname === '/en/') {
-          filePath = join(root, 'src/static-site/en/index.html');
-        } else {
-          const decodedPath = decodeURIComponent(url.pathname).replace(/^\/+/, '');
-          const publicPath = normalize(join(root, 'public', decodedPath));
-          if (!publicPath.startsWith(join(root, 'public'))) {
-            res.writeHead(403);
-            res.end('Forbidden');
-            return;
-          }
-          filePath = publicPath;
-        }
-
-        const body = await readFile(filePath);
-        res.writeHead(200, {
-          'content-type': mimeTypes.get(extname(filePath)) || 'application/octet-stream',
-          'cache-control': 'no-store',
-        });
-        res.end(body);
-      } catch {
-        res.writeHead(404);
-        res.end('Not found');
-      }
-    });
-
-    server.listen(0, '127.0.0.1', () => {
-      const address = server.address();
-      resolve({ server, baseUrl: `http://127.0.0.1:${address.port}` });
-    });
-    server.on('error', reject);
+async function startNextServer() {
+  const port = await getFreePort();
+  const server = spawn(process.execPath, [
+    'node_modules/next/dist/bin/next',
+    'dev',
+    '--webpack',
+    '--hostname',
+    '127.0.0.1',
+    '--port',
+    String(port),
+  ], {
+    cwd: root,
+    stdio: ['ignore', 'pipe', 'pipe'],
   });
+  const baseUrl = `http://127.0.0.1:${port}`;
+  let output = '';
+  server.stdout.on('data', (chunk) => {
+    output += String(chunk);
+  });
+  server.stderr.on('data', (chunk) => {
+    output += String(chunk);
+  });
+
+  for (let attempt = 0; attempt < 160; attempt += 1) {
+    if (server.exitCode !== null) {
+      throw new Error(`Next dev server exited early:\n${output}`);
+    }
+    try {
+      const response = await fetch(`${baseUrl}/pt`);
+      if (response.ok) return { server, baseUrl };
+    } catch {
+      // Server is still starting.
+    }
+    await new Promise((resolve) => setTimeout(resolve, 250));
+  }
+  server.kill();
+  throw new Error(`Next dev server did not start:\n${output}`);
 }
 
 async function waitForChrome() {
@@ -196,11 +180,11 @@ async function inspectLanding(pathname, viewport) {
         };
       };
       const headerTargets = [
-        inspectTarget('#hdr .brand', 'brand'),
-        inspectTarget('#hdr .m-actions .btn', 'mobile download CTA'),
-        inspectTarget('#burger', 'menu button'),
+        inspectTarget('.site-header .brand', 'brand'),
+        inspectTarget('.site-header .btn', 'desktop download CTA'),
+        inspectTarget('.menu-button', 'menu button'),
       ].filter(Boolean);
-      const floaties = Array.from(document.querySelectorAll('.floaty'))
+      const floaties = Array.from(document.querySelectorAll('.float'))
         .filter(isVisible)
         .map((el) => {
           const rect = el.getBoundingClientRect();
@@ -259,8 +243,8 @@ async function inspectStickyCta(pathname, viewport) {
         window.innerWidth,
         window.visualViewport ? window.visualViewport.width : window.innerWidth,
       );
-      const sticky = document.querySelector('#sticky');
-      const button = document.querySelector('#sticky a');
+      const sticky = document.querySelector('.mobile-download');
+      const button = document.querySelector('.mobile-download .btn');
       const stickyRect = sticky.getBoundingClientRect();
       const buttonRect = button.getBoundingClientRect();
       const stickyStyle = getComputedStyle(sticky);
@@ -313,9 +297,6 @@ async function inspectMobileHeroCompression(pathname, viewport) {
         window.visualViewport ? window.visualViewport.width : window.innerWidth,
       );
       const doc = document.documentElement;
-      const row = document.querySelector('.buf-strip .row');
-      const bufferWindow = document.querySelector('.buf-win');
-      const bufferTrack = document.querySelector('.buf-track');
       const isVisible = (el) => {
         const style = getComputedStyle(el);
         const rect = el.getBoundingClientRect();
@@ -333,20 +314,14 @@ async function inspectMobileHeroCompression(pathname, viewport) {
           textClipped: el.scrollWidth > el.clientWidth + 1,
         };
       };
-      const chipTargets = Array.from(document.querySelectorAll('.hero-chips span'))
+      const chipTargets = Array.from(document.querySelectorAll('.micro span, .actions a, .proof-item, .duration-row button, .mobile-download > *'))
         .filter(isVisible)
-        .map((el, index) => inspectTarget(el, 'hero chip ' + index));
-      const rowTargets = Array.from(document.querySelectorAll('.buf-strip .row > *'))
-        .filter(isVisible)
-        .map((el, index) => inspectTarget(el, 'buffer row item ' + index));
+        .map((el, index) => inspectTarget(el, 'responsive item ' + index));
 
       return {
         viewportWidth,
         scrollOverflow: Math.max(0, doc.scrollWidth - layoutViewportWidth),
-        rowDisplay: row ? getComputedStyle(row).display : null,
-        bufferWindowWidth: bufferWindow ? Math.round(bufferWindow.getBoundingClientRect().width) : 0,
-        bufferTrackWidth: bufferTrack ? Math.round(bufferTrack.getBoundingClientRect().width) : 0,
-        compressedTargets: [...chipTargets, ...rowTargets].filter((target) => target.clipped || target.textClipped),
+        compressedTargets: chipTargets.filter((target) => target.clipped || target.textClipped),
       };
     })()`,
   });
@@ -356,10 +331,10 @@ async function inspectMobileHeroCompression(pathname, viewport) {
   return result.value;
 }
 
-describe('responsive static landing', () => {
+describe('responsive refreshed landing', () => {
   before(async () => {
     assert.ok(existsSync(chromePath), `Chrome not found at ${chromePath}`);
-    const startedServer = await startStaticServer();
+    const startedServer = await startNextServer();
     webServer = startedServer.server;
     webBaseUrl = startedServer.baseUrl;
     chromePort = await getFreePort();
@@ -376,7 +351,7 @@ describe('responsive static landing', () => {
   });
 
   after(async () => {
-    webServer?.close();
+    webServer?.kill();
     chrome?.kill();
     if (chromeProfile) {
       try {
@@ -415,7 +390,7 @@ describe('responsive static landing', () => {
         mobile: true,
       });
 
-      assert.equal(result.stickyDisplay, 'flex');
+      assert.equal(result.stickyDisplay, 'grid');
       assert.equal(result.buttonClipped, false);
       assert.equal(result.buttonTooSmall, false);
     });
@@ -431,9 +406,6 @@ describe('responsive static landing', () => {
       });
 
       assert.equal(result.scrollOverflow, 0);
-      assert.equal(result.rowDisplay, 'grid');
-      assert.ok(result.bufferWindowWidth >= 96);
-      assert.ok(result.bufferTrackWidth >= 260);
       assert.deepEqual(result.compressedTargets, []);
     });
   }

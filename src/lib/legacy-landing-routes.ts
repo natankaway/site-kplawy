@@ -5,10 +5,10 @@ export const OLD_LANDING_ROUTES = {
   contact: { pt: 'faq', en: 'faq' },
   download: { pt: 'download', en: 'download' },
   faq: { pt: 'faq', en: 'faq' },
-  features: { pt: 'produto', en: 'features' },
-  pricing: { pt: 'planos', en: 'pricing' },
+  features: { pt: 'app', en: 'app' },
+  pricing: { pt: 'pro', en: 'pro' },
   support: { pt: 'faq', en: 'faq' },
-  guia: { pt: 'como-funciona', en: 'how-it-works' },
+  guia: { pt: 'como', en: 'como' },
 } as const;
 
 export type OldLandingRoute = keyof typeof OLD_LANDING_ROUTES;

@@ -23,7 +23,10 @@ describe('production landing', () => {
     assert.equal(existsSync(join(root, 'src/lib/home-page-v2.ts')), true);
     assert.equal(existsSync(join(root, 'public/assets/css/site-v2.css')), true);
     assert.equal(existsSync(join(root, 'public/assets/js/site-v2.js')), true);
-    assert.equal(existsSync(join(root, 'src/app/media/v2/[...asset]/route.ts')), true);
+    assert.equal(existsSync(join(root, 'src/app/media/v2/[...asset]/route.ts')), false);
+    assert.equal(existsSync(join(root, 'public/media/v2/demo.mp4')), true);
+    assert.equal(existsSync(join(root, 'public/media/v2/pt/camera.webp')), true);
+    assert.equal(existsSync(join(root, 'public/media/v2/en/camera.webp')), true);
 
     const route = read('src/app/[locale]/route.ts');
     assertIncludes(route, "redirect('/pt')", 'locale route');
@@ -49,29 +52,31 @@ describe('production landing', () => {
 
   it('uses the approved conversion-first message and refreshed media', () => {
     const landing = read('src/lib/home-page-v2.ts');
-    assertIncludes(landing, 'O lance já aconteceu?', 'PT hero');
-    assertIncludes(landing, 'Salve os últimos segundos.', 'PT hero');
-    assertIncludes(landing, 'The play already happened?', 'EN hero');
-    assertIncludes(landing, 'Save the last seconds.', 'EN hero');
+    assertIncludes(landing, 'Seu próprio replay.', 'PT hero');
+    assertIncludes(landing, 'Em qualquer esporte.', 'PT hero');
+    assertIncludes(landing, 'Your own replay.', 'EN hero');
+    assertIncludes(landing, 'For any sport.', 'EN hero');
+    assertIncludes(landing, 'pare de encher o celular com horas de vídeo', 'PT hero');
+    assertIncludes(landing, 'stop filling your phone with hours of video', 'EN hero');
     assertIncludes(landing, '/media/v2/demo.mp4', 'demo video');
+    assertIncludes(landing, '/media/v2/demo-poster.webp', 'demo poster');
     assertIncludes(landing, '/media/v2/watch.webp', 'watch image');
     assertIncludes(landing, '/media/v2/logo-symbol-white.webp', 'new logo');
     assertIncludes(landing, 'camera.webp', 'new app screenshots');
-    assertIncludes(landing, 'clips.webp', 'new app screenshots');
-    assertIncludes(landing, 'multicam.webp', 'new app screenshots');
+    assertIncludes(landing, 'player.webp', 'new app screenshots');
+    assertIncludes(landing, 'data-video-toggle', 'video pause control');
   });
 
   it('uses the corrected English and Brazilian Pro pricing', () => {
     const landing = read('src/lib/home-page-v2.ts');
-    assertIncludes(landing, '$4.99/month', 'English monthly price');
+    assertIncludes(landing, '$5.99/month', 'English monthly price');
     assertIncludes(landing, '$39.99/year', 'English annual price');
-    assertIncludes(landing, "price: '4.99'", 'English monthly JSON-LD price');
-    assertIncludes(landing, "price: '39.99'", 'English annual JSON-LD price');
     assertIncludes(landing, 'R$ 29,90/mês', 'Brazilian monthly price');
     assertIncludes(landing, 'R$ 249,90/ano', 'Brazilian annual price');
-    assertIncludes(landing, "price: '29.90'", 'Brazilian monthly JSON-LD price');
-    assertIncludes(landing, "price: '249.90'", 'Brazilian annual JSON-LD price');
-    assertExcludes(landing, '$5.99', 'refreshed landing');
+    assertIncludes(landing, 'pricingFor(locale)', 'structured pricing source');
+    assertIncludes(landing, 'price(pricing.premiumMonthly)', 'monthly JSON-LD price');
+    assertIncludes(landing, 'price(pricing.premiumAnnual)', 'annual JSON-LD price');
+    assertExcludes(landing, '$4.99', 'refreshed landing');
   });
 
   it('uses precise privacy language rather than a blanket tracking claim', () => {
@@ -101,9 +106,16 @@ describe('production landing', () => {
   it('redirects legacy landing pages to sections of the refreshed homepage', () => {
     const proxy = read('src/proxy.ts');
     const routeMap = read('src/lib/legacy-landing-routes.ts');
+    const landing = read('src/lib/home-page-v2.ts');
     assertIncludes(proxy, 'OLD_LANDING_ROUTES', 'proxy');
     assertIncludes(proxy, 'NextResponse.redirect', 'proxy');
     assertIncludes(routeMap, 'OLD_LANDING_ROUTES', 'legacy route map');
+    assertIncludes(routeMap, "pricing: { pt: 'pro', en: 'pro' }", 'legacy route map');
+    assertIncludes(routeMap, "features: { pt: 'app', en: 'app' }", 'legacy route map');
+    assertIncludes(routeMap, "guia: { pt: 'como', en: 'como' }", 'legacy route map');
+    for (const legacyAnchor of ['planos', 'pricing', 'produto', 'features', 'como-funciona', 'how-it-works', 'historia', 'story-sec']) {
+      assertIncludes(landing, legacyAnchor, `legacy anchor ${legacyAnchor}`);
+    }
 
     for (const [route, file] of [
       ['about', 'src/app/[locale]/about/page.tsx'],
