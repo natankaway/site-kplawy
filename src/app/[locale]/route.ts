@@ -1,7 +1,6 @@
-import { readFile } from 'node:fs/promises';
-import path from 'node:path';
 import { redirect } from 'next/navigation';
 import { isLocale, routing } from '@/i18n/routing';
+import { renderLandingPage } from '@/lib/home-page-v2';
 
 export const dynamic = 'force-static';
 
@@ -19,10 +18,7 @@ export async function GET(
     redirect('/pt');
   }
 
-  const htmlPath = path.join(process.cwd(), 'src/static-site', locale, 'index.html');
-  const html = await readFile(htmlPath, 'utf8');
-
-  return new Response(html, {
+  return new Response(renderLandingPage(locale), {
     headers: {
       'cache-control': 'public, max-age=0, must-revalidate',
       'content-type': 'text/html; charset=utf-8',
