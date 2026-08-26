@@ -1,0 +1,1 @@
+Optimized media for the refreshed KPLAWY landing page.
