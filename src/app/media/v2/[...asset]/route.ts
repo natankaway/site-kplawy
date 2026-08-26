@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 
 const root = process.cwd();
 
@@ -17,12 +17,8 @@ const direct: Record<string, string> = {
 
 const chunkCounts: Record<string, number> = {
   'pt/clips.webp': 2,
-  'pt/player.webp': 3,
-  'pt/remote.webp': 3,
   'pt/multicam.webp': 1,
   'en/clips.webp': 2,
-  'en/player.webp': 3,
-  'en/remote.webp': 3,
   'en/multicam.webp': 1,
   'demo.mp4': 5,
 };
@@ -43,25 +39,35 @@ async function readAsset(asset: string) {
 
   const count = chunkCounts[asset];
   if (!count) return null;
+
   const stem = chunkStem(asset);
-  const pieces = await Promise.all(Array.from({ length: count }, (_, index) => {
-    const suffix = String(index).padStart(2, '0');
-    return readFile(path.join(root, 'public/media/v3/chunks', `${stem}.${suffix}.txt`), 'utf8');
-  }));
+  const pieces = await Promise.all(
+    Array.from({ length: count }, (_, index) => {
+      const suffix = String(index).padStart(2, '0');
+      return readFile(path.join(root, 'public/media/v3/chunks', `${stem}.${suffix}.txt`), 'utf8');
+    }),
+  );
+
   return Buffer.from(pieces.join('').replace(/\s+/g, ''), 'base64');
 }
 
-export async function GET(_request: Request, { params }: { params: Promise<{ asset: string[] }> }) {
+export async function GET(
+  _request: Request,
+  { params }: { params: Promise<{ asset: string[] }> },
+) {
   const { asset } = await params;
   const key = asset.join('/');
+
   try {
     const body = await readAsset(key);
     if (!body) return new Response('Not found', { status: 404 });
+
     const isVideo = key.endsWith('.mp4');
     return new Response(body, {
       headers: {
         'content-type': isVideo ? 'video/mp4' : 'image/webp',
         'cache-control': 'public, max-age=31536000, immutable',
+        'x-content-type-options': 'nosniff',
       },
     });
   } catch {
