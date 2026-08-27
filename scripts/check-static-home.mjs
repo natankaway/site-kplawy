@@ -62,6 +62,10 @@ describe('production landing', () => {
     assertIncludes(landing, '/media/v2/demo-poster.webp', 'demo poster');
     assertIncludes(landing, '/media/v2/watch.webp', 'watch image');
     assertIncludes(landing, '/media/v2/logo-symbol-white.webp', 'new logo');
+    assertIncludes(landing, 'watch-cue', 'watch tap explanation');
+    assertIncludes(landing, 'data-flow-step="saved"', 'replay save flow');
+    assertIncludes(landing, 'Apertou no relógio', 'PT watch explanation');
+    assertIncludes(landing, 'Watch tapped', 'EN watch explanation');
     assertIncludes(landing, 'camera.webp', 'new app screenshots');
     assertIncludes(landing, 'player.webp', 'new app screenshots');
     assertIncludes(landing, 'data-video-toggle', 'video pause control');

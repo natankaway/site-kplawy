@@ -457,7 +457,8 @@ video {
 }
 
 .video-badge,
-.video-control {
+.video-control,
+.watch-cue {
   position: absolute;
   z-index: 2;
   border: 1px solid rgba(255, 255, 255, 0.16);
@@ -466,6 +467,21 @@ video {
   color: #fff;
   font-size: 11px;
   font-weight: 850;
+}
+
+.video-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 0 rgba(22, 139, 255, 0);
+  transition: box-shadow 180ms ease-out;
+}
+
+.video-card.replay-saved::after {
+  box-shadow: inset 0 0 0 3px rgba(22, 139, 255, 0.72);
 }
 
 .video-badge {
@@ -489,6 +505,55 @@ video {
   background-color: rgba(0, 0, 0, 0.78);
 }
 
+.watch-cue {
+  left: 18px;
+  bottom: 18px;
+  max-width: min(360px, calc(100% - 130px));
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 13px 8px 10px;
+  background: rgba(3, 8, 15, 0.82);
+  backdrop-filter: blur(14px);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 180ms ease-out, transform 180ms ease-out, border-color 180ms ease-out;
+}
+
+.video-card.watch-cue-visible .watch-cue {
+  border-color: rgba(22, 139, 255, 0.48);
+  opacity: 1;
+  transform: none;
+}
+
+.watch-cue img {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+}
+
+.watch-cue span,
+.watch-cue b,
+.watch-cue small {
+  min-width: 0;
+  display: block;
+}
+
+.watch-cue b {
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.1;
+}
+
+.watch-cue small {
+  margin-top: 3px;
+  color: #a9bad0;
+  font-size: 11px;
+  line-height: 1.25;
+}
+
 .demo-panel {
   padding: 42px;
   display: flex;
@@ -508,6 +573,80 @@ video {
 .watch-card p {
   color: var(--muted);
   line-height: 1.65;
+}
+
+.save-flow {
+  margin-top: 26px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(5, 10, 17, 0.68);
+  overflow: hidden;
+}
+
+.save-step {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  border-top: 1px solid rgba(143, 176, 216, 0.12);
+  color: #8998ac;
+  transition: background-color 180ms ease-out, color 180ms ease-out;
+}
+
+.save-step:first-child {
+  border-top: 0;
+}
+
+.save-step span {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(143, 176, 216, 0.22);
+  border-radius: 50%;
+  color: #91a2b7;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.save-step b,
+.save-step small {
+  min-width: 0;
+  display: block;
+}
+
+.save-step b {
+  color: #c5d1df;
+  font-size: 14px;
+}
+
+.save-step small {
+  margin-top: 3px;
+  color: #8797ac;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.save-step.complete span {
+  border-color: rgba(73, 223, 136, 0.45);
+  background: rgba(73, 223, 136, 0.1);
+  color: #9af1bd;
+}
+
+.save-step.active {
+  background: rgba(22, 139, 255, 0.12);
+}
+
+.save-step.active span {
+  border-color: rgba(22, 139, 255, 0.7);
+  background: rgba(22, 139, 255, 0.18);
+  color: #fff;
+}
+
+.save-step.active b {
+  color: #fff;
 }
 
 .duration-row {
@@ -1445,6 +1584,13 @@ footer {
     height: 500px;
   }
 
+  .watch-cue {
+    left: 14px;
+    right: 14px;
+    bottom: 68px;
+    max-width: none;
+  }
+
   .demo-panel {
     padding: 25px;
   }
@@ -1455,6 +1601,7 @@ footer {
 
   .duration-row {
     gap: 5px;
+    margin-top: 20px;
   }
 
   .duration-row button {
