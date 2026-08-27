@@ -134,17 +134,17 @@ const ANCHORS: Record<
   { how: string; features: string; pricing: string; faq: string; download: string; about: string }
 > = {
   pt: {
-    how: 'como-funciona',
-    features: 'produto',
-    pricing: 'planos',
+    how: 'como',
+    features: 'app',
+    pricing: 'pro',
     faq: 'faq',
     download: 'download',
     about: 'historia',
   },
   en: {
-    how: 'how-it-works',
-    features: 'features',
-    pricing: 'pricing',
+    how: 'como',
+    features: 'app',
+    pricing: 'pro',
     faq: 'faq',
     download: 'download',
     about: 'story-sec',
@@ -420,76 +420,69 @@ function header(locale: Locale, slug: LegalSlug) {
   const ui = UI[locale];
   const other = oppositeLocale(locale);
 
-  return `<header id="hdr" class="scrolled">
-  <div class="inner">
+  return `<header class="site-header">
+  <div class="container nav">
     <a href="/${locale}" class="brand" aria-label="KplaWY">
-      <img src="/assets/brand/logo_white.png" alt="KplaWY" style="width:30px;height:30px;object-fit:contain">
-      <span style="font-weight:800;font-size:18px;letter-spacing:.4px;font-stretch:110%">KplaWY</span>
+      <img src="/media/v2/logo-symbol-white.webp" width="34" height="34" alt="">
+      <span>KplaWY</span>
     </a>
-    <nav class="desk" aria-label="Navigation">
-      <a class="navlink" href="${navHref(locale, 'how')}">${escapeHtml(ui.how)}</a>
-      <a class="navlink" href="${navHref(locale, 'features')}">${escapeHtml(ui.features)}</a>
-      <a class="navlink" href="${navHref(locale, 'pricing')}">${escapeHtml(ui.pricing)}</a>
-      <a class="navlink" href="${navHref(locale, 'faq')}">${escapeHtml(ui.faq)}</a>
-      <a class="lang-pill" href="${legalHref(other, slug)}">${escapeHtml(ui.languageLabel)}</a>
-      <a class="btn" style="padding:10px 20px;font-size:14px" href="${navHref(locale, 'download')}">${escapeHtml(ui.downloadLabel)}</a>
+    <nav class="desktop-nav" aria-label="Navigation">
+      <a href="${navHref(locale, 'how')}">${escapeHtml(ui.how)}</a>
+      <a href="${navHref(locale, 'features')}">${escapeHtml(ui.features)}</a>
+      <a href="${navHref(locale, 'pricing')}">${escapeHtml(ui.pricing)}</a>
+      <a href="${navHref(locale, 'faq')}">${escapeHtml(ui.faq)}</a>
+      <a class="lang" href="${legalHref(other, slug)}">${escapeHtml(ui.languageLabel)}</a>
+      <a class="btn" href="${navHref(locale, 'download')}">${escapeHtml(ui.downloadLabel)}</a>
     </nav>
-    <div class="m-actions"><a class="btn" style="padding:9px 16px;font-size:13px" href="${navHref(locale, 'download')}">${escapeHtml(ui.downloadLabel)}</a></div>
+    <button class="menu-button" data-menu type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span></button>
   </div>
-</header>`;
+</header>
+<nav class="mobile-nav" aria-label="Menu mobile">
+  <a href="${navHref(locale, 'how')}">${escapeHtml(ui.how)}</a>
+  <a href="${navHref(locale, 'features')}">${escapeHtml(ui.features)}</a>
+  <a href="${navHref(locale, 'pricing')}">${escapeHtml(ui.pricing)}</a>
+  <a href="${navHref(locale, 'faq')}">${escapeHtml(ui.faq)}</a>
+  <a href="${legalHref(other, slug)}">${escapeHtml(ui.languageLabel)}</a>
+  <a class="btn" href="${navHref(locale, 'download')}">${escapeHtml(ui.downloadLabel)}</a>
+</nav>`;
 }
 
 function footer(locale: Locale) {
   const ui = UI[locale];
-  const other = oppositeLocale(locale);
 
   return `<footer>
-  <div class="container">
-    <div style="display:flex;flex-wrap:wrap;gap:44px;justify-content:space-between">
-      <div style="flex:1 1 260px;max-width:340px">
-        <div style="display:flex;align-items:center;gap:10px">
-          <img src="/assets/brand/logo_white.png" alt="KplaWY" style="width:28px;height:28px;object-fit:contain">
-          <span style="font-weight:800;font-size:17px">KplaWY</span>
-        </div>
-        <p style="margin:14px 0 0;font-size:13.5px;line-height:1.6;color:#8FA3BE">${escapeHtml(ui.footerCopy)}</p>
-        <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap">
-          <a class="store-pill" href="https://apps.apple.com/app/id6761232468" target="_blank" rel="noopener">App Store</a>
-          <a class="store-pill" href="https://play.google.com/store/apps/details?id=com.kplawy.instantreplay" target="_blank" rel="noopener">Google Play</a>
-        </div>
+  <div class="container legal-footer-grid">
+    <div>
+      <div class="footer-brand">
+        <img src="/media/v2/logo-symbol-white.webp" width="24" height="24" alt="">
+        <b>KplaWY · 2026</b>
       </div>
-      <div style="display:flex;gap:clamp(30px,5vw,70px);flex-wrap:wrap">
-        <div>
-          <div class="col-h">${escapeHtml(ui.product)}</div>
-          <div style="display:flex;flex-direction:column;gap:9px;margin-top:14px">
-            <a class="f" href="${navHref(locale, 'how')}">${escapeHtml(ui.how)}</a>
-            <a class="f" href="${navHref(locale, 'features')}">${escapeHtml(ui.features)}</a>
-            <a class="f" href="${navHref(locale, 'pricing')}">${escapeHtml(ui.pricing)}</a>
-            <a class="f" href="${navHref(locale, 'download')}">${escapeHtml(ui.download)}</a>
-          </div>
-        </div>
-        <div>
-          <div class="col-h">${escapeHtml(ui.company)}</div>
-          <div style="display:flex;flex-direction:column;gap:9px;margin-top:14px">
-            <a class="f" href="${navHref(locale, 'about')}">${escapeHtml(ui.about)}</a>
-            <a class="f" href="${navHref(locale, 'faq')}">${escapeHtml(ui.faq)}</a>
-            <a class="f" href="mailto:${SUPPORT_EMAIL}">${escapeHtml(ui.support)}</a>
-            <a class="f" href="mailto:${SUPPORT_EMAIL}">${escapeHtml(ui.contact)}</a>
-          </div>
-        </div>
-        <div>
-          <div class="col-h">${escapeHtml(ui.legal)}</div>
-          <div style="display:flex;flex-direction:column;gap:9px;margin-top:14px">
-            <a class="f" href="${legalHref(locale, 'privacy')}">${escapeHtml(ui.privacy)}</a>
-            <a class="f" href="${legalHref(locale, 'terms')}">${escapeHtml(ui.terms)}</a>
-            <a class="f" href="${legalHref(locale, 'delete-account')}">${escapeHtml(ui.deleteAccount)}</a>
-          </div>
-        </div>
-      </div>
+      <p>${escapeHtml(ui.footerCopy)}</p>
     </div>
-    <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;margin-top:48px;padding-top:22px;border-top:1px solid rgba(148,178,224,.1)">
-      <span style="font-size:12.5px;color:#5C6E88">${escapeHtml(ui.copyright)}</span>
-      <span class="mono" style="font-size:11px;letter-spacing:1.5px;color:#5C6E88">${locale === 'pt' ? '<span style="color:#EDF3FB">PT-BR</span> · <a href="/en" style="color:#9FB4D0">EN</a>' : '<a href="/pt" style="color:#9FB4D0">PT-BR</a> · <span style="color:#EDF3FB">EN</span>'}</span>
-    </div>
+    <nav aria-label="${escapeHtml(ui.product)}">
+      <b>${escapeHtml(ui.product)}</b>
+      <a href="${navHref(locale, 'how')}">${escapeHtml(ui.how)}</a>
+      <a href="${navHref(locale, 'features')}">${escapeHtml(ui.features)}</a>
+      <a href="${navHref(locale, 'pricing')}">${escapeHtml(ui.pricing)}</a>
+      <a href="${navHref(locale, 'download')}">${escapeHtml(ui.download)}</a>
+    </nav>
+    <nav aria-label="${escapeHtml(ui.company)}">
+      <b>${escapeHtml(ui.company)}</b>
+      <a href="${navHref(locale, 'about')}">${escapeHtml(ui.about)}</a>
+      <a href="${navHref(locale, 'faq')}">${escapeHtml(ui.faq)}</a>
+      <a href="mailto:${SUPPORT_EMAIL}">${escapeHtml(ui.support)}</a>
+      <a href="mailto:${SUPPORT_EMAIL}">${escapeHtml(ui.contact)}</a>
+    </nav>
+    <nav aria-label="${escapeHtml(ui.legal)}">
+      <b>${escapeHtml(ui.legal)}</b>
+      <a href="${legalHref(locale, 'privacy')}">${escapeHtml(ui.privacy)}</a>
+      <a href="${legalHref(locale, 'terms')}">${escapeHtml(ui.terms)}</a>
+      <a href="${legalHref(locale, 'delete-account')}">${escapeHtml(ui.deleteAccount)}</a>
+    </nav>
+  </div>
+  <div class="container legal-footer-bottom">
+    <span>${escapeHtml(ui.copyright)}</span>
+    <span>${locale === 'pt' ? '<span>PT-BR</span> · <a href="/en">EN</a>' : '<a href="/pt">PT-BR</a> · <span>EN</span>'}</span>
   </div>
 </footer>`;
 }
@@ -498,10 +491,10 @@ function legalSupport(locale: Locale) {
   const ui = UI[locale];
 
   return `<div class="legal-support">
-    <strong style="color:#EDF3FB">${escapeHtml(ui.legal)}</strong><br>
-    <a href="${legalHref(locale, 'privacy')}">${escapeHtml(ui.privacy)}</a><br>
-    <a href="${legalHref(locale, 'terms')}">${escapeHtml(ui.terms)}</a><br>
-    <a href="${legalHref(locale, 'delete-account')}">${escapeHtml(ui.deleteAccount)}</a><br>
+    <strong>${escapeHtml(ui.legal)}</strong>
+    <a href="${legalHref(locale, 'privacy')}">${escapeHtml(ui.privacy)}</a>
+    <a href="${legalHref(locale, 'terms')}">${escapeHtml(ui.terms)}</a>
+    <a href="${legalHref(locale, 'delete-account')}">${escapeHtml(ui.deleteAccount)}</a>
     <a href="mailto:${SUPPORT_EMAIL}">${SUPPORT_EMAIL}</a>
   </div>`;
 }
@@ -512,7 +505,7 @@ function pageHead(locale: Locale, slug: LegalSlug, title: string, description: s
 
   return `<head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${escapeHtml(title)} | KplaWY</title>
 <meta name="description" content="${escapeHtml(description)}">
 <link rel="canonical" href="${canonical}">
@@ -531,10 +524,10 @@ function pageHead(locale: Locale, slug: LegalSlug, title: string, description: s
 <meta name="twitter:title" content="${escapeHtml(title)}">
 <meta name="twitter:description" content="${escapeHtml(description)}">
 <meta name="twitter:image" content="${SITE_URL}/assets/og/og-${locale}.jpg">
-<meta name="theme-color" content="#05080F">
-<link rel="icon" type="image/png" href="/assets/brand/logoapp.png">
-<link rel="apple-touch-icon" href="/assets/brand/logoapp.png">
-<link rel="stylesheet" href="/assets/css/site.css">
+<meta name="theme-color" content="#020408">
+<link rel="icon" href="/media/v2/logo-symbol-white.webp" type="image/webp">
+<link rel="apple-touch-icon" href="/logo-icon.png">
+<link rel="stylesheet" href="/assets/css/site-v2.css">
 </head>`;
 }
 
@@ -560,7 +553,7 @@ export async function renderLegalPage(slug: LegalSlug, requestedLocale: string) 
   const page = `<!DOCTYPE html>
 <html lang="${ui.lang}">
 ${pageHead(locale, slug, doc.title, meta.description)}
-<body>
+<body class="legal-body">
 ${header(locale, slug)}
 <main class="legal-page">
   <section class="legal-hero">
@@ -588,6 +581,7 @@ ${html}
   </section>
 </main>
 ${footer(locale)}
+<script src="/assets/js/site-v2.js" defer></script>
 </body>
 </html>`;
 

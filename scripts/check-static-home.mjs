@@ -101,6 +101,10 @@ describe('production landing', () => {
     const legalRenderer = read('src/lib/static-legal-html.tsx');
     assertIncludes(legalRenderer, 'loadLegalDoc', 'legal renderer');
     assertIncludes(legalRenderer, 'kplawyapp@gmail.com', 'legal renderer');
+    assertIncludes(legalRenderer, '/assets/css/site-v2.css', 'legal renderer');
+    assertIncludes(legalRenderer, 'class="site-header"', 'legal renderer');
+    assertIncludes(legalRenderer, '/media/v2/logo-symbol-white.webp', 'legal renderer');
+    assertExcludes(legalRenderer, '/assets/css/site.css', 'legal renderer');
   });
 
   it('redirects legacy landing pages to sections of the refreshed homepage', () => {
