@@ -60,6 +60,7 @@ describe('production landing', () => {
     assertIncludes(landing, 'stop filling your phone with hours of video', 'EN hero');
     assertIncludes(landing, '/media/v2/demo.mp4', 'demo video');
     assertIncludes(landing, '/media/v2/demo-poster.webp', 'demo poster');
+    assertIncludes(landing, 'hero-replay-bg', 'signature hero replay background');
     assertIncludes(landing, '/media/v2/watch.webp', 'watch image');
     assertIncludes(landing, '/media/v2/logo-symbol-white.webp', 'new logo');
     assertIncludes(landing, 'O lance já passou. O KplaWY ainda pega.', 'PT demo marketing copy');
@@ -82,9 +83,18 @@ describe('production landing', () => {
     assertIncludes(landing, 'app-remote.webp', 'new app screenshots');
     assertIncludes(landing, 'app-player.webp', 'new app screenshots');
     assertIncludes(landing, 'app-multicam.webp', 'new app screenshots');
+    assertIncludes(landing, "index === 3 ? 'result' : ''", 'saved replay product moment');
     assertIncludes(landing, 'Da câmera ao replay salvo.', 'PT product story');
     assertIncludes(landing, 'From camera to saved replay.', 'EN product story');
     assertIncludes(landing, 'data-video-toggle', 'video pause control');
+  });
+
+  it('sets root social image metadata without build-time metadataBase warnings', () => {
+    const rootLayout = read('src/app/layout.tsx');
+    assertIncludes(rootLayout, 'metadataBase', 'root layout metadata');
+    assertIncludes(rootLayout, 'SITE_URL', 'root layout metadata');
+    assertIncludes(rootLayout, '<html lang="pt-BR">', 'root layout language fallback');
+    assertIncludes(read('src/app/twitter-image.tsx'), './opengraph-image', 'twitter image route');
   });
 
   it('uses the corrected English and Brazilian Pro pricing', () => {

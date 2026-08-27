@@ -232,7 +232,7 @@ async function inspectStickyCta(pathname, viewport) {
   await client.send('Page.navigate', { url: `${webBaseUrl}${pathname}` });
   await loaded;
   await client.send('Runtime.evaluate', {
-    expression: 'window.scrollTo(0, 900)',
+    expression: "document.querySelector('#controle')?.scrollIntoView()",
   });
   await new Promise((resolve) => setTimeout(resolve, 350));
 
@@ -266,6 +266,61 @@ async function inspectStickyCta(pathname, viewport) {
   await fetch(`http://127.0.0.1:${chromePort}/json/close/${target.id}`).catch(() => {});
   client.close();
   return result.value;
+}
+
+async function inspectMobileDownloadBehavior(pathname, viewport) {
+  const target = await fetch(`http://127.0.0.1:${chromePort}/json/new`, { method: 'PUT' }).then(
+    (response) => response.json(),
+  );
+  const client = new CdpClient(target.webSocketDebuggerUrl);
+  await client.open();
+  await client.send('Page.enable');
+  await client.send('Runtime.enable');
+  await client.send('Emulation.setDeviceMetricsOverride', {
+    width: viewport.width,
+    height: viewport.height,
+    deviceScaleFactor: viewport.deviceScaleFactor ?? 1,
+    mobile: viewport.mobile,
+  });
+
+  const loaded = client.once('Page.loadEventFired');
+  await client.send('Page.navigate', { url: `${webBaseUrl}${pathname}` });
+  await loaded;
+  await new Promise((resolve) => setTimeout(resolve, 350));
+
+  const readState = async (scrollExpression) => {
+    await client.send('Runtime.evaluate', { expression: scrollExpression });
+    await new Promise((resolve) => setTimeout(resolve, 450));
+    const { result } = await client.send('Runtime.evaluate', {
+      returnByValue: true,
+      expression: `(() => {
+        const sticky = document.querySelector('.mobile-download');
+        if (!sticky) return null;
+        const rect = sticky.getBoundingClientRect();
+        const style = getComputedStyle(sticky);
+        return {
+          opacity: style.opacity,
+          pointerEvents: style.pointerEvents,
+          visible: style.display !== 'none' && style.opacity !== '0' && rect.bottom > 0,
+          top: Math.round(rect.top),
+          bottom: Math.round(rect.bottom),
+          viewportHeight: window.innerHeight,
+        };
+      })()`,
+    });
+    return result.value;
+  };
+
+  const states = {
+    top: await readState('window.scrollTo(0, 0)'),
+    demo: await readState("document.querySelector('#demo')?.scrollIntoView()"),
+    control: await readState("document.querySelector('#controle')?.scrollIntoView()"),
+    app: await readState("document.querySelector('#app')?.scrollIntoView()"),
+  };
+
+  await fetch(`http://127.0.0.1:${chromePort}/json/close/${target.id}`).catch(() => {});
+  client.close();
+  return states;
 }
 
 async function inspectMobileHeroCompression(pathname, viewport) {
@@ -473,13 +528,62 @@ async function inspectAppScreens(pathname, viewport) {
       return {
         viewportWidth,
         count: cards.length,
-        appScreensActive: document.body.classList.contains('app-screens-active'),
+        appScreensActive: document.body.classList.contains('immersive-section-active'),
         mobileDownloadHidden: !mobileDownload || getComputedStyle(mobileDownload).display === 'none' || getComputedStyle(mobileDownload).opacity === '0',
         screensScrollOverflow: screens ? Math.max(0, screens.scrollWidth - screens.clientWidth) : null,
         cardRects: cards.map(rectFor),
         clippedCards: cards.map(rectFor).filter((item) => item.clipped),
         maxCardHeight: cards.reduce((max, card) => Math.max(max, Math.round(card.getBoundingClientRect().height)), 0),
+        largeMoments: cards
+          .filter((card) => card.classList.contains('featured') || card.classList.contains('result'))
+          .map(rectFor),
         textProblems,
+      };
+    })()`,
+  });
+
+  await fetch(`http://127.0.0.1:${chromePort}/json/close/${target.id}`).catch(() => {});
+  client.close();
+  return result.value;
+}
+
+async function inspectLegalPage(pathname, viewport) {
+  const target = await fetch(`http://127.0.0.1:${chromePort}/json/new`, { method: 'PUT' }).then(
+    (response) => response.json(),
+  );
+  const client = new CdpClient(target.webSocketDebuggerUrl);
+  await client.open();
+  await client.send('Page.enable');
+  await client.send('Runtime.enable');
+  await client.send('Emulation.setDeviceMetricsOverride', {
+    width: viewport.width,
+    height: viewport.height,
+    deviceScaleFactor: viewport.deviceScaleFactor ?? 1,
+    mobile: viewport.mobile,
+  });
+
+  const loaded = client.once('Page.loadEventFired');
+  await client.send('Page.navigate', { url: `${webBaseUrl}${pathname}` });
+  await loaded;
+  await new Promise((resolve) => setTimeout(resolve, 350));
+
+  const { result } = await client.send('Runtime.evaluate', {
+    returnByValue: true,
+    expression: `(() => {
+      const doc = document.documentElement;
+      const h1 = document.querySelector('.legal-hero h1');
+      const hero = document.querySelector('.legal-hero');
+      const shell = document.querySelector('.legal-shell');
+      const h1Rect = h1.getBoundingClientRect();
+      const heroRect = hero.getBoundingClientRect();
+      const shellRect = shell.getBoundingClientRect();
+      const h1Style = getComputedStyle(h1);
+      return {
+        scrollOverflow: Math.max(0, doc.scrollWidth - window.innerWidth),
+        h1Height: Math.round(h1Rect.height),
+        h1FontSize: parseFloat(h1Style.fontSize),
+        heroHeight: Math.round(heroRect.height),
+        shellTop: Math.round(shellRect.top),
       };
     })()`,
   });
@@ -555,6 +659,23 @@ describe('responsive refreshed landing', () => {
   }
 
   for (const pathname of ['/pt', '/en']) {
+    it(`${pathname} keeps the mobile download CTA contextual instead of covering hero, demo, or app screens`, async () => {
+      const result = await inspectMobileDownloadBehavior(pathname, {
+        width: 360,
+        height: 780,
+        deviceScaleFactor: 3,
+        mobile: true,
+      });
+
+      assert.equal(result.top.visible, false);
+      assert.equal(result.demo.visible, false);
+      assert.equal(result.control.visible, true);
+      assert.equal(result.app.visible, false);
+      assert.ok(result.control.bottom <= result.control.viewportHeight, `sticky CTA bottom is clipped: ${result.control.bottom}`);
+    });
+  }
+
+  for (const pathname of ['/pt', '/en']) {
     it(`${pathname} keeps hero chips and the buffer strip readable on Galaxy S25-sized mobile`, async () => {
       const result = await inspectMobileHeroCompression(pathname, {
         width: 360,
@@ -611,7 +732,9 @@ describe('responsive refreshed landing', () => {
       assert.equal(result.appScreensActive, true);
       assert.equal(result.mobileDownloadHidden, true);
       assert.deepEqual(result.clippedCards, []);
-      assert.ok(result.maxCardHeight <= 290, `mobile screen cards are too tall: ${result.maxCardHeight}`);
+      assert.equal(result.largeMoments.length, 2);
+      assert.ok(result.largeMoments.every((item) => item.height >= 270), `large mobile product moments are too small: ${JSON.stringify(result.largeMoments)}`);
+      assert.ok(result.maxCardHeight <= 430, `mobile screen cards are too tall: ${result.maxCardHeight}`);
       assert.deepEqual(result.textProblems, []);
     });
   }
@@ -623,6 +746,7 @@ describe('responsive refreshed landing', () => {
       assert.ok(result.count >= 5, `expected at least 5 product screens, got ${result.count}`);
       assert.equal(result.screensScrollOverflow, 0);
       assert.deepEqual(result.clippedCards, []);
+      assert.equal(result.largeMoments.length, 2);
       assert.ok(result.maxCardHeight <= 620, `desktop screen cards are too tall: ${result.maxCardHeight}`);
       assert.deepEqual(result.textProblems, []);
     });
@@ -642,6 +766,23 @@ describe('responsive refreshed landing', () => {
       assert.deepEqual(result.clippedCards, []);
       assert.ok(result.maxCardHeight <= 560, `tablet screen cards are too tall: ${result.maxCardHeight}`);
       assert.deepEqual(result.textProblems, []);
+    });
+  }
+
+  for (const pathname of ['/pt/privacy', '/pt/terms', '/pt/delete-account', '/en/privacy', '/en/terms', '/en/delete-account']) {
+    it(`${pathname} keeps legal pages calm and readable on mobile`, async () => {
+      const result = await inspectLegalPage(pathname, {
+        width: 360,
+        height: 780,
+        deviceScaleFactor: 3,
+        mobile: true,
+      });
+
+      assert.equal(result.scrollOverflow, 0);
+      assert.ok(result.h1FontSize <= 40, `legal h1 is too loud: ${result.h1FontSize}px`);
+      assert.ok(result.h1Height <= 132, `legal h1 is too tall: ${result.h1Height}`);
+      assert.ok(result.heroHeight <= 300, `legal hero is too tall: ${result.heroHeight}`);
+      assert.ok(result.shellTop < 340, `legal content starts too low: ${result.shellTop}`);
     });
   }
 });

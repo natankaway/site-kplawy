@@ -60,14 +60,23 @@
     if (reveal) reveal.observe(el);
   });
 
-  const appSection = document.querySelector('#app');
-  if ('IntersectionObserver' in window && appSection) {
-    const appObserver = new IntersectionObserver((entries) => {
+  const setDownloadReady = () => {
+    body.classList.toggle('download-ready', window.scrollY > Math.min(900, window.innerHeight * 0.9));
+  };
+  setDownloadReady();
+  window.addEventListener('scroll', setDownloadReady, { passive: true });
+
+  const immersiveSections = [...document.querySelectorAll('#demo, #app')];
+  if ('IntersectionObserver' in window && immersiveSections.length) {
+    const visibleImmersiveSections = new Set();
+    const immersiveObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        body.classList.toggle('app-screens-active', entry.isIntersecting);
+        if (entry.isIntersecting) visibleImmersiveSections.add(entry.target);
+        else visibleImmersiveSections.delete(entry.target);
       });
+      body.classList.toggle('immersive-section-active', visibleImmersiveSections.size > 0);
     }, { threshold: 0.18, rootMargin: '-12% 0px -18% 0px' });
-    appObserver.observe(appSection);
+    immersiveSections.forEach((section) => immersiveObserver.observe(section));
   }
 
   const setVideoButton = (button, paused) => {
