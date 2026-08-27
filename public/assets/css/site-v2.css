@@ -798,44 +798,90 @@ video {
 
 .screens {
   display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(250px, 315px);
-  gap: 15px;
-  overflow-x: auto;
-  padding: 4px 4px 22px;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: thin;
+  grid-template-columns: minmax(280px, 360px) repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  overflow: visible;
+  padding: 0;
 }
 
 .screen-card {
   min-width: 0;
-  scroll-snap-align: start;
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  align-items: center;
+  gap: 15px;
+  padding: 12px;
+  border: 1px solid rgba(143, 176, 216, 0.16);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(22, 139, 255, 0.14), transparent 34%),
+    rgba(7, 11, 18, 0.78);
+}
+
+.screen-card.featured {
+  grid-row: span 2;
+  grid-template-columns: 1fr;
+  align-self: stretch;
+  padding: 13px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(22, 139, 255, 0.24), transparent 40%),
+    linear-gradient(180deg, rgba(11, 18, 29, 0.96), rgba(3, 6, 11, 0.92));
 }
 
 .screen-phone {
-  padding: 6px;
+  min-width: 0;
+  padding: 5px;
   border: 1px solid var(--line);
-  border-radius: 22px;
+  border-radius: 16px;
   background: linear-gradient(145deg, #1b2736, #05080c);
 }
 
 .screen-phone img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 142px;
+  object-fit: cover;
+  object-position: center 18%;
+  border-radius: 12px;
+}
+
+.screen-card.featured .screen-phone {
+  border-radius: 22px;
+  padding: 6px;
+}
+
+.screen-card.featured .screen-phone img {
+  height: min(468px, 42vw);
+  object-position: center 50%;
   border-radius: 17px;
 }
 
+.screen-copy {
+  min-width: 0;
+}
+
 .screen-card h3 {
-  margin: 17px 3px 6px;
+  margin: 0 0 6px;
   font-size: 17px;
+  text-wrap: balance;
 }
 
 .screen-card p {
-  margin: 0 3px;
+  margin: 0;
   color: #8796a9;
   font-size: 12px;
-  line-height: 1.45;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.screen-card.featured h3 {
+  margin-top: 15px;
+  font-size: 22px;
+}
+
+.screen-card.featured p {
+  max-width: 34ch;
+  font-size: 13px;
 }
 
 .plans {
@@ -1429,6 +1475,18 @@ footer {
     grid-template-columns: minmax(0, 1fr) minmax(120px, 0.7fr);
   }
 
+  .screens {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .screen-card.featured {
+    grid-row: auto;
+  }
+
+  .screen-card.featured .screen-phone img {
+    height: min(390px, 50vw);
+  }
+
   .plans {
     grid-template-columns: 1fr 1fr;
   }
@@ -1644,8 +1702,49 @@ footer {
   }
 
   .screens {
-    grid-auto-columns: minmax(246px, 78vw);
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .screen-card,
+  .screen-card.featured {
+    grid-row: auto;
+    grid-template-columns: minmax(86px, 112px) minmax(0, 1fr);
     gap: 12px;
+    align-items: center;
+    padding: 10px;
+    border-radius: 16px;
+  }
+
+  .screen-phone,
+  .screen-card.featured .screen-phone {
+    padding: 4px;
+    border-radius: 14px;
+  }
+
+  .screen-phone img,
+  .screen-card.featured .screen-phone img {
+    height: 148px;
+    object-position: center 18%;
+    border-radius: 10px;
+  }
+
+  .screen-card.featured .screen-phone img {
+    height: 178px;
+    object-position: center 50%;
+  }
+
+  .screen-card h3,
+  .screen-card.featured h3 {
+    margin: 0 0 5px;
+    font-size: 17px;
+  }
+
+  .screen-card p,
+  .screen-card.featured p {
+    max-width: none;
+    font-size: 12px;
+    line-height: 1.4;
   }
 
   .price {
@@ -1688,6 +1787,13 @@ footer {
     border-radius: 16px;
     background: rgba(4, 8, 14, 0.94);
     backdrop-filter: blur(15px);
+    transition: transform 180ms ease-out, opacity 180ms ease-out;
+  }
+
+  .app-screens-active .mobile-download {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(calc(100% + 24px));
   }
 
   .mobile-download span {
@@ -1786,7 +1892,29 @@ footer {
   }
 
   .screens {
-    grid-auto-columns: minmax(228px, 82vw);
+    gap: 9px;
+  }
+
+  .screen-card,
+  .screen-card.featured {
+    grid-template-columns: 86px minmax(0, 1fr);
+    gap: 10px;
+    padding: 9px;
+  }
+
+  .screen-phone img,
+  .screen-card.featured .screen-phone img {
+    height: 126px;
+  }
+
+  .screen-card h3,
+  .screen-card.featured h3 {
+    font-size: 15px;
+  }
+
+  .screen-card p,
+  .screen-card.featured p {
+    font-size: 11px;
   }
 
   .mobile-download {

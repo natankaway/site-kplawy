@@ -111,12 +111,14 @@ const COPY: Record<Locale, Copy> = {
     watchTitle: 'Um botão grande para o meio do jogo.',
     watchText: 'A tela do relógio segue a identidade KplaWY e deixa a ação principal impossível de confundir.',
     screensEyebrow: 'Produto real',
-    screensTitle: 'Estas são as telas atuais do KplaWY.',
-    screensText: 'A landing agora usa a interface atual do app no mesmo idioma do site.',
+    screensTitle: 'Da câmera ao replay salvo.',
+    screensText: 'As telas reais mostram a experiência completa: escolher o modo, deixar a câmera pronta, disparar à distância e assistir ao clipe.',
     screens: [
-      ['home.webp', 'Início', 'Escolha Câmera, Controle Remoto ou Multi-Câmera.', 'Tela inicial atual do KplaWY em português'],
-      ['camera.webp', 'Câmera', 'Buffer ativo e botão REPLAY sempre ao alcance.', 'Tela atual da câmera do KplaWY em português'],
-      ['player.webp', 'Player', 'Assista, controle velocidade e compartilhe o replay salvo.', 'Tela atual do player de clipes do KplaWY em português'],
+      ['app-camera.webp', 'Câmera pronta', 'Buffer ativo, controle remoto e botão REPLAY no alcance do jogo.', 'Tela de câmera atual do KplaWY em português'],
+      ['app-home.webp', 'Escolha o modo', 'Câmera, Controle Remoto ou Multi-Câmera antes da partida começar.', 'Tela de seleção de modo do KplaWY em português'],
+      ['app-remote.webp', 'Controle remoto', 'Conecte outro celular e dispare o replay sem voltar até o tripé.', 'Tela de controle remoto ativo do KplaWY em português'],
+      ['app-player.webp', 'Replay salvo', 'Assista, volte 5 segundos, controle velocidade e compartilhe o lance.', 'Tela do player de clipes do KplaWY em português'],
+      ['app-multicam.webp', 'Multi-Câmera Pro', 'Vários celulares gravam e salvam o mesmo lance ao mesmo tempo.', 'Tela de Multi-Câmera do KplaWY em português'],
     ],
     plansEyebrow: 'Comece grátis',
     plansTitle: 'O essencial é Free. O sistema completo é Pro.',
@@ -199,12 +201,14 @@ const COPY: Record<Locale, Copy> = {
     watchTitle: 'One big button for the middle of the game.',
     watchText: 'The watch screen follows the KplaWY identity and keeps the main action impossible to miss.',
     screensEyebrow: 'Real product',
-    screensTitle: 'These are the current KplaWY screens.',
-    screensText: 'The landing now uses the current app interface in the same language as the site.',
+    screensTitle: 'From camera to saved replay.',
+    screensText: 'Real app screens show the full experience: pick a mode, keep the camera ready, trigger remotely and watch the clip.',
     screens: [
-      ['home.webp', 'Home', 'Choose Camera, Remote Control or Multi-Camera.', 'Current KplaWY home screen in English'],
-      ['camera.webp', 'Camera', 'Active buffer and REPLAY always within reach.', 'Current KplaWY camera screen in English'],
-      ['player.webp', 'Player', 'Watch, control speed and share the saved replay.', 'Current KplaWY clip player screen in English'],
+      ['app-camera.webp', 'Camera ready', 'Active buffer, remote control and REPLAY within reach during the game.', 'Current KplaWY camera screen in English'],
+      ['app-home.webp', 'Choose a mode', 'Camera, Remote Control or Multi-Camera before the match starts.', 'KplaWY mode selection screen in English'],
+      ['app-remote.webp', 'Remote control', 'Connect another phone and trigger replay without walking back to the tripod.', 'Active KplaWY remote control screen in English'],
+      ['app-player.webp', 'Replay saved', 'Watch, jump back 5 seconds, control speed and share the play.', 'KplaWY clip player screen in English'],
+      ['app-multicam.webp', 'Multi-Camera Pro', 'Multiple phones record and save the same play at the same time.', 'KplaWY Multi-Camera screen in English'],
     ],
     plansEyebrow: 'Start free',
     plansTitle: 'The essentials are Free. The complete system is Pro.',
@@ -250,8 +254,26 @@ const COPY: Record<Locale, Copy> = {
 };
 
 const SCREEN_SIZES: Record<Locale, Record<string, [number, number]>> = {
-  pt: { 'home.webp': [1080, 2260], 'camera.webp': [921, 2048], 'player.webp': [921, 2048] },
-  en: { 'home.webp': [1080, 2272], 'camera.webp': [921, 2048], 'player.webp': [921, 2048] },
+  pt: {
+    'home.webp': [1080, 2260],
+    'camera.webp': [921, 2048],
+    'player.webp': [921, 2048],
+    'app-home.webp': [820, 1823],
+    'app-camera.webp': [820, 1777],
+    'app-remote.webp': [820, 1823],
+    'app-player.webp': [820, 1773],
+    'app-multicam.webp': [820, 1823],
+  },
+  en: {
+    'home.webp': [1080, 2272],
+    'camera.webp': [921, 2048],
+    'player.webp': [921, 2048],
+    'app-home.webp': [820, 1823],
+    'app-camera.webp': [820, 1823],
+    'app-remote.webp': [820, 1823],
+    'app-player.webp': [820, 1823],
+    'app-multicam.webp': [820, 1823],
+  },
 };
 
 function esc(value: string) {
@@ -282,7 +304,7 @@ export function renderLandingPage(locale: Locale) {
   const screens = c.screens.map(([file, title, description, alt], index) => {
     const [width, height] = SCREEN_SIZES[locale][file];
     const load = index === 0 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"';
-    return `<article class="screen-card reveal"><div class="screen-phone"><img ${load} decoding="async" src="${media}/${file}" width="${width}" height="${height}" alt="${esc(alt)}"></div><h3>${esc(title)}</h3><p>${esc(description)}</p></article>`;
+    return `<article class="screen-card${index === 0 ? ' featured' : ''} reveal"><div class="screen-phone"><img ${load} decoding="async" src="${media}/${file}" width="${width}" height="${height}" alt="${esc(alt)}"></div><div class="screen-copy"><h3>${esc(title)}</h3><p>${esc(description)}</p></div></article>`;
   }).join('');
   const privacy = c.privacyItems.map(([t, d]) => `<div class="privacy-item"><i>✓</i><div><b>${esc(t)}</b><span>${esc(d)}</span></div></div>`).join('');
   const faq = c.faqs.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('');

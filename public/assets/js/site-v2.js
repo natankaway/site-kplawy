@@ -60,6 +60,16 @@
     if (reveal) reveal.observe(el);
   });
 
+  const appSection = document.querySelector('#app');
+  if ('IntersectionObserver' in window && appSection) {
+    const appObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        body.classList.toggle('app-screens-active', entry.isIntersecting);
+      });
+    }, { threshold: 0.18, rootMargin: '-12% 0px -18% 0px' });
+    appObserver.observe(appSection);
+  }
+
   const setVideoButton = (button, paused) => {
     if (!button) return;
     const label = paused ? button.dataset.playLabel : button.dataset.pauseLabel;

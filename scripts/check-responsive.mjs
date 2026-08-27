@@ -410,6 +410,85 @@ async function inspectDemoExperience(pathname, viewport) {
   return result.value;
 }
 
+async function inspectAppScreens(pathname, viewport) {
+  const target = await fetch(`http://127.0.0.1:${chromePort}/json/new`, { method: 'PUT' }).then(
+    (response) => response.json(),
+  );
+  const client = new CdpClient(target.webSocketDebuggerUrl);
+  await client.open();
+  await client.send('Page.enable');
+  await client.send('Runtime.enable');
+  await client.send('Emulation.setDeviceMetricsOverride', {
+    width: viewport.width,
+    height: viewport.height,
+    deviceScaleFactor: viewport.deviceScaleFactor ?? 1,
+    mobile: viewport.mobile,
+  });
+
+  const loaded = client.once('Page.loadEventFired');
+  await client.send('Page.navigate', { url: `${webBaseUrl}${pathname}#app` });
+  await loaded;
+  await client.send('Runtime.evaluate', {
+    expression: "document.querySelector('#app')?.scrollIntoView()",
+  });
+  await new Promise((resolve) => setTimeout(resolve, 350));
+
+  const { result } = await client.send('Runtime.evaluate', {
+    returnByValue: true,
+    expression: `(() => {
+      const viewportWidth = Math.min(
+        window.innerWidth,
+        window.visualViewport ? window.visualViewport.width : window.innerWidth,
+      );
+      const screens = document.querySelector('.screens');
+      const mobileDownload = document.querySelector('.mobile-download');
+      const cards = Array.from(document.querySelectorAll('.screen-card'));
+      const rectFor = (el) => {
+        const rect = el.getBoundingClientRect();
+        return {
+          left: Math.round(rect.left),
+          right: Math.round(rect.right),
+          width: Math.round(rect.width),
+          height: Math.round(rect.height),
+          clipped: rect.left < 0 || rect.right > viewportWidth,
+        };
+      };
+      const textProblems = cards.flatMap((card, index) => {
+        return Array.from(card.querySelectorAll('h3, p'))
+          .map((el) => {
+            const rect = el.getBoundingClientRect();
+            return {
+              index,
+              text: el.textContent.trim().replace(/\\s+/g, ' '),
+              width: Math.round(rect.width),
+              scrollWidth: el.scrollWidth,
+              clientWidth: el.clientWidth,
+              clipped: el.scrollWidth > el.clientWidth + 1,
+              oneWordColumn: rect.width < 82 && el.textContent.trim().includes(' '),
+            };
+          })
+          .filter((item) => item.clipped || item.oneWordColumn);
+      });
+
+      return {
+        viewportWidth,
+        count: cards.length,
+        appScreensActive: document.body.classList.contains('app-screens-active'),
+        mobileDownloadHidden: !mobileDownload || getComputedStyle(mobileDownload).display === 'none' || getComputedStyle(mobileDownload).opacity === '0',
+        screensScrollOverflow: screens ? Math.max(0, screens.scrollWidth - screens.clientWidth) : null,
+        cardRects: cards.map(rectFor),
+        clippedCards: cards.map(rectFor).filter((item) => item.clipped),
+        maxCardHeight: cards.reduce((max, card) => Math.max(max, Math.round(card.getBoundingClientRect().height)), 0),
+        textProblems,
+      };
+    })()`,
+  });
+
+  await fetch(`http://127.0.0.1:${chromePort}/json/close/${target.id}`).catch(() => {});
+  client.close();
+  return result.value;
+}
+
 describe('responsive refreshed landing', () => {
   before(async () => {
     assert.ok(existsSync(chromePath), `Chrome not found at ${chromePath}`);
@@ -514,6 +593,54 @@ describe('responsive refreshed landing', () => {
       assert.ok(result.video.height >= 300, `video is too small: ${result.video.height}`);
       assert.ok(result.flow.height <= 190, `save flow is too tall: ${result.flow.height}`);
       assert.ok(result.panel.height <= 440, `demo panel is too tall: ${result.panel.height}`);
+      assert.deepEqual(result.textProblems, []);
+    });
+  }
+
+  for (const pathname of ['/pt', '/en']) {
+    it(`${pathname} presents app screens as a compact vertical product story on mobile`, async () => {
+      const result = await inspectAppScreens(pathname, {
+        width: 360,
+        height: 780,
+        deviceScaleFactor: 3,
+        mobile: true,
+      });
+
+      assert.ok(result.count >= 5, `expected at least 5 product screens, got ${result.count}`);
+      assert.equal(result.screensScrollOverflow, 0);
+      assert.equal(result.appScreensActive, true);
+      assert.equal(result.mobileDownloadHidden, true);
+      assert.deepEqual(result.clippedCards, []);
+      assert.ok(result.maxCardHeight <= 290, `mobile screen cards are too tall: ${result.maxCardHeight}`);
+      assert.deepEqual(result.textProblems, []);
+    });
+  }
+
+  for (const pathname of ['/pt', '/en']) {
+    it(`${pathname} presents app screens without a horizontal carousel on desktop`, async () => {
+      const result = await inspectAppScreens(pathname, { width: 1280, height: 820, mobile: false });
+
+      assert.ok(result.count >= 5, `expected at least 5 product screens, got ${result.count}`);
+      assert.equal(result.screensScrollOverflow, 0);
+      assert.deepEqual(result.clippedCards, []);
+      assert.ok(result.maxCardHeight <= 620, `desktop screen cards are too tall: ${result.maxCardHeight}`);
+      assert.deepEqual(result.textProblems, []);
+    });
+  }
+
+  for (const pathname of ['/pt', '/en']) {
+    it(`${pathname} keeps app screens balanced on tablet widths`, async () => {
+      const result = await inspectAppScreens(pathname, {
+        width: 768,
+        height: 900,
+        deviceScaleFactor: 2,
+        mobile: true,
+      });
+
+      assert.ok(result.count >= 5, `expected at least 5 product screens, got ${result.count}`);
+      assert.equal(result.screensScrollOverflow, 0);
+      assert.deepEqual(result.clippedCards, []);
+      assert.ok(result.maxCardHeight <= 560, `tablet screen cards are too tall: ${result.maxCardHeight}`);
       assert.deepEqual(result.textProblems, []);
     });
   }

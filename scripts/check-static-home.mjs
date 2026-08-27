@@ -77,8 +77,13 @@ describe('production landing', () => {
     assertExcludes(landing, 'data-seconds', 'demo duration timeline');
     assertIncludes(landing, 'Apertou no relógio', 'PT watch explanation');
     assertIncludes(landing, 'Watch tapped', 'EN watch explanation');
-    assertIncludes(landing, 'camera.webp', 'new app screenshots');
-    assertIncludes(landing, 'player.webp', 'new app screenshots');
+    assertIncludes(landing, 'app-camera.webp', 'new app screenshots');
+    assertIncludes(landing, 'app-home.webp', 'new app screenshots');
+    assertIncludes(landing, 'app-remote.webp', 'new app screenshots');
+    assertIncludes(landing, 'app-player.webp', 'new app screenshots');
+    assertIncludes(landing, 'app-multicam.webp', 'new app screenshots');
+    assertIncludes(landing, 'Da câmera ao replay salvo.', 'PT product story');
+    assertIncludes(landing, 'From camera to saved replay.', 'EN product story');
     assertIncludes(landing, 'data-video-toggle', 'video pause control');
   });
 
