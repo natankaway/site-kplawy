@@ -17,14 +17,10 @@
     });
   });
 
-  const buttons = [...document.querySelectorAll('[data-duration]')];
-  const fill = document.querySelector('[data-fill]');
-  const seconds = document.querySelector('[data-seconds]');
   const toast = document.querySelector('[data-toast]');
   const toastSeconds = document.querySelector('[data-toast-seconds]');
   const flowSteps = [...document.querySelectorAll('[data-flow-step]')];
-  let selected = 10;
-  const widths = { 10: '30%', 22: '46%', 30: '62%', 50: '86%' };
+  const savedSeconds = 10;
   const flowOrder = ['play', 'tap', 'saved'];
 
   const setFlowState = (state) => {
@@ -36,22 +32,8 @@
     });
   };
 
-  buttons.forEach((button) => {
-    button.addEventListener('click', () => {
-      selected = Number(button.dataset.duration || 10);
-      buttons.forEach((item) => item.classList.toggle('active', item === button));
-      if (fill) fill.style.width = widths[selected] || '30%';
-      if (seconds) seconds.textContent = `${selected}s`;
-      toast?.classList.remove('show');
-      setFlowState('play');
-      document.querySelectorAll('.video-card').forEach((card) => {
-        card.classList.remove('watch-cue-visible', 'replay-saved');
-      });
-    });
-  });
-
   const showAutoSaved = (card) => {
-    if (toastSeconds) toastSeconds.textContent = String(selected);
+    if (toastSeconds) toastSeconds.textContent = String(savedSeconds);
     setFlowState('saved');
     card?.classList.add('replay-saved');
     card?.classList.remove('watch-cue-visible');

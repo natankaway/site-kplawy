@@ -314,7 +314,7 @@ async function inspectMobileHeroCompression(pathname, viewport) {
           textClipped: el.scrollWidth > el.clientWidth + 1,
         };
       };
-      const chipTargets = Array.from(document.querySelectorAll('.micro span, .actions a, .proof-item, .duration-row button, .mobile-download > *'))
+      const chipTargets = Array.from(document.querySelectorAll('.micro span, .actions a, .proof-item, .mobile-download > *'))
         .filter(isVisible)
         .map((el, index) => inspectTarget(el, 'responsive item ' + index));
 

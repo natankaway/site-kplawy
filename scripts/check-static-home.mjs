@@ -67,6 +67,10 @@ describe('production landing', () => {
     assertIncludes(landing, 'data-auto-save', 'automatic replay saved state');
     assertExcludes(landing, 'data-replay', 'manual replay button');
     assertExcludes(landing, 'class="replay"', 'manual replay button');
+    assertExcludes(landing, 'data-duration', 'demo duration controls');
+    assertExcludes(landing, 'class="duration-row"', 'demo duration controls');
+    assertExcludes(landing, 'data-fill', 'demo duration timeline');
+    assertExcludes(landing, 'data-seconds', 'demo duration timeline');
     assertIncludes(landing, 'Apertou no relógio', 'PT watch explanation');
     assertIncludes(landing, 'Watch tapped', 'EN watch explanation');
     assertIncludes(landing, 'camera.webp', 'new app screenshots');
