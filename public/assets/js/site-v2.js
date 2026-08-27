@@ -22,10 +22,8 @@
   const seconds = document.querySelector('[data-seconds]');
   const toast = document.querySelector('[data-toast]');
   const toastSeconds = document.querySelector('[data-toast-seconds]');
-  const replay = document.querySelector('[data-replay]');
   const flowSteps = [...document.querySelectorAll('[data-flow-step]')];
   let selected = 10;
-  let savedUntil = 0;
   const widths = { 10: '30%', 22: '46%', 30: '62%', 50: '86%' };
   const flowOrder = ['play', 'tap', 'saved'];
 
@@ -46,21 +44,24 @@
       if (seconds) seconds.textContent = `${selected}s`;
       toast?.classList.remove('show');
       setFlowState('play');
+      document.querySelectorAll('.video-card').forEach((card) => {
+        card.classList.remove('watch-cue-visible', 'replay-saved');
+      });
     });
   });
 
-  replay?.addEventListener('click', () => {
+  const showAutoSaved = (card) => {
     if (toastSeconds) toastSeconds.textContent = String(selected);
-    savedUntil = Date.now() + 1900;
-    toast?.classList.remove('show');
     setFlowState('saved');
-    document.querySelectorAll('.video-card').forEach((card) => {
-      card.classList.add('watch-cue-visible', 'replay-saved');
-      window.setTimeout(() => card.classList.remove('replay-saved'), 700);
-      window.setTimeout(() => card.classList.remove('watch-cue-visible'), 1900);
-    });
-    requestAnimationFrame(() => requestAnimationFrame(() => toast?.classList.add('show')));
-  });
+    card?.classList.add('replay-saved');
+    card?.classList.remove('watch-cue-visible');
+    toast?.classList.add('show');
+  };
+
+  const resetAutoSaved = (card) => {
+    card?.classList.remove('replay-saved');
+    toast?.classList.remove('show');
+  };
 
   const reveal = 'IntersectionObserver' in window && !reducedMotion
     ? new IntersectionObserver((entries) => {
@@ -92,15 +93,24 @@
       video.pause();
       video.removeAttribute('autoplay');
       card?.classList.add('watch-cue-visible');
-      setFlowState('tap');
+      showAutoSaved(card);
       setVideoButton(toggle, true);
     } else {
       setVideoButton(toggle, video.paused);
     }
 
     video.addEventListener('timeupdate', () => {
-      if (!Number.isFinite(video.duration) || video.duration <= 0 || Date.now() < savedUntil) return;
-      const nearWatchTap = video.currentTime > 1 && video.duration - video.currentTime <= 3;
+      if (!Number.isFinite(video.duration) || video.duration <= 0) return;
+      const remaining = video.duration - video.currentTime;
+      const savedWindow = video.currentTime > 1 && remaining <= 1.35;
+      const nearWatchTap = video.currentTime > 1 && remaining <= 3 && !savedWindow;
+
+      if (savedWindow) {
+        showAutoSaved(card);
+        return;
+      }
+
+      resetAutoSaved(card);
       card?.classList.toggle('watch-cue-visible', nearWatchTap);
       setFlowState(nearWatchTap ? 'tap' : 'play');
     });
