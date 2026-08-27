@@ -1,6 +1,6 @@
 # Política de Privacidade — KplaWY Instant Replay 22s
 
-**Última atualização:** 7 de junho de 2026
+**Última atualização:** 27 de agosto de 2026
 **Versão:** 1.0
 **Aplica-se a:** aplicativo KplaWY Instant Replay 22s (iOS, Android, Apple Watch, Wear OS) e ao site `kplawy.app`.
 
@@ -137,7 +137,7 @@ Essa transferência é amparada por:
 Reforçando, por ser o ponto mais importante:
 
 - Seus clipes ficam **localmente no seu aparelho**.
-- **Nada** vai para nossos servidores.
+- Nenhum conteúdo de vídeo vai para nossos servidores.
 - O backup é **opcional** e, quando ligado, envia para o **seu próprio**
   Google Drive.
 - A função de múltiplas câmeras conecta seus aparelhos **diretamente pela
@@ -275,9 +275,13 @@ essencial**: `NEXT_LOCALE`, que lembra o idioma que você escolheu (português o
 inglês). Esse cookie é funcional — não rastreia você nem coleta dados.
 **Duração: 1 ano** (ou conforme renovação da preferência).
 
-Não há ferramentas de análise (*analytics*), rastreamento, pixels nem cookies
-de terceiros. As fontes são servidas pelo próprio domínio (*self-hosted*), sem
-chamadas a servidores de terceiros.
+No site público `kplawy.app`, não há ferramentas de análise (*analytics*),
+rastreamento, pixels nem cookies de terceiros. As fontes são servidas pelo
+próprio domínio (*self-hosted*), sem chamadas a servidores de terceiros.
+
+Essa seção trata apenas do site. O aplicativo pode usar os dados de conta,
+Firebase, RevenueCat, diagnósticos opcionais e estatísticas anônimas de uso
+descritos nas seções anteriores desta Política.
 
 ---
 

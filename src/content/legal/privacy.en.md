@@ -1,6 +1,6 @@
 # Privacy Policy — KplaWY Instant Replay 22s
 
-**Last updated:** June 7, 2026
+**Last updated:** August 27, 2026
 **Version:** 1.0
 **Applies to:** the KplaWY Instant Replay 22s app (iOS, Android, Apple Watch,
 Wear OS) and the `kplawy.app` website.
@@ -138,7 +138,7 @@ This transfer is supported by:
 To reinforce the most important point:
 
 - Your clips stay **locally on your device**.
-- **Nothing** goes to our servers.
+- No video content goes to our servers.
 - Backup is **optional** and, when enabled, sends to your **own** Google Drive.
 - The multi-camera feature connects your devices **directly over the local
   network** (Wi-Fi), with **encrypted** transmission. Nothing passes through
@@ -272,8 +272,13 @@ functional cookie**: `NEXT_LOCALE`, which remembers the language you chose
 (Portuguese or English). This cookie is functional — it does not track you or
 collect data. **Duration: 1 year** (or as the preference is renewed).
 
-There are no analytics tools, tracking, pixels, or third-party cookies. Fonts
-are served from our own domain (self-hosted), with no third-party requests.
+On the public `kplawy.app` website, there are no analytics tools, tracking,
+pixels, or third-party cookies. Fonts are served from our own domain
+(self-hosted), with no third-party requests.
+
+This section applies only to the website. The app may use account data,
+Firebase, RevenueCat, optional diagnostics, and anonymous usage statistics as
+described in the previous sections of this Policy.
 
 ---
 

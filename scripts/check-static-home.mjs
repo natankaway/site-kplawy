@@ -137,6 +137,41 @@ describe('production landing', () => {
     assertExcludes(legalRenderer, '/assets/css/site.css', 'legal renderer');
   });
 
+  it('keeps production legal documents complete and consistent across locales', () => {
+    const legalDocs = [
+      'src/content/legal/privacy.pt.md',
+      'src/content/legal/privacy.en.md',
+      'src/content/legal/terms.pt.md',
+      'src/content/legal/terms.en.md',
+      'src/content/legal/delete-account.pt.md',
+      'src/content/legal/delete-account.en.md',
+    ].map((file) => [file, read(file)]);
+
+    for (const [file, source] of legalDocs) {
+      assertExcludes(source, 'fase de elaboração', file);
+      assertExcludes(source, 'em fase de elaboração', file);
+      assertExcludes(source, 'revisado por um profissional jurídico', file);
+      assertExcludes(source, 'draft', file);
+      assertExcludes(source, 'TODO', file);
+    }
+
+    const privacyPt = read('src/content/legal/privacy.pt.md');
+    const privacyEn = read('src/content/legal/privacy.en.md');
+    for (const [label, source] of [['PT privacy', privacyPt], ['EN privacy', privacyEn]]) {
+      assertIncludes(source, 'Firebase', label);
+      assertIncludes(source, 'RevenueCat', label);
+      assertIncludes(source, label === 'PT privacy' ? 'Estatísticas de uso' : 'Usage statistics', label);
+      assertIncludes(source, label === 'PT privacy' ? 'rastreamento publicitário' : 'advertising tracking', label);
+    }
+
+    assertExcludes(privacyPt, 'Nada vai para nossos servidores.', 'PT privacy video wording');
+    assertExcludes(privacyEn, 'Nothing goes to our servers.', 'EN privacy video wording');
+    assertIncludes(privacyPt, 'Nenhum conteúdo de vídeo vai para nossos servidores.', 'PT privacy video wording');
+    assertIncludes(privacyEn, 'No video content goes to our servers.', 'EN privacy video wording');
+    assertIncludes(privacyPt, 'No site público `kplawy.app`', 'PT website-only analytics wording');
+    assertIncludes(privacyEn, 'On the public `kplawy.app` website', 'EN website-only analytics wording');
+  });
+
   it('redirects legacy landing pages to sections of the refreshed homepage', () => {
     const proxy = read('src/proxy.ts');
     const routeMap = read('src/lib/legacy-landing-routes.ts');
