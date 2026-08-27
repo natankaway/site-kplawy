@@ -331,6 +331,85 @@ async function inspectMobileHeroCompression(pathname, viewport) {
   return result.value;
 }
 
+async function inspectDemoExperience(pathname, viewport) {
+  const target = await fetch(`http://127.0.0.1:${chromePort}/json/new`, { method: 'PUT' }).then(
+    (response) => response.json(),
+  );
+  const client = new CdpClient(target.webSocketDebuggerUrl);
+  await client.open();
+  await client.send('Page.enable');
+  await client.send('Runtime.enable');
+  await client.send('Emulation.setDeviceMetricsOverride', {
+    width: viewport.width,
+    height: viewport.height,
+    deviceScaleFactor: viewport.deviceScaleFactor ?? 1,
+    mobile: viewport.mobile,
+  });
+
+  const loaded = client.once('Page.loadEventFired');
+  await client.send('Page.navigate', { url: `${webBaseUrl}${pathname}#demo` });
+  await loaded;
+  await client.send('Runtime.evaluate', {
+    expression: "document.querySelector('#demo')?.scrollIntoView()",
+  });
+  await new Promise((resolve) => setTimeout(resolve, 350));
+
+  const { result } = await client.send('Runtime.evaluate', {
+    returnByValue: true,
+    expression: `(() => {
+      const viewportWidth = Math.min(
+        window.innerWidth,
+        window.visualViewport ? window.visualViewport.width : window.innerWidth,
+      );
+      const rectFor = (selector) => {
+        const el = document.querySelector(selector);
+        if (!el) return null;
+        const rect = el.getBoundingClientRect();
+        return {
+          left: Math.round(rect.left),
+          right: Math.round(rect.right),
+          width: Math.round(rect.width),
+          height: Math.round(rect.height),
+          clipped: rect.left < 0 || rect.right > viewportWidth,
+        };
+      };
+      const visible = (el) => {
+        const style = getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+      };
+      const textProblems = Array.from(document.querySelectorAll('.save-step b, .save-step small, .auto-save-status b, .auto-save-status small'))
+        .filter(visible)
+        .map((el) => {
+          const rect = el.getBoundingClientRect();
+          return {
+            text: el.textContent.trim().replace(/\\s+/g, ' '),
+            width: Math.round(rect.width),
+            scrollWidth: el.scrollWidth,
+            clientWidth: el.clientWidth,
+            clipped: el.scrollWidth > el.clientWidth + 1,
+            oneWordColumn: rect.width < 64 && el.textContent.trim().includes(' '),
+          };
+        })
+        .filter((item) => item.clipped || item.oneWordColumn);
+
+      return {
+        viewportWidth,
+        video: rectFor('.video-card'),
+        panel: rectFor('.demo-panel'),
+        flow: rectFor('.save-flow'),
+        autoSave: rectFor('.auto-save-status'),
+        stepCount: document.querySelectorAll('.save-step').length,
+        textProblems,
+      };
+    })()`,
+  });
+
+  await fetch(`http://127.0.0.1:${chromePort}/json/close/${target.id}`).catch(() => {});
+  client.close();
+  return result.value;
+}
+
 describe('responsive refreshed landing', () => {
   before(async () => {
     assert.ok(existsSync(chromePath), `Chrome not found at ${chromePath}`);
@@ -407,6 +486,35 @@ describe('responsive refreshed landing', () => {
 
       assert.equal(result.scrollOverflow, 0);
       assert.deepEqual(result.compressedTargets, []);
+    });
+  }
+
+  for (const pathname of ['/pt', '/en']) {
+    it(`${pathname} keeps the replay demo compact and legible on mobile`, async () => {
+      const result = await inspectDemoExperience(pathname, { width: 360, height: 780, mobile: true });
+
+      assert.equal(result.stepCount, 3);
+      assert.equal(result.video.clipped, false);
+      assert.equal(result.panel.clipped, false);
+      assert.equal(result.flow.clipped, false);
+      assert.equal(result.autoSave.clipped, false);
+      assert.ok(result.flow.height <= 190, `save flow is too tall: ${result.flow.height}`);
+      assert.ok(result.panel.height <= 390, `demo panel is too tall: ${result.panel.height}`);
+      assert.deepEqual(result.textProblems, []);
+    });
+  }
+
+  for (const pathname of ['/pt', '/en']) {
+    it(`${pathname} keeps the replay demo balanced on desktop`, async () => {
+      const result = await inspectDemoExperience(pathname, { width: 1280, height: 820, mobile: false });
+
+      assert.equal(result.stepCount, 3);
+      assert.equal(result.video.clipped, false);
+      assert.equal(result.panel.clipped, false);
+      assert.ok(result.video.height >= 300, `video is too small: ${result.video.height}`);
+      assert.ok(result.flow.height <= 190, `save flow is too tall: ${result.flow.height}`);
+      assert.ok(result.panel.height <= 440, `demo panel is too tall: ${result.panel.height}`);
+      assert.deepEqual(result.textProblems, []);
     });
   }
 });

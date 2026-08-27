@@ -62,6 +62,10 @@ describe('production landing', () => {
     assertIncludes(landing, '/media/v2/demo-poster.webp', 'demo poster');
     assertIncludes(landing, '/media/v2/watch.webp', 'watch image');
     assertIncludes(landing, '/media/v2/logo-symbol-white.webp', 'new logo');
+    assertIncludes(landing, 'O lance já passou. O KplaWY ainda pega.', 'PT demo marketing copy');
+    assertIncludes(landing, 'The play is already over. KplaWY still catches it.', 'EN demo marketing copy');
+    assertExcludes(landing, 'Escolha a duração', 'old demo controls copy');
+    assertExcludes(landing, 'Pick a duration', 'old demo controls copy');
     assertIncludes(landing, 'watch-cue', 'watch tap explanation');
     assertIncludes(landing, 'data-flow-step="saved"', 'replay save flow');
     assertIncludes(landing, 'data-auto-save', 'automatic replay saved state');
